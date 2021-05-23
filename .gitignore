@@ -1,0 +1,15 @@
+.dub
+docs.json
+__dummy.html
+docs/
+/d-coder-ui-html
+d-coder-ui-html.so
+d-coder-ui-html.dylib
+d-coder-ui-html.dll
+d-coder-ui-html.a
+d-coder-ui-html.lib
+d-coder-ui-html-test-*
+*.exe
+*.o
+*.obj
+*.lst
