@@ -1014,15 +1014,16 @@ class Element : Node, IElement
     }
 
     /** Attaches a shadow DOM tree to the specified element and returns a reference to its ShadowRoot. */
-    void attachShadow()
+    Element attachShadow( string[ string ] shadowRootInit )
     {
-        //
+        Element shadowroot;
+        return shadowroot;
     }
 
     /** A shortcut method to create and run an animation on an element. Returns the created Animation object instance. */
-    void animate() 
+    Animation animate( keyframes, options ) 
     {
-        //
+        return new Animation();
     }
 
     /** Inserts a set of Node objects or DOMString objects after the last child of the element. */
@@ -1091,6 +1092,491 @@ struct Options
     bool        passive;
     AbortSignal signal;
 }
+
+/** */
+class Animation
+{
+    /** Creates a new Animation object instance. */
+    this()
+    {
+        //
+    }
+
+    /** The current time value of the animation in milliseconds, whether running or paused. If the animation lacks a timeline, is inactive or hasn't been played yet, its value is null. */
+    float currentTime()
+    {
+        return _animationTimeline.currentTime;
+    }
+
+    /** The current time value of the animation in milliseconds, whether running or paused. If the animation lacks a timeline, is inactive or hasn't been played yet, its value is null. */
+    void currentTime( float newTime )
+    {
+        return _animationTimeline.currentTime = newTime;
+    }
+
+    /** Gets and sets the AnimationEffect associated with this animation. This will usually be a KeyframeEffect object. */
+    AnimationEffect effect()
+    {
+        return _animationEffect;
+    }
+
+    /** Returns the current finished Promise for this animation. */
+    AnimationsPromise finished()
+    {
+        return _finishedPromise;
+    }
+
+    /** Gets and sets the String used to identify the animation. */
+    string id()
+    {
+        return _id;
+    }
+    void id( string id )
+    {
+        _id = id;
+    }
+
+    /** Indicates whether the animation is currently waiting for an asynchronous operation such as initiating playback or pausing a running animation. */
+    bool pending()
+    {
+        return _pending;
+    }
+
+    /** Returns an enumerated value describing the playback state of an animation. */
+    PlayState playState()
+    {
+        return _playState;
+    }
+
+    /** Gets or sets the playback rate of the animation. */
+    float playbackRate()
+    {
+        return _playbackRate;
+    }
+    void playbackRate( float newRate )
+    {
+        _playbackRate = newRate;
+    }
+
+    /** Returns the current ready Promise for this animation. */
+    AnimationsPromise ready()
+    {
+        return _readyPromise;
+    }
+
+    /** Returns the replace state of the animation. This will be active if the animation has been replaced, or persisted if Animation.persist() has been invoked on it.*/
+    ReplaceState replaceState()
+    {
+        return _replaceState;
+    }
+    void replaceState( ReplaceState newState )
+    {
+        _replaceState = newState;
+    }
+
+    /** Gets or sets the scheduled time when an animation's playback should begin. */
+    float startTime()
+    {
+        return _startTime;
+    }
+    void startTime( float newTime )
+    {
+        _startTime = newTime;
+    }
+
+    /** Gets or sets the timeline associated with this animation. */
+    AnimationTimeline timeline()
+    {
+        return _animationTimeline;
+    }
+    void timeline( AnimationTimeline newTimeline )
+    {
+        _animationTimeline = newTimeline;
+    }
+
+    // Events
+    /** Gets and sets the event handler for the cancel event. */
+    void oncancel()
+    {
+        //
+    }
+
+    /** Gets and sets the event handler for the finish event. */
+    void onfinish()
+    {
+        //
+    }
+
+    /** Allows you to set and run an event handler that fires when the animation is removed (i.e., put into an active replace state). */
+    void onremove()
+    {
+        //
+    }
+
+    // Methods
+    /** Clears all keyframeEffects caused by this animation and aborts its playback. */
+    void cancel()
+    {
+        oncancel();
+        _playState = PlayState.idle;
+    }
+
+    /** Commits the end styling state of an animation to the element being animated, even after that animation has been removed. It will cause the end styling state to be written to the element being animated, in the form of properties inside a style attribute. */
+    void commitStyles()
+    {
+        //
+    }
+
+    /** Seeks either end of an animation, depending on whether the animation is playing or reversing. */
+    void finish()
+    {
+        onfinish();
+        _playState = PlayState.finished;
+    }
+
+    /** Suspends playing of an animation. */
+    void pause()
+    {
+        _playState = PlayState.paused;
+    }
+
+    /** Explicitly persists an animation, when it would otherwise be removed due to the browser's Automatically removing filling animations behavior. */
+    void persist()
+    {
+        //
+    }
+
+    /** Starts or resumes playing of an animation, or begins the animation again if it previously finished. */
+    void play()
+    {
+        _playState = PlayState.running;
+    }
+
+    /** Reverses playback direction, stopping at the start of the animation. If the animation is finished or unplayed, it will play from end to beginning. */
+    void reverse()
+    {
+        //
+    }
+
+    /** Sets the speed of an animation after first synchronizing its playback position. */
+    void updatePlaybackRate( float playbackRate )
+    {
+        _playbackRate = playbackRate;
+    }
+
+protected:
+    AnimationTimeline _animationTimeline;
+    AnimationEffect   _animationEffect;
+    AnimationsPromise _finishedPromise;
+    string            _id;
+    bool              _pending;
+    PlayState         _playState;
+    float             _playbackRate;
+    AnimationsPromise _readyPromise;
+    ReplaceState      _replaceState;
+    float             _startTime;
+}
+
+/** */
+enum ReplaceState
+{
+    active,    // The initial value of the animation's replace state; when the animation has been removed by the browser's Automatically removing filling animations behavior.
+    persisted, // The animation has been explicitly persisted by invoking Animation.persist() on it.
+    removed    // The animation has been explicitly removed.
+}
+
+/** */
+enum PlayState
+{
+    idle,
+    running,
+    paused,
+    finished,
+}
+
+/** */
+class AnimationsPromise
+{
+    this( PromiseExecutor executor )
+    {
+        this._executor = executor;
+    }
+    this( ResolutionFunc resolutionFunc, RejectionFunc rejectionFunc )
+    {
+        this._executor = new PromiseExecutor( resolutionFunc, rejectionFunc );
+    }
+
+protected:
+    PromiseExecutor _executor;
+}
+
+/** */
+alias void function( ResolutionFunc resolutionFunc, RejectionFunc rejectionFunc ) PromiseExecutor;
+alias void function() ResolutionFunc;
+alias void function() RejectionFunc;
+
+/** */
+class AnimationTimeline
+{
+    /** */
+    float currentTime()
+    {
+        return _currentTime;
+    }
+
+    /** */
+    TimelinePhase phase()
+    {
+        return _phase;
+    }
+
+protected:
+    float         _currentTime;
+    TimelinePhase _phase;
+}
+
+/** */
+enum TimelinePhase 
+{ 
+    inactive, 
+    before, 
+    active, 
+    after
+ }
+
+/** */
+class AnimationEffect
+{
+    /** Returns the EffectTiming object associated with the animation containing all the animation's timing values. */
+    EffectTiming getTiming()
+    {
+        return _effectTiming;
+    }
+
+    /** Returns the calculated timing properties for this AnimationEffect. */
+    EffectTiming getComputedTiming()
+    {
+        return _computedTiming;
+    }
+
+    /** Updates the specified timing properties of this AnimationEffect. */
+    void updateTiming( EffectTiming timing )
+    {
+        //
+    }
+
+protected:
+    EffectTiming _effectTiming;
+    EffectTiming _computedTiming;
+}
+
+/** */
+class KeyframeEffect
+{
+    /** */
+    this( Element targetElement, Keyframe2[] keyframeBlock, KeyframeOptions timingOptions )
+    {
+        this._target = targetElement;
+    }
+    this( Element targetElement, Keyframe2 keyframeBlock, KeyframeOptions timingOptions )
+    {
+        this._target = targetElement;
+    }
+    this( KeyframeEffect sourceKeyFrames )
+    {
+        //
+    }
+
+    /** Gets and sets the element, or originating element of the pseudo-element, being animated by this object. This may be null for animations that do not target a specific element or pseudo-element. */
+    Element target()
+    {
+        return _target;
+    }
+    void target( Element target )
+    {
+        _target = target;
+    }
+
+    /** Gets and sets the selector of the pseudo-element being animated by this object. This may be null for animations that do not target a pseudo-element.  */
+    Element pseudoElement()
+    {
+        return null;
+    }
+    void pseudoElement( Element element )
+    {
+        return null;
+    }
+
+    /** Gets and sets the iteration composite operation for resolving the property value changes of this keyframe effect. */
+    IterationCompositeOperation iterationComposite()
+    {
+        return _iterationComposite;
+    }
+    void iterationComposite( IterationCompositeOperation iterationCompositeOperation )
+    {
+        _iterationComposite = iterationCompositeOperation;
+    }
+
+    /** Gets and sets the composite operation property for resolving the property value changes between this and other keyframe effects. */
+    CompositeOperation composite()
+    {
+        return _composite;
+    }
+    void composite( CompositeOperation composite )
+    {
+        _composite = composite;
+    }
+
+    // Methods
+    /** Returns the calculated, current timing values for this keyframe effect. */
+    ComputedTiming getComputedTiming()
+    {
+        return ComputedTiming();
+    }
+
+    /** Returns the computed keyframes that make up this effect along with their computed keyframe offsets. */
+    Keyframe[] getKeyframes()
+    {
+        return _keyframes;
+    }
+
+    /** The EffectTiming object associated with the animation containing all the animation's timing values. */
+    float getTiming()
+    {
+        return _timing;
+    }
+
+    /** Replaces the set of keyframes that make up this effect. */
+    void setKeyframes( Keyframe2[] keyframes )
+    {
+        //
+    }
+    void setKeyframes( Keyframe2 keyframes )
+    {
+        //
+    }
+
+    /** Updates the specified timing properties. */
+    void updateTiming( float timing )
+    {
+        _timing = timing;
+    }
+
+protected:
+    Element                     _target;
+    IterationCompositeOperation _iterationComposite;
+    CompositeOperation          _composite;
+    Keyframe[]                  _keyframes;
+    float                       _timing;
+}
+
+/** */
+struct KeyframeOptions
+{
+    float              delay;              // The number of milliseconds to delay the start of the animation. Defaults to 0.
+    PlaybackDirection  direction;          // Whether the animation runs forwards (normal), backwards (reverse), switches direction after each iteration (alternate), or runs backwards and switches direction after each iteration (alternate-reverse). Defaults to "normal".
+    float              duration;           // The number of milliseconds each iteration of the animation takes to complete. Defaults to 0. Although this is technically optional, keep in mind that your animation will not run if this value is 0.
+    string             easing;             // The rate of the animation's change over time. Accepts the pre-defined values "linear", "ease", "ease-in", "ease-out", and "ease-in-out", or a custom "cubic-bezier" value like "cubic-bezier(0.42, 0, 0.58, 1)". Defaults to "linear".
+    float              endDelay;           // The number of milliseconds to delay after the end of an animation. This is primarily of use when sequencing animations based on the end time of another animation. Defaults to 0. 
+    FillMode           fill;               // Dictates whether the animation's effects should be reflected by the element(s) prior to playing ("backwards"), retained after the animation has completed playing ("forwards"), or both. Defaults to "none".
+    float              iterationStart;     // Describes at what point in the iteration the animation should start. 0.5 would indicate starting halfway through the first iteration for example, and with this value set, an animation with 2 iterations would end halfway through a third iteration. Defaults to 0.0.
+    float              iterations;         // The number of times the animation should repeat. Defaults to 1, and can also take a value of Infinity to make it repeat for as long as the element exists.
+    CompositeOperation composite;          // Determines how values are combined between this animation and the element's underlying values.
+    CompositeOperation iterationComposite; // Determines how values build from iteration to iteration in the current animation.
+}
+
+/** */
+struct Keyframe2
+{
+    // CSS properties
+}
+
+/** */
+struct Keyframe
+{
+    /** The offset of the keyframe specified as a number between 0.0 and 1.0 inclusive or null. This is equivalent to specifying start and end states in percentages in CSS stylesheets using @keyframes. This will be null if the keyframe is automatically spaced using KeyframeEffect.spacing. */
+    float              offset;
+    /** The computed offset for this keyframe, calculated when the list of computed keyframes was produced according to KeyframeEffect.spacing. Unlike offset, above, the computedOffset is never null. */
+    float              computedOffset;
+    /** The easing function used from this keyframe until the next keyframe in the series. */
+    string             easing;
+    /** The KeyframeEffect.composite operation used to combine the values specified in this keyframe with the underlying value. This will be absent if the composite operation specified on the effect is being used. */
+    CompositeOperation composite;
+}  
+
+/** */
+struct ComputedTiming
+{
+    /** The end time of the animation in milliseconds from the animation's start (if the KeyframeEffect is associated with an Animation). (Also includes EffectTiming.endDelay in that calculation.) */
+    float endTime;
+    /** The length of time in milliseconds that the animation's effects will run. This is equal to the iteration duration multiplied by the iteration count. */
+    float activeDuration;
+    /** The current time of the animation in milliseconds. If the KeyframeEffect is not associated with an Animation, its value is null. */
+    float localTime;
+    /** Indicates how far along the animation is through its current iteration with values between 0 and 1. Returns null if the animation is not running or its KeyframeEffect isn't associated with an Animation. */
+    float progress;
+    /** The number of times this animation has looped, starting from 0. Returns null if the animation is not running or its KeyframeEffect isn't associated with an Animation. */
+    float currentIteration;
+}
+
+/** */
+enum CompositeOperation 
+{ 
+    replace, 
+    add, 
+    accumulate 
+}
+
+/** */
+enum IterationCompositeOperation 
+{ 
+    replace, 
+    accumulate 
+}
+
+/** */
+struct EffectTiming
+{
+    /** The number of milliseconds to delay the start of the animation. Defaults to 0. */
+    float             delay;
+    /** Whether the animation runs forwards (normal), backwards (reverse), switches direction after each iteration (alternate), or runs backwards and switches direction after each iteration (alternate-reverse). Defaults to "normal". */
+    PlaybackDirection direction;
+    /** The number of milliseconds each iteration of the animation takes to complete. Defaults to 0. Although this is technically optional, keep in mind that your animation will not run if this value is 0. */
+    float             duration; // float.min+1 = auto
+    /** The rate of the animation's change over time. Accepts the pre-defined values "linear", "ease", "ease-in", "ease-out", and "ease-in-out", or a custom "cubic-bezier" value like "cubic-bezier(0.42, 0, 0.58, 1)". Defaults to "linear". */
+    string            easing;
+    /** The number of milliseconds to delay after the end of an animation. This is primarily of use when sequencing animations based on the end time of another animation. Defaults to 0.  */
+    float             endDeiay;
+    /** Dictates whether the animation's effects should be reflected by the element(s) prior to playing ("backwards"), retained after the animation has completed playing ("forwards"), or both. Defaults to "none". */
+    FillMode          fill;
+    /** Describes at what point in the iteration the animation should start. 0.5 would indicate starting halfway through the first iteration for example, and with this value set, an animation with 2 iterations would end halfway through a third iteration. Defaults to 0.0. */
+    float             iterationStart;
+    /** The number of times the animation should repeat. Defaults to 1, and can also take a value of Infinity to make it repeat for as long as the element exists. */
+    float             iterations;
+}
+
+/** */
+enum PlaybackDirection
+{
+    normal,
+    reverse,
+    alternate,
+    alternate_reverse,
+}
+
+/** */
+enum FillMode 
+{
+     none, 
+     forwards, 
+     backwards, 
+     both, 
+     auto,
+}
+
+/** */
+//alias void function() EasingFunction;
+
 
 /** */
 struct Computed
