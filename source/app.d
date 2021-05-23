@@ -713,7 +713,17 @@ class Element : Node, IElement
     /** Returns the child elements of this element. */
     HTMLCollection children()
     {
-        return new HTMLCollection( this._firstChild );
+        Element[] elements;
+
+        for ( auto node = _first; node !is null; node = node.nextSibling )
+        {
+            if ( node.nodeType == ELEMENT_NODE )
+            {
+                elements ~= cast ( Element ) node;
+            }
+        }
+
+        return new HTMLCollection( elements );
     }
 
     /** Returns a DOMTokenList containing the list of class attributes. */
@@ -1076,17 +1086,124 @@ class Element : Node, IElement
     /** Returns a StylePropertyMapReadOnly interface which provides a read-only representation of a CSS declaration block that is an alternative to CSSStyleDeclaration. */
     StylePropertyMapReadOnly computedStyleMap()
     {
-        return StylePropertyMapReadOnly();
+        return _computedStyleMap;
+    }
+
+    /** Dispatches an event to this node in the DOM and returns a Boolean that indicates whether no handler canceled the event. */
+    bool dispatchEvent( Event event )
+    {
+        return true;
+    }
+    bool dispatchEvent( Event event, Element target )
+    {
+        event.target = target;
+        return true;
+    }
+
+    /** Returns an array of Animation objects currently active on the element. */
+    Animation[] getAnimations() 
+    {
+        return _animations;
+    }
+
+    /** Retrieves the value of the named attribute from the current node and returns it as an Object. */
+    string getAttribute( string attributeName )
+    {
+        return _attrs.getNamedItem( attributeName ).value.asString;
+    }
+
+    /** Returns an array of attribute names from the current element. */
+    string[] getAttributeNames()
+    {
+        string[] names;
+
+        foreach ( a; _attrs )
+        {
+            names ~= a.name;
+        }
+
+        return names;
+    }
+
+    /** Retrieves the node representation of the named attribute from the current node and returns it as an Attr. */
+    Attr getAttributeNode( string attrName )
+    {
+        return _attrs.getNamedItem( attributeName );
+    }
+
+    /** Retrieves the node representation of the attribute with the specified name and namespace, from the current node and returns it as an Attr. */
+    Attr getAttributeNodeNS()
+    {
+        return null;
+    }
+
+    /** Retrieves the value of the attribute with the specified name and namespace, from the current node and returns it as an Object. */
+    string getAttributeNS()
+    {
+        return "";
+    }
+
+    /** Returns the size of an element and its position relative to the viewport. */
+    DOMRect getBoundingClientRect()
+    {
+        return DOMRect();
+    }
+
+    /** Returns a collection of rectangles that indicate the bounding rectangles for each line of text in a client. */
+    DOMRect[] getClientRects()
+    {
+        return [];
+    }
+
+    /** Returns a live HTMLCollection that contains all descendants of the current element that possess the list of classes given in the parameter. */
+    HTMLCollection getElementsByTagName( string tagName )
+    {
+        Element[] elements;
+
+        foreach ( child; children )
+        {
+            if ( child.tagName == tagName )
+            {
+                elements ~= child;
+            }
+        }
+
+        return new HTMLCollection( elements );
+    }
+
+    /** Returns a live HTMLCollection containing all descendant elements, of a particular tag name and namespace, from the current element. */
+    HTMLCollection getElementsByTagNameNS( string namespaceURI, string localName )
+    {
+        return null;
+    }
+
+    /** Returns a Boolean indicating if the element has the specified attribute or not. */
+    bool hasAttribute( string name )
+    {
+        return ( _attrs.getNamedItem( name ) !is null );
+    }
+
+    /** Returns a Boolean indicating if the element has the specified attribute, in the specified namespace, or not. */
+    bool hasAttributeNS( string namespaceURI, string localName )
+    {
+        return null;
+    }
+
+    /** Returns a Boolean indicating if the element has one or more HTML attributes present. */
+    bool hasAttributes()
+    {
+        //
     }
 
 protected:
-    NamedNodeMap _attrs;
-    Computed     _computed;
-    string       _ns;
-    string       _prefix;
-    string       _name;
-    string       _tagName;
-
+    NamedNodeMap             _attrs;
+    StylePropertyMapReadOnly _computedStyleMap;
+    string                   _ns;
+    string                   _prefix;
+    string                   _name;
+    string                   _tagName;
+    Animation[]              _animations;
+      
     /** _attrs.getNamedItem( "class" ).value.split( ' ' ) */
     string[] _classes()
     {
@@ -1121,7 +1238,14 @@ protected:
 }
 
 /** */
-struct StylePropertyMapReadOnly
+struct DOMRect
+{
+    Rect _rect;
+    alias _rect this;
+}
+
+/** */
+class StylePropertyMapReadOnly
 {
     /** Returns an unsinged long integer containing the size of the StylePropertyMapReadOnly object. */
     size_t size()
@@ -1130,15 +1254,183 @@ struct StylePropertyMapReadOnly
     }
 
     /** Returns an array of a given object's own enumerable property [key, value] pairs, in the same order as that provided by a for...in loop (the difference being that a for-in loop enumerates properties in the prototype chain as well). */
-    KeyValue[] entries()
+    CSSStyleValue[ string ] entries()
     {
-        return _entries;
+        return _map;
     }
 
-    /** */
+    /** Executes a provided function once for each element of StylePropertyMapReadOnly. */
+    void forEach( KeyValueForEachCallback1 callback, void* This=null )
+    {
+        foreach ( ref property, ref value; _map )
+        {
+            callback( value );
+        }
+    }
+
+    void forEach( KeyValueForEachCallback2 callback, void* This=null )
+    {
+        foreach ( ref property, ref value; _map )
+        {
+            callback( value, property );
+        }
+    }
+
+    void forEach( KeyValueForEachCallback3 callback, void* This=null )
+    {
+        foreach ( ref property, ref value; _map )
+        {
+            callback( value, property, _map );
+        }
+    }
+
+    /** Returns the value of the specified property. */
+    CSSStyleValue get( string property )
+    {
+        return _map.get( property, null );
+    }
+
+    /** Returns an array of CSSStyleValue objects containing the values for the provided property. */
+    CSSStyleValue[] getAll()
+    {
+        return _map;
+    }
+
+    /** Indicates whether the specified property is in the StylePropertyMapReadOnly object. */
+    bool has( string property )
+    {
+        return ( property in _map ) !is null;
+    }
+
+    /** Returns a new Array Iterator containing the keys for each item in StylePropertyMapReadOnly. */
+    string[] keys()
+    {
+        return _map.keys();
+    }
+
+    /** Returns a new Array Iterator containing the values for each index in the StylePropertyMapReadOnly object. */
+    CSSStyleValue[] values()
+    {
+        return _map.values();
+    }
 
 protected:
-    KeyValue[] _entries;
+    CSSStyleValue[ string ] _map;
+}
+
+/** */
+class StylePropertyMap : StylePropertyMapReadOnly
+{
+    void set( string property, CSSStyleValue[] values ... );
+    { 
+        foreach ( value; values )
+        {
+            _map[ property ] = value;
+        }
+    }
+    void set( string property, string[] values ... ) 
+    { 
+        foreach ( value; values )
+        {
+            _map[ property ] = CSSStyleValue.parse( property, value );
+        }
+    }
+
+    void append( string property, CSSStyleValue[] values ... )
+    { 
+        foreach ( value; values )
+        {
+            _map[ property ] = value;
+        }
+    }
+    void append( string property, string[] values ... )
+    { 
+        foreach ( value; values )
+        {
+            _map[ property ] = CSSStyleValue.parse( property, value );
+        }
+    }
+
+    void delete( string property)
+    { 
+        _map.remove( property );
+    }
+
+    void clear()
+    {
+        _map.clear();
+    }
+};
+
+/** */
+struct CSSStyleValue
+{
+    Value _value;
+    alias _value this;
+
+    const 
+    string[] validCSSProperties = 
+        [ // sorted
+            "border", "borderLeft", "borderTop",
+        ];
+
+    static 
+    CSSStyleValue parse( string property, string cssText )
+    {
+        // 1. -- custom property
+        // 2. valid CSS property
+
+        import std.string : startsWith;
+
+        if ( property.startsWith( "--" ) )
+        {
+            return parse_custom_css_property( property, cssText );
+        }
+        else
+
+        if ( is_valid_css_property( property ) )
+        {
+            return parse_valid_css_property( property, cssText );
+        }
+
+        return CSSStyleValue();
+    }
+
+    static 
+    CSSStyleValue[] parseAll( string property, string cssText )
+    {
+        return [ CSSStyleValue() ];
+    }
+
+    //
+    bool is_valid_css_property( string property )
+    {
+        import std.range : assumeSorted;
+        return assumeSorted( validCSSProperties ).contains( property );
+    }
+
+    //
+    CSSStyleValue parse_custom_css_property( string property, string cssText )
+    {
+        return CSSStyleValue();
+    }
+
+    CSSStyleValue parse_valid_css_property( string property, string cssText )
+    {
+        return CSSStyleValue();
+    }
+}
+
+/** */
+alias void delegate( CSSStyleValue value                                                 ) KeyValueForEachCallback1;
+alias void delegate( CSSStyleValue value, string property                                ) KeyValueForEachCallback2;
+alias void delegate( CSSStyleValue value, string property, CSSStyleValue[ string ] array ) KeyValueForEachCallback3;
+
+/** */
+struct KeyValue
+{
+    string key;
+    string value;
 }
 
 /** */
@@ -1681,7 +1973,12 @@ class EventListener
 /** */
 class Event
 {
-    //
+    Element target;
+
+    void preventDefault()
+    {
+        //
+    }
 }
 
 /** */
@@ -1717,54 +2014,29 @@ class HTMLSlotElement
 /** */
 class HTMLCollection
 {
-    this( Element first )
+    this( Element[] elements )
     {
-        this._first = first;
+        this._elements = elements;
     }
 
     size_t length()
     {
-        size_t count;
-
-        for ( auto node = _first; node !is null; node = node.nextSibling )
-        {
-            if ( node.nodeType == ELEMENT_NODE )
-            {
-                count += 1;
-            }
-        }
-
-        return count;
+        return _elements.length;
     }
 
     /** */
     Node item( size_t index )
     {
-        auto node = _first;
-        size_t i;
-
-        for ( auto node = _first; node !is null; node = node.nextSibling )
-        {
-            if ( node.nodeType == ELEMENT_NODE )
-            {
-                if ( i == index )
-                {
-                    return node;
-                }
-
-                i += 1;
-            }
-        }
-
-        return null;
+        if ( index < _elements.length )
+            return _elements[ index ];
+        else
+            return null;
     }
 
     /** Returns the specific node whose ID or, as a fallback, name matches the string specified by name. */
     Node namedItem( string name )
     {
-        auto node = _first;
-
-        for ( auto node = _first; node !is null; node = node.nextSibling )
+        foreach ( ref node; _elements )
         {
             if ( node.nodeType == ELEMENT_NODE )
             {
@@ -1786,7 +2058,8 @@ class HTMLCollection
     }
 
 protected:
-    Node _first;
+    Node      _first;
+    Element[] _elements;
 }
 
 /** */
@@ -2428,6 +2701,18 @@ struct Value
         bool   _bool;
         Node   _node;
     }
+
+    string asString()
+    {
+        final
+        switch ( type )
+        case ValueType.String : return _string;
+        case ValueType.Float  : return _float.to!string;
+        case ValueType.Int    : return _int.to!string;
+        case ValueType.Size_t : return _size_t.to!string;
+        case ValueType.Bool   : return _bool.to!string;
+        case ValueType.Node   : return _node.to!string;
+    }
 }
 
 /** */
@@ -2677,7 +2962,7 @@ interface IAttr : INode
 }
 
 /** */
-class Attr : IAttr
+class Attr : Node, IAttr
 {
     this()
     {
