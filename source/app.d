@@ -1021,26 +1021,62 @@ class Element : Node, IElement
     }
 
     /** A shortcut method to create and run an animation on an element. Returns the created Animation object instance. */
-    Animation animate( keyframes, options ) 
+    Animation animate( Keyframe2[] keyframes, AnimateOptions options ) 
+    {
+        return new Animation();
+    }
+    Animation animate( Keyframe2 keyframe, AnimateOptions options ) 
     {
         return new Animation();
     }
 
     /** Inserts a set of Node objects or DOMString objects after the last child of the element. */
-    void append( Node node )
+    void append( Node[] args ... )
     {
-        //
+        foreach ( node; args )
+        {
+            appendChild( node );
+        }
     }
-
-    void append( string s )
+    void append( string[] args ... )
     {
-        //
+        foreach ( s; args )
+        {
+            //auto e = createElement( s );
+            //appendChild( e );
+        }
+    }
+    void append( ARGS... )( ARGS args )
+    {
+        static
+        foreach ( T; ARGS )
+        {
+            static
+            if ( is ( T == Node ) )
+            {
+                appendChild( node );
+            }
+            else
+
+            static
+            if ( is ( T == string ) )
+            {            
+                //auto e = createElement( s );
+                //appendChild( e );
+            }
+        }
     }
 
     /** Returns the Element which is the closest ancestor of the current element (or the current element itself) which matches the selectors given in parameter. */
-    void closest()
+    Element closest( string selectors )
     {
-        //
+        return null;
+    }
+
+    /** Returns a StylePropertyMapReadOnly interface which provides a read-only representation of a CSS declaration block that is an alternative to CSSStyleDeclaration. */
+    StylePropertyMapReadOnly computedStyleMap()
+    {
+        return StylePropertyMapReadOnly();
     }
 
 protected:
@@ -1082,6 +1118,47 @@ protected:
 
         return ss.join( ' ' );
     }
+}
+
+/** */
+struct StylePropertyMapReadOnly
+{
+    /** Returns an unsinged long integer containing the size of the StylePropertyMapReadOnly object. */
+    size_t size()
+    {
+        return 0;
+    }
+
+    /** Returns an array of a given object's own enumerable property [key, value] pairs, in the same order as that provided by a for...in loop (the difference being that a for-in loop enumerates properties in the prototype chain as well). */
+    KeyValue[] entries()
+    {
+        return _entries;
+    }
+
+    /** */
+
+protected:
+    KeyValue[] _entries;
+}
+
+/** */
+struct CSSStyleDeclaration
+{
+    //
+}
+
+/** */
+struct AnimateOptions
+{
+    string            id ;            // A property unique to animate(): a DOMString with which to reference the animation.
+    float             delay;          // The number of milliseconds to delay the start of the animation. Defaults to 0.
+    PlaybackDirection direction;      // Whether the animation runs forwards (normal), backwards (reverse), switches direction after each iteration (alternate), or runs backwards and switches direction after each iteration (alternate-reverse). Defaults to "normal".
+    float             duration;       // The number of milliseconds each iteration of the animation takes to complete. Defaults to 0. Although this is technically optional, keep in mind that your animation will not run if this value is 0.
+    string            easing;         // The rate of the animation's change over time. Accepts the pre-defined values "linear", "ease", "ease-in", "ease-out", and "ease-in-out", or a custom "cubic-bezier" value like "cubic-bezier(0.42, 0, 0.58, 1)". Defaults to "linear".
+    float             endDelay;       // The number of milliseconds to delay after the end of an animation. This is primarily of use when sequencing animations based on the end time of another animation. Defaults to 0. 
+    FillMode          fill;           // Dictates whether the animation's effects should be reflected by the element(s) prior to playing ("backwards"), retained after the animation has completed playing ("forwards"), or both. Defaults to "none".
+    float             iterationStart; // Describes at what point in the iteration the animation should start. 0.5 would indicate starting halfway through the first iteration for example, and with this value set, an animation with 2 iterations would end halfway through a third iteration. Defaults to 0.0.
+    float             iterations;     // The number of times the animation should repeat. Defaults to 1, and can also take a value of Infinity to make it repeat for as long as the element exists.
 }
 
 /** */
