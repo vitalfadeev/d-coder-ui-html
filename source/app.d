@@ -1192,6 +1192,71 @@ class Element : Node, IElement
     /** Returns a Boolean indicating if the element has one or more HTML attributes present. */
     bool hasAttributes()
     {
+        return ( _attrs.length > 0 );
+    }
+
+    /** Indicates whether the element on which it is invoked has pointer capture for the pointer identified by the given pointer ID. */
+    bool hasPointerCapture()
+    {
+        return _pointerCapture;
+    }
+
+    /** Inserts a given element node at a given position relative to the element it is invoked upon. */
+    Element insertAdjacentElement( InsertAdjacent position, Element element )
+    {
+        final
+        switch ( position )
+        {
+            case InsertAdjacent.beforebegin: 
+                return this.insertBefore( element, this );
+
+            case InsertAdjacent.afterbegin:
+                if ( this._firstChild !is null )
+                    return this.insertBefore( element, this._firstChild );
+                else
+                    return this.appendChild( element );
+
+            case InsertAdjacent.beforeend: 
+                return this.appendChild( element );
+
+            case InsertAdjacent.afterend: 
+                if ( this._nextSibling !is null )
+                    return this.insertBefore( element, this._nextSibling );
+                else
+                if ( _this.parentNode !is null )
+                    return this._parentNode.appendChild( element );
+                else
+                    assert( 0, "unsupported: no parent" );
+        }
+
+        return null;
+    }
+
+    /** Parses the text as HTML or XML and inserts the resulting nodes into the tree in the position given. */
+    void insertAdjacentHTML( InsertAdjacent position, string text )
+    {
+        assert( 0, "unsupported" );
+    }
+
+    /** Inserts a given text node at a given position relative to the element it is invoked upon. */
+    void insertAdjacentText( InsertAdjacent position, string text )
+    {
+        assert( 0, "unsupported" );
+    }
+
+    /** Returns a Boolean indicating whether or not the element would be selected by the specified selector string. */
+    bool matches( string selectorString )
+    {
+        return false;
+    }
+
+    /** Inserts a set of Node objects or DOMString objects before the first child of the element. */
+    void prepend( Node[] args ... )
+    {
+        //
+    }
+    void prepend( string[] args ... )
+    {
         //
     }
 
@@ -1203,6 +1268,7 @@ protected:
     string                   _name;
     string                   _tagName;
     Animation[]              _animations;
+    bool                     _pointerCapture;
       
     /** _attrs.getNamedItem( "class" ).value.split( ' ' ) */
     string[] _classes()
@@ -1236,6 +1302,16 @@ protected:
         return ss.join( ' ' );
     }
 }
+
+/** */
+enum InsertAdjacent
+{
+    beforebegin, // Before the targetElement itself.
+    afterbegin,  // Just inside the targetElement, before its first child.
+    beforeend,   // Just inside the targetElement, after its last child.
+    afterend     // After the targetElement itself.
+}
+
 
 /** */
 struct DOMRect
