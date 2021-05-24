@@ -97,13 +97,212 @@ protected:
 /** */
 interface IDocument
 {
-    string characterSet();
+    //
 }
 
 /** */
-class Document : IDocument
+class Document : Node, IDocument
 {
-    //
+    // Properties
+    /** Returns the Element that currently has focus. */
+    Element activeElement()
+    {
+        return _activeElement;
+    }
+    
+    /** Returns the <body> or <frameset> node of the current document. */
+    Element body()
+    {
+        return _body;
+    }
+
+    /** Returns the character set being used by the document. */
+    string characterSet()
+    {
+        return _characterSet;
+    }
+
+    /** Returns the number of child elements of the current document. */
+    size_t childElementCount()
+    {
+        size_t count;
+
+        foreach ( child; childNodes )
+        {
+            if ( child.nodeType == ELEMENT_NODE )
+            {
+                count += 1;
+            }
+        }
+
+        return count;
+    }
+
+    /** Returns the child elements of the current document. */
+    HTMLCollection children()
+    {
+        Element[] elements;
+
+        for ( auto node = _firstChild; node !is null; node = node.nextSibling )
+        {
+            if ( node.nodeType == ELEMENT_NODE )
+            {
+                elements ~= cast ( Element ) node;
+            }
+        }
+
+        return new HTMLCollection( elements );
+    }
+
+    /** Indicates whether the document is rendered in quirks or strict mode. */
+    CompatMode compatMode()
+    {
+        return _compatMode;
+    }
+
+    /** Returns the Content-Type from the MIME Header of the current document. */
+    string contentType()
+    {
+        return _contentType;
+    }
+
+    /** Returns the Document Type Definition (DTD) of the current document. */
+    DocumentType doctype()
+    {
+        return _doctype;
+    }
+
+    /** Returns the Element that is a direct child of the document. For HTML documents, this is normally the HTMLHtmlElement object representing the document's <html> element. */
+    Element documentElement()
+    {
+        return _documentElement;
+    }
+
+    /** Returns the document location as a string. */
+    string documentURI()
+    {
+        return  _documentURI;
+    }
+
+    /** Returns a list of the embedded <embed> elements within the current document. */
+    HTMLCollection embeds()
+    {
+        Element[] elements;
+
+        for ( auto node = _firstChild; node !is null; node = node.nextSibling )
+        {
+            if ( node.nodeType == ELEMENT_NODE )
+            if ( ( cast ( Element ) node ).tagName == "embed" )
+            {
+                elements ~= cast ( Element ) node;
+            }
+        }
+
+        return new HTMLCollection( elements );
+    }
+
+    /** Returns the first child element of the current document. */
+    Element firstElementChild()
+    {
+        if ( _firstChild !is null )
+        for ( auto node = _firstChild; node !is null; node = node.nextSibling )
+        {
+            if ( node.nodeType == ELEMENT_NODE )
+            {
+                return node;
+            }
+        }
+
+        return null;
+    }
+
+    /** Returns the FontFaceSet interface of the current document. */
+    FontFaceSet fonts()
+    {
+        return _fonts;
+    }
+
+
+protected:
+    Element      _activeElement;
+    Element      _body;
+    string       _characterSet = "UTF-8";
+    CompatMode   _compatMode;
+    string       _contentType;
+    DocumentType _doctype;
+    Element      _documentElement;
+    string       _documentURI;
+    FontFaceSet  _fonts;
+}
+
+enum CompatMode
+{
+    BackCompat,
+    CSS1Compat
+}
+
+/** */
+class FontFaceSet
+{
+    // Properties
+    /** Indicates the font-face's loading status. It will be one of 'loading' or 'loaded'. */
+    FontFaceStatus status()
+    {
+        return _fontFaceStatus;
+    }
+
+    /** Promise which resolves once font loading and layout operations have completed. */
+    Promise ready()
+    {
+        return _ready;
+    }
+
+    // Events
+    // onloading      // An EventListener called whenever an event of type loading is fired, indicating a font-face set has started loading.
+    // onloadingdone  // An EventListener called whenever an event of type loadingdone is fired, indicating that a font face set has finished loading.
+    // onloadingerror // An EventListener called whenever an event of type loadingerror is fired, indicating that an error occurred whilst loading a font-face set.
+
+    // Methods
+    /** A Boolean that indicates whether a font is loaded, but doesn't initiate a load when it isn't. */
+    bool check()
+    {
+        return ( _fontFaceStatus == FontFaceStatus.loaded );
+    }
+
+    /** Removes all manually-added fonts from the font set. CSS-connected fonts are unaffected. */
+    void clear()
+    {
+        //
+    }
+
+    /** Removes a manually-added font from the font set. CSS-connected fonts are unaffected. */
+    void delete()
+    {
+        //
+    }
+
+    /** Returns a Promise which resolves to a list of font-faces for a requested font. */
+    Promise load( string font )
+    {
+        // font: "italic bold 16px Roboto"
+        return _load;
+    }
+    Promise load( string font, string text )
+    {
+        return _load;
+    }
+
+protected:
+    FontFaceStatus _fontFaceStatus;
+    Promise        _ready;
+    Promise        _load;
+}
+
+/** */
+enum FontFaceStatus
+{
+    loading,
+    loaded
 }
 
 /** */
@@ -1505,7 +1704,7 @@ class Element : Node, IElement
     }
 
     // Events
-    enum Events
+    enum EventTypes
     {
         cancel,  // Fires on a <dialog> when the user instructs the browser that they wish to dismiss the current open dialog. For example, the browser might fire this event when the user presses the Esc key or clicks a "Close dialog" button which is part of the browser's UI.
         error,   // Fired when a resource failed to load, or can't be used. For example, if a script has an execution error or an image can't be found or is invalid. 
@@ -1522,7 +1721,38 @@ class Element : Node, IElement
         compositionstart,  // Fired when a text composition system such as an input method editor starts a new composition session.
         compositionupdate, // Fired when a new character is received in the context of a text composition session controlled by a text composition system such as an input method editor.
         // Focus events
-
+        blur,     // Fired when an element has lost focus.
+        focus,    // Fired when an element has gained focus.
+        focusin,  // Fired when an element is about to gain focus.
+        focusout, // Fired when an element is about to lose focus.
+        // Fullscreen events
+        fullscreenchange, // Sent to an Element when it transitions into or out of full-screen mode.
+        fullscreenerror,  // Sent to an Element if an error occurs while attempting to switch it into or out of full-screen mode.
+        // Keyboard events
+        keydown,  // Fired when a key is pressed.
+        keypress, // Fired when a key that produces a character value is pressed down. 
+        keyup,    // Fired when a key is released.
+        // Mouse events
+        auxclick,                  // Fired when a non-primary pointing device button (e.g., any mouse button other than the left button) has been pressed and released on an element.
+        click,                     // Fired when a pointing device button (e.g., a mouse's primary button) is pressed and released on a single element.
+        contextmenu,               // Fired when the user attempts to open a context menu.
+        dblclick,                  // Fired when a pointing device button (e.g., a mouse's primary button) is clicked twice on a single element.
+        mousedown,                 // Fired when a pointing device button is pressed on an element.
+        mouseenter,                // Fired when a pointing device (usually a mouse) is moved over the element that has the listener attached.
+        mouseleave,                // Fired when the pointer of a pointing device (usually a mouse) is moved out of an element that has the listener attached to it.
+        mousemove,                 // Fired when a pointing device (usually a mouse) is moved while over an element.
+        mouseout,                  // Fired when a pointing device (usually a mouse) is moved off the element to which the listener is attached or off one of its children.
+        mouseover,                 // Fired when a pointing device is moved onto the element to which the listener is attached or onto one of its children.
+        mouseup,                   // Fired when a pointing device button is released on an element.
+        webkitmouseforcechanged,   // Fired each time the amount of pressure changes on the trackpadtouchscreen.
+        webkitmouseforcedown,      // Fired after the mousedown event as soon as sufficient pressure has been applied to qualify as a "force click".
+        webkitmouseforcewillbegin, // Fired before the mousedown event.
+        webkitmouseforceup,        // Fired after the webkitmouseforcedown event as soon as the pressure has been reduced sufficiently to end the "force click".
+        // Touch events
+        touchcancel, // Fired when one or more touch points have been disrupted in an implementation-specific manner (for example, too many touch points are created).
+        touchend,    // Fired when one or more touch points are removed from the touch surface.
+        touchmove,   // Fired when one or more touch points are moved along the touch surface.
+        touchstart,  // Fired when one or more touch points are placed on the touch surface.
     }
 
     EventMixin!"cancel";
@@ -1540,6 +1770,38 @@ class Element : Node, IElement
     EventMixin!"compositionstart";
     EventMixin!"compositionupdate";
     // Focus events
+    EventMixin!"blur";
+    EventMixin!"focus";
+    EventMixin!"focusin";
+    EventMixin!"focusout";
+    // Fullscreen events
+    EventMixin!"fullscreenchange";
+    EventMixin!"fullscreenerror";
+    // Keyboard events
+    EventMixin!"keydown";
+    EventMixin!"keypress";
+    EventMixin!"keyup";
+    // Mouse events
+    EventMixin!"auxclick";
+    EventMixin!"click";
+    EventMixin!"contextmenu";
+    EventMixin!"dblclick";
+    EventMixin!"mousedown";
+    EventMixin!"mouseenter";
+    EventMixin!"mouseleave";
+    EventMixin!"mousemove";
+    EventMixin!"mouseout";
+    EventMixin!"mouseover";
+    EventMixin!"mouseup";
+    EventMixin!"webkitmouseforcechanged";
+    EventMixin!"webkitmouseforcedown";
+    EventMixin!"webkitmouseforcewillbegin";
+    EventMixin!"webkitmouseforceup";
+    // Touch events
+    EventMixin!"touchcancel";
+    EventMixin!"touchend";
+    EventMixin!"touchmove";
+    EventMixin!"touchstart";
 
 protected:
     NamedNodeMap             _attrs;
@@ -2112,11 +2374,6 @@ class AnimationsPromise
 protected:
     PromiseExecutor _executor;
 }
-
-/** */
-alias void function( ResolutionFunc resolutionFunc, RejectionFunc rejectionFunc ) PromiseExecutor;
-alias void function() ResolutionFunc;
-alias void function() RejectionFunc;
 
 /** */
 class AnimationTimeline
@@ -3436,6 +3693,83 @@ protected:
     bool   _specified;
     string _value;
 }
+
+/** */
+class Promise
+{
+    /** */
+    this( PromiseExecutor executor )
+    {
+        this._executor;
+    }
+
+    /** Wait for all promises to be resolved, or for any to be rejected. */
+    Promise all( T )( T[] iterable )
+    {
+        return null;
+    }
+
+    /** Wait until all promises have settled (each may resolve or reject). */
+    Promise allSettled( T )( T[] iterable )
+    {
+        return null;
+    }
+
+    /** Takes an iterable of Promise objects and, as soon as one of the promises in the iterable fulfills, returns a single promise that resolves with the value from that promise. */
+    Promise any( T )( T[] iterable )
+    {
+        return null;
+    }
+
+    /** Wait until any of the promises is resolved or rejected. */
+    Promise race( T )( T[] iterable )
+    {
+        return null;
+    }
+
+    /** Returns a new Promise object that is rejected with the given reason. */
+    Promise reject( T )( T reason )
+    {
+        return null;
+    }
+
+    /** Returns a new Promise object that is resolved with the given value. If the value is a thenable (i.e. has a then method), the returned promise will "follow" that thenable, adopting its eventual state; otherwise, the returned promise will be fulfilled with the value. */
+    Promise resolve( T )( T value )
+    {
+        //
+    }
+
+
+    /** Appends a rejection handler callback to the promise, and returns a new promise resolving to the return value of the callback if it is called, or to its original fulfillment value if the promise is instead fulfilled. */
+    Promise catch()
+    {
+        return this;
+    }
+
+    /** Appends fulfillment and rejection handlers to the promise, and returns a new promise resolving to the return value of the called handler, or to its original settled value if the promise was not handled (i.e. if the relevant handler onFulfilled or onRejected is not a function). */
+    Promise then( PromiseCallback successCallback )
+    {
+        return new Promise( successCallback );
+    }
+    Promise then( PromiseCallback successCallback, PromiseCallback failureCallback )
+    {
+        return new Promise( successCallback, failureCallback );
+    }
+
+    /** Appends a handler to the promise, and returns a new promise that is resolved when the original promise is resolved. The handler is called when the promise is settled, whether fulfilled or rejected. */
+    Promise finally( PromiseCallback callback )
+    {
+        return new Promose( callback );
+    }
+
+protected:
+    PromiseExecutor _executor;
+}
+
+/** */
+alias void function() PromiseCallback;
+alias void function( PromiseCallback successCallback, PromiseCallback failureCallback ) PromiseExecutor;
+
 
 
 /** */
