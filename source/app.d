@@ -26,7 +26,72 @@ interface IEventTarget
 /** */
 class EventTarget : IEventTarget
 {
-    //
+    /** Registers an event handler to a specific event type on the element. */
+    void addEventListener( string type, EventListener listener, Options options, bool useCapture=false )
+    {
+        _routes[ type ] = listener;
+    }
+
+    void addEventListener( string type, EventListener listener, Options options )
+    {
+        _routes[ type ] = listener;
+    }
+
+    void addEventListener( string type, EventListener listener, bool useCapture=false )
+    {
+        _routes[ type ] = listener;
+    }
+
+    void addEventListener( string type, EventListener listener )
+    {
+        _routes[ type ] = listener;
+    }
+
+    /** Dispatches an event to this node in the DOM and returns a Boolean that indicates whether no handler canceled the event. */
+    bool dispatchEvent( Event event )
+    {
+        auto listener = event.type in _routes;
+
+        if ( listener !is null )
+        {
+            listener.handleEvent( event );
+            return true;
+        }
+
+        return true;
+    }
+    bool dispatchEvent( Event event, Element target )
+    {
+        Event event2 = new Event( event );
+        event2.target = target;
+
+        auto listener = event.type in _routes;
+
+        if ( listener !is null )
+        {
+            listener.handleEvent( event2 );
+            return true;
+        }
+
+        return true;
+    }
+
+    /** Removes an event listener from the element. */
+    void removeEventListener( string type, EventListener listener, RemoveEventListenerOptions options )
+    {
+        _routes.remove( type );
+    }
+    void removeEventListener( string type, EventListener listener, bool useCapture )
+    {
+        _routes.remove( type );
+    }
+    void removeEventListener( string type, EventListener listener )
+    {
+        _routes.remove( type );
+    }
+
+protected:
+    EventListener[ type ] _routes;
 }
 
 /** */
@@ -1002,27 +1067,6 @@ class Element : Node, IElement
     }
 
     // Methods
-    /** Registers an event handler to a specific event type on the element. */
-    void addEventListener( string type, EventListener listener, Options options, bool useCapture=false )
-    {
-        EventTarget.addEventListener();
-    }
-
-    void addEventListener( string type, EventListener listener, Options options )
-    {
-        EventTarget.addEventListener();
-    }
-
-    void addEventListener( string type, EventListener listener, bool useCapture=false )
-    {
-        EventTarget.addEventListener();
-    }
-
-    void addEventListener( string type, EventListener listener )
-    {
-        EventTarget.addEventListener();
-    }
-
     /** Attaches a shadow DOM tree to the specified element and returns a reference to its ShadowRoot. */
     Element attachShadow( string[ string ] shadowRootInit )
     {
@@ -1087,17 +1131,6 @@ class Element : Node, IElement
     StylePropertyMapReadOnly computedStyleMap()
     {
         return _computedStyleMap;
-    }
-
-    /** Dispatches an event to this node in the DOM and returns a Boolean that indicates whether no handler canceled the event. */
-    bool dispatchEvent( Event event )
-    {
-        return true;
-    }
-    bool dispatchEvent( Event event, Element target )
-    {
-        event.target = target;
-        return true;
     }
 
     /** Returns an array of Animation objects currently active on the element. */
@@ -1253,12 +1286,260 @@ class Element : Node, IElement
     /** Inserts a set of Node objects or DOMString objects before the first child of the element. */
     void prepend( Node[] args ... )
     {
-        //
+        foreach ( node; args )
+        {
+            insertBefore( node, _firstChild );
+        }
     }
     void prepend( string[] args ... )
     {
+        foreach ( s; args )
+        {
+            //auto e = createElement( s );
+            //insertBefore( node, _firstChild );
+        }
+    }
+    void prepend( ARGS... )( ARGS args )
+    {
+        static
+        foreach ( T; ARGS )
+        {
+            static
+            if ( is ( T == Node ) )
+            {
+                insertBefore( node, _firstChild );
+            }
+            else
+
+            static
+            if ( is ( T == string ) )
+            {            
+                //auto e = createElement( s );
+                //insertBefore( node, _firstChild );
+        }
+        }
+    }
+
+    /** Returns the first Node which matches the specified selector string relative to the element. */
+    Element querySelector( string selectors )
+    {
+        return null;
+    }
+
+    /** Returns a NodeList of nodes which match the specified selector string relative to the element. */
+    NodeList querySelectorAll( string selectors )
+    {
+        return new NodeList();
+    }
+
+    /** Releases (stops) pointer capture that was previously set for a specific pointer event. */
+    void releasePointerCapture( int pointerId )
+    {
         //
     }
+
+    /** Removes the element from the children list of its parent. */
+    void remove()
+    {
+        if ( _parentNode !is null )
+            _parentNode.removeChild( this );
+    }
+
+    /** Removes the named attribute from the current node. */
+    void removeAttribute( string attrName )
+    {
+        _attrs.removeNamedItem( attrName );
+    }
+
+    /** Removes the node representation of the named attribute from the current node. */
+    void removeAttributeNode( Attr attributeNode )
+    {
+        _attrs.removeNamedItem( attributeNode.name );
+    }
+
+    /** Removes the attribute with the specified name and namespace, from the current node. */
+    void removeAttributeNS( string ns, string attrName )
+    {
+        _attrs.removeNamedItemNS( ns, attrName );
+    }
+
+    /** Replaces the existing children of a Node with a specified new set of children. */
+    void replaceChildren( Node[] args ... )
+    {
+        _removeAllChilds();
+
+        foreach ( node; args )
+        {
+            appendChild( node, _firstChild );
+        }
+    }
+    void replaceChildren( string[] args ... )
+    {
+        _removeAllChilds();
+
+        foreach ( s; args )
+        {
+            //auto e = createElement( s );
+            //replaceChildren( e, _firstChild );
+        }
+    }
+    void replaceChildren( ARGS... )( ARGS args )
+    {
+        _removeAllChilds();
+
+        static
+        foreach ( T; ARGS )
+        {
+            static
+            if ( is ( T == Node ) )
+            {
+                appendChild( node );
+            }
+            else
+
+            static
+            if ( is ( T == string ) )
+            {            
+                //auto e = createElement( s );
+                //appendChild( node );
+            }
+        }
+        }
+    }
+
+    /** Asynchronously asks the browser to make the element full-screen. */
+    Promise requestFullscreen()
+    {
+        //return new Promise( fullscreenComplette, fullscreenFail );
+        return null;
+    }
+
+    /** Allows to asynchronously ask for the pointer to be locked on the given element. */
+    void requestPointerLock()
+    {
+        //
+    }
+
+    /** Scrolls to a particular set of coordinates inside a given element. */
+    void scroll( int x_coord, int y_coord )
+    {
+        //
+    }
+    void scroll( ScrollToOptions options )
+    {
+        //
+    }
+
+    /** Scrolls an element by the given amount. */
+    void scrollBy( int x_coord, int y_coord )
+    {
+        //
+    }
+    void scrollBy( ScrollToOptions options )
+    {
+        //
+    }
+
+    /** Scrolls the page until the element gets into the view. */
+    void scrollIntoView()
+    {
+        //
+    }
+    void scrollIntoView( bool alignToTop )
+    {
+        //
+    }
+    void scrollIntoView( ScrollIntoViewOptions scrollIntoViewOptions )
+    {
+        //
+    }
+
+    /** Scrolls to a particular set of coordinates inside a given element. */
+    void scrollTo( int x_coord, int y_coord )
+    {
+        //
+    }
+    void scrollTo( ScrollToOptions options )
+    {
+        //
+    }
+
+    /** Sets the value of a named attribute of the current node. */
+    void setAttribute( string name, string value )
+    {
+        _attrs.setNamedItem( new Attr( name, value ) );
+    }
+
+    /** Sets the node representation of the named attribute from the current node. */
+    Attr setAttributeNode( Attr attribute ) 
+    {
+        return _attrs.setNamedItem( attribute );
+    }
+
+    /** Sets the node representation of the attribute with the specified name and namespace, from the current node. */
+    Attr setAttributeNodeNS( Attr attribute )
+    {
+        return _attrs.setNamedItemNS( attribute );
+    }
+
+    /** Sets the value of the attribute with the specified name and namespace, from the current node. */
+    void setAttributeNS( string namespace, string name, string value )
+    {
+        _attrs.setNamedItemNS( new Attr( ns, name, value ) );
+    }
+
+    /** Designates a specific element as the capture target of future pointer events. */
+    void setPointerCapture( int pointerId )
+    {
+        //
+    }
+
+    /** Toggles a boolean attribute, removing it if it is present and adding it if it is not present, on the specified element. */
+    bool toggleAttribute( string name )
+    {
+        return false;
+    }
+    bool toggleAttribute( string name, bool force )
+    {
+        return false;
+    }
+
+    // Events
+    enum Events
+    {
+        cancel,  // Fires on a <dialog> when the user instructs the browser that they wish to dismiss the current open dialog. For example, the browser might fire this event when the user presses the Esc key or clicks a "Close dialog" button which is part of the browser's UI.
+        error,   // Fired when a resource failed to load, or can't be used. For example, if a script has an execution error or an image can't be found or is invalid. 
+        scroll,  // Fired when the document view or an element has been scrolled.
+        select,  // Fired when some text has been selected.
+        show,    // Fired when a contextmenu event was fired on/bubbled to an element that has a contextmenu attribute. 
+        wheel,   // Fired when the user rotates a wheel button on a pointing device (typically a mouse).
+        // Clipboard events
+        copy,    // Fired when the user initiates a copy action through the browser's user interface.
+        cut,     // Fired when the user initiates a cut action through the browser's user interface.
+        paste,   // Fired when the user initiates a paste action through the browser's user interface.
+        // Composition events
+        compositionend,    // Fired when a text composition system such as an input method editor completes or cancels the current composition session.
+        compositionstart,  // Fired when a text composition system such as an input method editor starts a new composition session.
+        compositionupdate, // Fired when a new character is received in the context of a text composition session controlled by a text composition system such as an input method editor.
+        // Focus events
+
+    }
+
+    EventMixin!"cancel";
+    EventMixin!"error";
+    EventMixin!"scroll";
+    EventMixin!"select";
+    EventMixin!"show";
+    EventMixin!"wheel";
+    // Clipboard events
+    EventMixin!"copy";
+    EventMixin!"cut";
+    EventMixin!"paste";
+    // Composition events
+    EventMixin!"compositionend";
+    EventMixin!"compositionstart";
+    EventMixin!"compositionupdate";
+    // Focus events
 
 protected:
     NamedNodeMap             _attrs;
@@ -1269,6 +1550,7 @@ protected:
     string                   _tagName;
     Animation[]              _animations;
     bool                     _pointerCapture;
+    int                      _pointerId;
       
     /** _attrs.getNamedItem( "class" ).value.split( ' ' ) */
     string[] _classes()
@@ -1301,6 +1583,82 @@ protected:
 
         return ss.join( ' ' );
     }
+
+    /** */
+    void _removeAllChilds()
+    {
+        while ( _firstChild !is null )
+        {
+            removeChild( _firstChild );
+        }
+    }
+}
+
+/** */
+mixin template EventMixin( string NAME )
+{
+    enum EventMixin = 
+    format!q{
+        EventListener on%s()
+        {
+            //
+        }
+        void on%s( EventListener listener )
+        {
+            //
+        }
+    }
+    ( 
+        NAME,
+        NAME,
+    );
+}
+
+/** */
+struct ScrollIntoViewOptions
+{
+    ScrollBehavior      behavior; // Defines the transition animation.
+    VerticalAlignment   block;    // Defines vertical alignment.
+    HorizontalAlignment inline;   // Defines horizontal alignment.
+}
+
+/** */
+enum VerticalAlignment
+{
+    start, 
+    center, 
+    end, 
+    nearest
+}
+
+/** */
+enum HorizontalAlignment
+{
+    start, 
+    center, 
+    end, 
+    nearest
+}
+
+/** */
+struct ScrollToOptions
+{
+    int            top;      // Specifies the number of pixels along the Y axis to scroll the window or element.
+    int            left;     // Specifies the number of pixels along the X axis to scroll the window or element.
+    ScrollBehavior behavior; // Specifies whether the scrolling should animate smoothly, or happen instantly in a single jump. This is actually defined on the ScrollOptions dictionary, which is implemented by ScrollToOptions.
+}
+
+/** */
+enum ScrollBehavior
+{
+    smooth, // The scrolling animates smoothly.
+    auto    // The scrolling happens in a single jump.
+}
+
+/** */
+struct RemoveEventListenerOptions
+{
+    bool capture;
 }
 
 /** */
@@ -2049,12 +2407,19 @@ class EventListener
 /** */
 class Event
 {
-    Element target;
+    EventType type;
+    Element   target;
 
     void preventDefault()
     {
         //
     }
+}
+
+/** */
+enum EventType
+{
+    //
 }
 
 /** */
