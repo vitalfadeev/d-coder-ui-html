@@ -222,19 +222,632 @@ class Document : Node, IDocument
         return _fonts;
     }
 
+    /** Returns a list of the <form> elements within the current document. */
+    HTMLCollection forms()
+    {
+        Element[] elements;
+
+        for ( auto node = _firstChild; node !is null; node = node.nextSibling )
+        {
+            if ( node.nodeType == ELEMENT_NODE )
+            if ( ( cast ( Element ) node ).tagName == "form" )
+            {
+                elements ~= cast ( Element ) node;
+            }
+        }
+
+        return new HTMLCollection( elements );
+    }
+
+    /** The element that's currently in full screen mode for this document. */
+    Element fullscreenElement()
+    {
+        return _fullscreenElement;
+    }
+
+    /** Returns the <head> element of the current document. */
+    Element head()
+    {
+        return _head;
+    }
+
+    /** Returns a Boolean value indicating if the page is considered hidden or not. */
+    bool hidden()
+    {
+        return _hidden;
+    }
+
+    /** Returns a list of the images in the current document. */
+    HTMLCollection images()
+    {
+        Element[] elements;
+
+        for ( auto node = _firstChild; node !is null; node = node.nextSibling )
+        {
+            if ( node.nodeType == ELEMENT_NODE )
+            if ( ( cast ( Element ) node ).tagName == "img" )
+            {
+                elements ~= cast ( Element ) node;
+            }
+        }
+
+        return new HTMLCollection( elements );
+    }
+
+    /** Returns the DOM implementation associated with the current document. */
+    DOMImplementation implementation()
+    {
+        return _implementation;
+    }
+
+    /** Returns the last child element of the current document. */
+    Element lastElementChild()
+    {
+        if ( _documentElement !is null )
+            return _documentElement.lastElementChild();
+        else
+            return null;
+    }
+
+    /** Returns a list of all the hyperlinks in the document. */
+    HTMLCollection links()
+    {
+        Element[] elements;
+
+        for ( auto node = _firstChild; node !is null; node = node.nextSibling )
+        {
+            if ( node.nodeType == ELEMENT_NODE )
+            if ( ( cast ( Element ) node ).tagName == "area"  || 
+                 ( cast ( Element ) node ).tagName == "a" )
+            {
+                elements ~= cast ( Element ) node;
+            }
+        }
+
+        return new HTMLCollection( elements );
+    }
+
+    /** Returns the Element currently being presented in picture-in-picture mode in this document. */
+    void pictureInPictureElement()
+    {
+        return _pictureInPictureElement;
+    }
+
+    /** Returns true if the picture-in-picture feature is enabled. */
+    bool pictureInPictureEnabled()
+    {
+        return _pictureInPictureEnabled;
+    }
+
+    /** Returns a list of the available plugins. */
+    HTMLCollection plugins()
+    {
+        Element[] elements;
+
+        for ( auto node = _firstChild; node !is null; node = node.nextSibling )
+        {
+            if ( node.nodeType == ELEMENT_NODE )
+            if ( ( cast ( Element ) node ).tagName == "embed" )
+            {
+                elements ~= cast ( Element ) node;
+            }
+        }
+
+        return new HTMLCollection( elements );
+    }
+
+    /** Returns the element set as the target for mouse events while the pointer is locked. null if lock is pending, pointer is unlocked, or if the target is in another document. */
+    Element pointerLockElement()
+    {
+        return _pointerLockElement;
+    }
+
+    /** Returns the FeaturePolicy interface which provides a simple API for introspecting the feature policies applied to a specific document. */
+    FeaturePolicy featurePolicy()
+    {
+        return null;
+    }
+
+    /** Returns all the <script> elements on the document. */
+    HTMLCollection scripts()
+    {
+        Element[] elements;
+
+        for ( auto node = _firstChild; node !is null; node = node.nextSibling )
+        {
+            if ( node.nodeType == ELEMENT_NODE )
+            if ( ( cast ( Element ) node ).tagName == "script" )
+            {
+                elements ~= cast ( Element ) node;
+            }
+        }
+
+        return new HTMLCollection( elements );
+    }
+
+    /** Returns a reference to the Element that scrolls the document. */
+    Element scrollingElement()
+    {
+        return _scrollingElement;
+    }
+
+    /** Returns a StyleSheetList of CSSStyleSheet objects for stylesheets explicitly linked into, or embedded in a document. */
+    StyleSheetList styleSheets()
+    {
+        return new StyleSheetList();
+    }
+
+    /** Returns timeline as a special instance of DocumentTimeline that is automatically created on page load. */
+    DocumentTimeline timeline()
+    {
+        return new DocumentTimeline();
+    }
+
+    /** Returns a string denoting the visibility state of the document. Possible values are visible, hidden, prerender, and unloaded. */
+    VisibilityState visibilityState()
+    {
+        return _visibilityState;
+    }
+
+    // Event handlers
+    EventHandler onfullscreenchange;   // Is an EventHandler representing the code to be called when the fullscreenchange event is raised. 
+    EventHandler onfullscreenerror;    // Is an EventHandler representing the code to be called when the fullscreenerror event is raised.
+    EventHandler onreadystatechange;   // Represents the event handling code for the readystatechange event.
+    EventHandler onselectionchange;    // Is an EventHandler representing the code to be called when the selectionchange event is raised.
+    EventHandler onvisibilitychange;   // Is an EventHandler representing the code to be called when the visibilitychange event is raised.
+
+    // GlobalEventHandlers
+    EventHandler onabort;              // Is an EventHandler representing the code to be called when the abort event is raised.
+    EventHandler onblur;               // Is an EventHandler representing the code to be called when the blur event is raised.
+    EventHandler onerror;              // Is an OnErrorEventHandler representing the code to be called when the error event is raised.
+    EventHandler onfocus;              // Is an EventHandler representing the code to be called when the focus event is raised.
+    EventHandler oncancel;             // Is an EventHandler representing the code to be called when the cancel event is raised.
+    EventHandler oncanplay;            // Is an EventHandler representing the code to be called when the canplay event is raised.
+    EventHandler oncanplaythrough;     // Is an EventHandler representing the code to be called when the canplaythrough event is raised.
+    EventHandler onchange;             // Is an EventHandler representing the code to be called when the change event is raised.
+    EventHandler onclick;              // Is an EventHandler representing the code to be called when the click event is raised.
+    EventHandler onclose;              // Is an EventHandler representing the code to be called when the close event is raised.
+    EventHandler oncontextmenu;        // Is an EventHandler representing the code to be called when the contextmenu event is raised.
+    EventHandler oncuechange;          // Is an EventHandler representing the code to be called when the cuechange event is raised.
+    EventHandler ondblclick;           // Is an EventHandler representing the code to be called when the dblclick event is raised.
+    EventHandler ondrag;               // Is an EventHandler representing the code to be called when the drag event is raised.
+    EventHandler ondragend;            // Is an EventHandler representing the code to be called when the dragend event is raised.
+    EventHandler ondragenter;          // Is an EventHandler representing the code to be called when the dragenter event is raised.
+    EventHandler ondragleave;          // Is an EventHandler representing the code to be called when the dragleave event is raised.
+    EventHandler ondragover;           // Is an EventHandler representing the code to be called when the dragover event is raised.
+    EventHandler ondragstart;          // Is an EventHandler representing the code to be called when the dragstart event is raised.
+    EventHandler ondrop;               // Is an EventHandler representing the code to be called when the drop event is raised.
+    EventHandler ondurationchange;     // Is an EventHandler representing the code to be called when the durationchange event is raised.
+    EventHandler onemptied;            // Is an EventHandler representing the code to be called when the emptied event is raised.
+    EventHandler onended;              // Is an EventHandler representing the code to be called when the ended event is raised.
+    EventHandler onformdata;           // Is an EventHandler for processing formdata events, fired after the entry list representing the form's data is constructed.
+    EventHandler ongotpointercapture;  // Is an EventHandler representing the code to be called when the gotpointercapture event type is raised.
+    EventHandler oninput;              // Is an EventHandler representing the code to be called when the input event is raised.
+    EventHandler oninvalid;            // Is an EventHandler representing the code to be called when the invalid event is raised.
+    EventHandler onkeydown;            // Is an EventHandler representing the code to be called when the keydown event is raised.
+    EventHandler onkeypress;           // Is an EventHandler representing the code to be called when the keypress event is raised.
+    EventHandler onkeyup;              // Is an EventHandler representing the code to be called when the keyup event is raised.
+    EventHandler onload;               // Is an EventHandler representing the code to be called when the load event is raised.
+    EventHandler onloadeddata;         // Is an EventHandler representing the code to be called when the loadeddata event is raised.
+    EventHandler onloadedmetadata;     // Is an EventHandler representing the code to be called when the loadedmetadata event is raised.
+    EventHandler onloadend;            // Is an EventHandler representing the code to be called when the loadend event is raised (when progress has stopped on the loading of a resource.)
+    EventHandler onloadstart;          // Is an EventHandler representing the code to be called when the loadstart event is raised (when progress has begun on the loading of a resource.)
+    EventHandler onlostpointercapture; // Is an EventHandler representing the code to be called when the lostpointercapture event type is raised.
+    EventHandler onmousedown;          // Is an EventHandler representing the code to be called when the mousedown event is raised.
+    EventHandler onmouseenter;         // Is an EventHandler representing the code to be called when the mouseenter event is raised.
+    EventHandler onmouseleave;         // Is an EventHandler representing the code to be called when the mouseleave event is raised.
+    EventHandler onmousemove;          // Is an EventHandler representing the code to be called when the mousemove event is raised.
+    EventHandler onmouseout;           // Is an EventHandler representing the code to be called when the mouseout event is raised.
+    EventHandler onmouseover;          // Is an EventHandler representing the code to be called when the mouseover event is raised.
+    EventHandler onmouseup;            // Is an EventHandler representing the code to be called when the mouseup event is raised.
+    EventHandler onwheel;              // Is an EventHandler representing the code to be called when the wheel event is raised.
+    EventHandler onpause;              // Is an EventHandler representing the code to be called when the pause event is raised.
+    EventHandler onplay;               // Is an EventHandler representing the code to be called when the play event is raised.
+    EventHandler onplaying;            // Is an EventHandler representing the code to be called when the playing event is raised.
+    EventHandler onpointerdown;        // Is an EventHandler representing the code to be called when the pointerdown event is raised.
+    EventHandler onpointermove;        // Is an EventHandler representing the code to be called when the pointermove event is raised.
+    EventHandler onpointerup;          // Is an EventHandler representing the code to be called when the pointerup event is raised.
+    EventHandler onpointercancel;      // Is an EventHandler representing the code to be called when the pointercancel event is raised.
+    EventHandler onpointerover;        // Is an EventHandler representing the code to be called when the pointerover event is raised.
+    EventHandler onpointerout;         // Is an EventHandler representing the code to be called when the pointerout event is raised.
+    EventHandler onpointerenter;       // Is an EventHandler representing the code to be called when the pointerenter event is raised.
+    EventHandler onpointerleave;       // Is an EventHandler representing the code to be called when the pointerleave event is raised.
+    EventHandler onpointerlockchange;  // Is an EventHandler representing the code to be called when the pointerlockchange event is raised.
+    EventHandler onpointerlockerror;   // Is an EventHandler representing the code to be called when the pointerlockerror event is raised.
+    EventHandler onprogress;           // Is an EventHandler representing the code to be called when the progress event is raised.
+    EventHandler onratechange;         // Is an EventHandler representing the code to be called when the ratechange event is raised.
+    EventHandler onreset;              // Is an EventHandler representing the code to be called when the reset event is raised.
+    EventHandler onresize;             // Is an EventHandler representing the code to be called when the resize event is raised.
+    EventHandler onscroll;             // Is an EventHandler representing the code to be called when the scroll event is raised.
+    EventHandler onseeked;             // Is an EventHandler representing the code to be called when the seeked event is raised.
+    EventHandler onseeking;            // Is an EventHandler representing the code to be called when the seeking event is raised.
+    EventHandler onselect;             // Is an EventHandler representing the code to be called when the select event is raised.
+    EventHandler onselectstart;        // Is an EventHandler representing the code to be called when the selectionchange event is raised, i.e. when the user starts to make a new text selection on a web page.
+    EventHandler onselectionchange;    // Is an EventHandler representing the code to be called when the selectionchange event is raised, i.e. when the text selected on a web page changes.
+    EventHandler onsort;               // Is an EventHandler representing the code to be called when the sort event is raised.
+    EventHandler onstalled;            // Is an EventHandler representing the code to be called when the stalled event is raised.
+    EventHandler onsubmit;             // Is an EventHandler representing the code to be called when the submit event is raised.
+    EventHandler onsuspend;            // Is an EventHandler representing the code to be called when the suspend event is raised.
+    EventHandler ontimeupdate;         // Is an EventHandler representing the code to be called when the timeupdate event is raised.
+    EventHandler onvolumechange;       // Is an EventHandler representing the code to be called when the volumechange event is raised.
+    EventHandler ontransitioncancel;   // An EventHandler called when a transitioncancel event is sent, indicating that a CSS transition has been cancelled.
+    EventHandler ontransitionend;      // An EventHandler called when a transitionend event is sent, indicating that a CSS transition has finished playing.
+    EventHandler ontransitionrun;      // An EventHandler called when a transitionrun event is sent, indicating that a CSS transition is running, though not nessarilty started.
+    EventHandler ontransitionstart;    // An EventHandler called when a transitionstart event is sent, indicating that a CSS transition has started transitioning.
+    EventHandler onwaiting;            // Is an EventHandler representing the code to be called when the waiting event is raised.
+
+    // Methods
+    /** Adopt node from an external document. */
+    Node adoptNode( Node externalNode )
+    {
+        return null;
+    }
 
 protected:
-    Element      _activeElement;
-    Element      _body;
-    string       _characterSet = "UTF-8";
-    CompatMode   _compatMode;
-    string       _contentType;
-    DocumentType _doctype;
-    Element      _documentElement;
-    string       _documentURI;
-    FontFaceSet  _fonts;
+    Element         _activeElement;
+    Element         _body;
+    string          _characterSet = "UTF-8";
+    CompatMode      _compatMode;
+    string          _contentType;
+    DocumentType    _doctype;
+    Element         _documentElement;
+    string          _documentURI;
+    FontFaceSet     _fonts;
+    Element         _fullscreenElement;
+    Element         _head;
+    bool            _hidden;
+    DOMImplementation _implementation;
+    element         _pictureInPictureElement;
+    bool            _pictureInPictureEnabled;
+    Element         _pointerLockElement;
+    Element         _scrollingElement;
+    VisibilityState _visibilityState;
 }
 
+/** */
+class HTMLDocument : Document
+{
+    /** Returns a semicolon-separated list of the cookies for that document or sets a single cookie. */
+    string cookie()
+    {
+        return _cookie;
+    }
+
+    /** Returns a reference to the window object. */
+    Window defaultView()
+    {
+        return _defaultView;
+    }
+
+    /** Gets/sets the ability to edit the whole document. */
+    DesignMode designMode()
+    {
+        return _designMode;
+    }
+
+    /** Gets/sets directionality (rtl/ltr) of the document. */
+    Dir dir()
+    {
+        return _dir;
+    }
+
+    /** Returns the date on which the document was last modified. */
+    string lastModified()
+    {
+        return _lastModified;
+    }
+
+    /** Returns the URI of the current document. */
+    Location location()
+    {
+        return _location;
+    }
+
+    /** Returns loading status of the document. */
+    ReadyState readyState()
+    {
+        return _readyState;
+    }
+
+    /** Returns the URI of the page that linked to this page. */
+    string referrer()
+    {
+        return _referrer;
+    }
+
+    /** Sets or gets the title of the current document. */
+    string title()
+    {
+        return _title;
+    }
+
+    /** Returns the document location as a string. */
+    string URL()
+    {
+        return location.toString();
+    }
+
+protected:
+    string     _cookie;
+    Window     _defaultView;
+    Dir        _dir;
+    string     _lastModified;
+    Location   _location;
+    ReadyState _readyState;
+    string     _referrer;
+    string     _title;
+}
+
+/** */
+enum ReadyState
+{
+    loading,
+    interactive,
+    complete
+}
+
+/** */
+class Location
+{
+    /** Is a static DOMStringList containing, in reverse order, the origins of all ancestor browsing contexts of the document associated with the given Location object. */
+    DOMStringList ancestorOrigins()
+    {
+        return new DOMStringList();
+    }
+
+    /** Is a stringifier that returns a USVString containing the entire URL. If changed, the associated document navigates to the new page. It can be set from a different origin than the associated document. */
+    string href()
+    {
+        return _href;
+    }
+
+    /** Is a USVString containing the protocol scheme of the URL, including the final ':'. */
+    string protocol()
+    {
+        return _protocol;
+    }
+
+    /** Is a USVString containing the host, that is the hostname, a ':', and the port of the URL. */
+    string host()
+    {
+        return _host;
+    }
+
+    /** Is a USVString containing the domain of the URL. */
+    string hostname()
+    {
+        return _hostname;
+    }
+
+    /** Is a USVString containing the port number of the URL. */
+    string port()
+    {
+        return _port;
+    }
+
+    /** Is a USVString containing an initial '/' followed by the path of the URL, not including the query string or fragment. */
+    string pathname()
+    {
+        return _pathname;
+    }
+
+    /** Is a USVString containing a '?' followed by the parameters or "querystring" of the URL. Modern browsers provide URLSearchParams and URL.searchParams to make it easy to parse out the parameters from the querystring. */
+    string search()
+    {
+        return _search;
+    }
+
+    /** Is a USVString containing a '#' followed by the fragment identifier of the URL. */
+    string hash()
+    {
+        return _hash;
+    }
+
+    /** Returns a USVString containing the canonical form of the origin of the specific location. */
+    string origin()
+    {
+        return _origin;
+    }
+
+    //
+    /** Loads the resource at the URL provided in parameter. */
+    void assign( string url )
+    {
+        //
+    }
+
+    /** Reloads the current URL, like the Refresh button. */
+    void reload()
+    {
+        //
+    }
+
+    /** Replaces the current resource with the one at the provided URL (redirects to the provided URL). The difference from the assign() method and setting the href property is that after using replace() the current page will not be saved in session History, meaning the user won't be able to use the back button to navigate to it. */
+    void replace( string url )
+    {
+        //
+    }
+
+    /** Returns a USVString containing the whole URL. It is a synonym for HTMLAnchorElement.href, though it can't be used to modify the value. */
+    string toString()
+    {
+        return "";
+    }
+
+protected:
+    string _url;
+    string _href;
+    string _protocol;
+    string _host;
+    string _hostname;
+    string _port;
+    string _pathname;
+    string _search;
+    string _hash;
+    string _origin;
+}
+
+/** */
+enum Dir
+{
+    ltr,
+    rtl,
+    auto
+}
+
+/** */
+class Window
+{
+    //
+}
+
+/** */
+enum DesignMode
+{
+    on,
+    off
+}
+
+/** */
+enum VisibilityState
+{
+    visible,
+    hidden
+}
+
+/** */
+class DocumentTimeline
+{
+    this()
+    {
+        //
+    }
+
+    /** Returns the time value in milliseconds for this timeline or null if it is inactive. */
+    float currentTime()
+    {
+        return 0;
+    }
+}
+
+/** */
+class StyleSheetList
+{
+    StyleSheet[] _lst;
+    alias _lst this;
+}
+
+/** */
+class StyleSheet
+{
+    bool       disabled;         // Is a Boolean representing whether the current stylesheet has been applied or not.
+    string     href;             // Returns a DOMString representing the location of the stylesheet.
+    MediaList  media;            // Returns a MediaList representing the intended destination medium for style information.
+    Node       ownerNode;        // Returns a Node associating this style sheet with the current document.
+    StyleSheet parentStyleSheet; // Returns a StyleSheet including this one, if any; returns null if there aren't any.
+    string     title;            // Returns a DOMString representing the advisory title of the current style sheet.
+    string     type;             // Returns a DOMString representing the style sheet language for this style sheet.
+}
+
+/** */
+class MediaList
+{
+    /** A stringifier that returns a DOMString representing the MediaList as text, and also allows you to set a new MediaList. */
+    string mediaText()
+    {
+        //
+    }
+
+    /** Returns the number of media queries in the MediaList. */
+    size_t length()
+    {
+        return _items.length;
+    }
+
+    /** Adds a media query to the MediaList. */
+    void appendMedium( string a )
+    {
+        _items ~= a;
+    }
+
+    /** Removes a media query from the MediaList. */
+    void deleteMedium()
+    {
+        //
+    }
+
+    /** A getter that returns a CSSOMString representing a media query as text, given the media query's index value inside the MediaList. */
+    string item( size_t index )
+    {
+        return _items[ index ];
+    }
+
+protected:
+    string[] _items;
+}
+
+/** */
+class FeaturePolicy
+{
+    /** Returns a Boolean that indicates whether or not a particular feature is enabled in the specified context. */
+    bool allowsFeature( string feature )
+    {
+        return false;
+    }
+    bool allowsFeature( string feature, string origin )
+    {
+        return false;
+    }
+
+    /** Returns a list of names of all features supported by the User Agent. Feature whose name appears on the list might not be allowed by the Feature Policy of the current execution context and/or might not be accessible because of user's permissions. */
+    string[] features()
+    {
+        return [];
+    }
+
+    /** Returns the Allow list for the specified feature. */
+    string[] getAllowlistForFeature( string feature )
+    {
+        return [];
+    }
+
+}
+
+/** */
+class DOMImplementation
+{
+    /** Creates and returns an XMLDocument. */
+    XMLDocument createDocument( string namespaceURI, string qualifiedNameStr, string documentType )
+    {
+        return new XMLDocument();
+    }
+
+    /** Creates and returns a DocumentType. */
+    DocumentType createDocumentType( string qualifiedNameStr, string publicId, string systemId )
+    {
+        return new DocumentType();
+    }
+
+    /** Creates and returns an HTML Document. */
+    Document createHTMLDocument( string title )
+    {
+        return new Document();
+    }
+
+    /** Returns a Boolean indicating if a given feature is supported or not. This function is unreliable and kept for compatibility purpose alone: except for SVG-related queries, it always returns true. Old browsers are very inconsistent in their behavior. */
+    bool hasFeature( string feature, string version)
+    {
+        //
+    }
+}
+
+/** */
+class XMLDocument
+{
+    //
+}
+
+/** */
 enum CompatMode
 {
     BackCompat,
@@ -282,14 +895,26 @@ class FontFaceSet
     }
 
     /** Returns a Promise which resolves to a list of font-faces for a requested font. */
-    Promise load( string font )
+    Promise!string load( string font )
     {
         // font: "italic bold 16px Roboto"
-        return _load;
+        return 
+            new Promise!string(
+                ( success, failure )
+                {
+                    //
+                }
+            );
     }
-    Promise load( string font, string text )
+    Promise!string load( string font, string text )
     {
-        return _load;
+        return 
+            new Promise!string(
+                ( success, failure )
+                {
+                    //
+                }
+            );
     }
 
 protected:
@@ -3695,75 +4320,135 @@ protected:
 }
 
 /** */
-class Promise
+class Promise( TS )
 {
-    /** */
-    this( PromiseExecutor executor )
+    alias PromiseCallback( T ) = T delegate( T value );
+    alias SuccessCallback      = PromiseCallback!TS;
+    alias FailureCallback      = PromiseCallback!string;
+    alias FinallyCallback      = void delegate();
+    alias Executor             = void delegate( SuccessCallback success, FailureCallback failure );
+
+    this( Executor executor )
     {
-        this._executor;
+        this._executor = executor;
     }
 
+    // static
     /** Wait for all promises to be resolved, or for any to be rejected. */
+    static
     Promise all( T )( T[] iterable )
     {
         return null;
     }
 
     /** Wait until all promises have settled (each may resolve or reject). */
+    static
     Promise allSettled( T )( T[] iterable )
     {
         return null;
     }
 
     /** Takes an iterable of Promise objects and, as soon as one of the promises in the iterable fulfills, returns a single promise that resolves with the value from that promise. */
+    static
     Promise any( T )( T[] iterable )
     {
         return null;
     }
 
     /** Wait until any of the promises is resolved or rejected. */
+    static
     Promise race( T )( T[] iterable )
     {
         return null;
     }
 
     /** Returns a new Promise object that is rejected with the given reason. */
+    static
     Promise reject( T )( T reason )
     {
         return null;
     }
 
     /** Returns a new Promise object that is resolved with the given value. If the value is a thenable (i.e. has a then method), the returned promise will "follow" that thenable, adopting its eventual state; otherwise, the returned promise will be fulfilled with the value. */
+    static
     Promise resolve( T )( T value )
     {
-        //
+        return 
+            new Promise( 
+                ( success, failure )
+                {
+                    if ( success !is null )
+                        success( value );
+                } 
+            );
     }
 
-
+    // Methods
     /** Appends a rejection handler callback to the promise, and returns a new promise resolving to the return value of the callback if it is called, or to its original fulfillment value if the promise is instead fulfilled. */
-    Promise catch()
+    auto catch_( FailureCallback failure )
     {
+        then( null, failure );
         return this;
     }
 
     /** Appends fulfillment and rejection handlers to the promise, and returns a new promise resolving to the return value of the called handler, or to its original settled value if the promise was not handled (i.e. if the relevant handler onFulfilled or onRejected is not a function). */
-    Promise then( PromiseCallback successCallback )
+    auto then( SuccessCallback success, FailureCallback failure=null )
     {
-        return new Promise( successCallback );
-    }
-    Promise then( PromiseCallback successCallback, PromiseCallback failureCallback )
-    {
-        return new Promise( successCallback, failureCallback );
+        _callbacks ~= CallbackRec( success, failure );
+        return this;
     }
 
     /** Appends a handler to the promise, and returns a new promise that is resolved when the original promise is resolved. The handler is called when the promise is settled, whether fulfilled or rejected. */
-    Promise finally( PromiseCallback callback )
+    auto finally_( FinallyCallback onfinally )
     {
-        return new Promose( callback );
+        _onfinally = onfinally;
+        return this;
     }
 
-protected:
-    PromiseExecutor _executor;
+
+    // D addon
+    void run()
+    {
+        _executor( &_success, &_failure );
+    }
+
+private:
+    TS _success( TS value )
+    {
+        foreach ( rec; _callbacks )
+        {
+            value = rec.success( value );
+        }
+
+        if ( _onfinally !is null )
+            _onfinally();
+
+        return value;
+    }
+
+    string _failure( string reason )
+    {
+        foreach ( rec; _callbacks )
+        {
+            reason = rec.failure( reason );
+        }
+
+        if ( _onfinally !is null )
+            _onfinally();
+
+        return reason;
+    }
+
+private:
+    Executor        _executor;
+    CallbackRec[]   _callbacks;
+    FinallyCallback _onfinally;
+
+    struct CallbackRec
+    {
+        SuccessCallback success;
+        FailureCallback failure;
+    }
 }
 
 /** */
