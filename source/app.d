@@ -483,6 +483,42 @@ class Document : Node, IDocument
         return null;
     }
 
+    /** Inserts a set of Node objects or DOMString objects after the last child of the document. */
+    void append( Node node )
+    {
+        Element.append( node );
+    }
+    void append( string s )
+    {
+        Element.append( s );
+    }
+
+    /** Returns a CaretPosition object containing the DOM node containing the caret, and caret's character offset within that node. */
+    CaretPosition caretPositionFromPoint( int x, int y )
+    {
+        return new CaretPosition();
+    }
+
+    // XPathEvaluator
+    /** Compiles an XPathExpression which can then be used for (repeated) evaluations. */
+    XPathExpression createExpression( string xpathText, NamespaceURLMapper namespaceURLMapper=null )
+    {
+        return new XPathExpression();
+    }
+
+    /** Creates an XPathNSResolver object. */
+    XPathNSResolver createNSResolver( Node node )
+    {
+        return new XPathNSResolver();
+    }
+
+    /** Evaluates an XPath expression. */
+    XPathResult evaluate( string xpathExpression, Node contextNode, XPathNSResolver namespaceResolver, XPathResultType resultType, XPathResult result=null )
+    {
+        return new XPathResult();
+    }
+
+
 protected:
     Element         _activeElement;
     Element         _body;
@@ -502,6 +538,72 @@ protected:
     Element         _pointerLockElement;
     Element         _scrollingElement;
     VisibilityState _visibilityState;
+}
+
+/** */
+class XPathNSResolver
+{
+    string resolve( Node node, string ns ) 
+    {
+        return "";
+    }
+}
+
+/** */
+class XPathExpression
+{
+    /** Evaluates the XPath expression on the given node or document. */
+    XPathResult evaluate( Node contextNode, XPathResultType type, XPathResult result=null )
+    {
+        return new XPathResult();
+    }
+}
+
+/** */
+enum XPathResultType
+{
+    //
+}
+
+/** */
+class XPathResult 
+{
+    //
+}
+
+/** */
+alias string function( string prefix ) NamespaceURLMapper;
+
+/** */
+class CaretPosition
+{
+    /** Returns a Node containing the found node at the caret's position. */
+    Node offsetNode()
+    {
+        return _offsetNode;
+    }
+
+    /** Returns a long representing the character offset in the caret position node. */
+    size_t offset()
+    {
+        return _offset;
+    }
+
+    /** */
+    Rect getClientRect()
+    {
+        return Rect();
+    }
+
+protected:
+    Node _offsetNode;
+    size_t _offset;
+}
+
+/** */
+struct Rect
+{
+    //
 }
 
 /** */
@@ -567,6 +669,169 @@ class HTMLDocument : Document
         return location.toString();
     }
 
+    /** Closes a document stream for writing. */
+    void close()
+    {
+        _opened = false;
+    }
+
+    /** Returns a list of elements with the given name. */
+    NodeList getElementsByName( string name )
+    {
+        Element[] elements;
+
+        for ( auto node = _firstChild; node !is null; node = node.nextSibling )
+        {
+            if ( node.nodeType == ELEMENT_NODE )
+            if ( ( cast ( Element ) node ).name == name )
+            {
+                elements ~= cast ( Element ) node;
+            }
+        }
+
+        return new NodeList( elements );
+    }
+
+    /** Returns true if the focus is currently located anywhere inside the specified document. */
+    bool hasFocus()
+    {
+        return _hasFocus;
+    }
+
+    /** Opens a document stream for writing. */
+    void open()
+    {
+        _opened = true;
+    }
+
+    /** Writes text in a document. */
+    void write( string markup )
+    {
+        //
+    }
+
+    /** Writes a line of text in a document. */
+    void writeln( string line )
+    {
+        //
+    }
+
+    // Events
+    enum Events
+    {
+        scroll,             // Fired when the document view or an element has been scrolled.
+        visibilitychange,   // Fired when the content of a tab has become visible or has been hidden.
+        wheel,              // Fired when the user rotates a wheel button on a pointing device (typically a mouse).
+        // Animation events
+        animationcancel,    // Fired when an animation unexpectedly aborts.
+        animationend,       // Fired when an animation has completed normally.
+        animationiteration, // Fired when an animation iteration has completed.
+        animationstart,     // Fired when an animation starts.
+        // Clipboard events
+        copy,               // Fired when the user initiates a copy action through the browser's user interface.
+        cut,                // Fired when the user initiates a cut action through the browser's user interface.
+        paste,              // Fired when the user initiates a paste action through the browser's user interface.
+        // Drag & drop events
+        drag,               // Fired every few hundred milliseconds as an element or text selection is being dragged by the user.
+        dragend,            // Fired when a drag operation is being ended (by releasing a mouse button or hitting the escape key).
+        dragenter,          // Fired when a dragged element or text selection enters a valid drop target.
+        dragleave,          // Fired when a dragged element or text selection leaves a valid drop target.
+        dragover,           // Fired when an element or text selection is being dragged over a valid drop target (every few hundred milliseconds).
+        dragstart,          // Fired when the user starts dragging an element or text selection.
+        drop,               // Fired when an element or text selection is dropped on a valid drop target.
+        // Fullscreen events
+        fullscreenchange,   // Fired when the Document transitions into or out of full-screen mode.
+        fullscreenerror,    // Fired if an error occurs while attempting to switch into or out of full-screen mode.
+        // Keyboard events
+        keydown,            // Fired when a key is pressed.
+        keyup,              // Fired when a key is released.
+        // Load & unload events
+        DOMContentLoaded,   // Fired when the document has been completely loaded and parsed, without waiting for stylesheets, images, and subframes to finish loading.
+        readystatechange,   // Fired when the readyState attribute of a document has changed.
+        // Pointer events
+        gotpointercapture,  // Fired when an element captures a pointer using setPointerCapture().
+        lostpointercapture, // Fired when a captured pointer is released.
+        pointercancel,      // Fired when a pointer event is canceled.
+        pointerdown,        // Fired when a pointer becomes active.
+        pointerenter,       // Fired when a pointer is moved into the hit test boundaries of an element or one of its descendants.
+        pointerleave,       // Fired when a pointer is moved out of the hit test boundaries of an element.
+        pointerlockchange,  // Fired when the pointer is locked/unlocked.
+        pointerlockerror,   // Fired when locking the pointer failed.
+        pointermove,        // Fired when a pointer changes coordinates.
+        pointerout,         // Fired when a pointer is moved out of the hit test boundaries of an element (among other reasons).
+        pointerover,        // Fired when a pointer is moved into an element's hit test boundaries.
+        pointerup,          // Fired when a pointer is no longer active.
+        // Selection events
+        selectionchange,    // Fired when the current text selection on a document is changed.
+        selectstart,        // Fired when the user begins a new selection.
+        // Touch events
+        touchcancel,        // Fired when one or more touch points have been disrupted in an implementation-specific manner (for example, too many touch points are created).
+        touchend,           // Fired when one or more touch points are removed from the touch surface.
+        touchmove,          // Fired when one or more touch points are moved along the touch surface.
+        touchstart,         // Fired when one or more touch points are placed on the touch surface.
+        // Transition events
+        transitioncancel,   // Fired when a CSS transition is canceled.
+        transitionend,      // Fired when a CSS transition has completed.
+        transitionrun,      // Fired when a CSS transition is first created.
+        transitionstart,    // Fired when a CSS transition has actually started.
+    }
+    mixin EventMixin!"scroll"; 
+    mixin EventMixin!"visibilitychange";
+    mixin EventMixin!"wheel";
+    // Animation events
+    mixin EventMixin!"animationcancel";
+    mixin EventMixin!"animationend";
+    mixin EventMixin!"animationiteration";
+    mixin EventMixin!"animationstart";
+    // Clipboard events
+    mixin EventMixin!"copy";
+    mixin EventMixin!"cut";
+    mixin EventMixin!"paste";
+    // Drag & drop events
+    mixin EventMixin!"drag";
+    mixin EventMixin!"dragend";
+    mixin EventMixin!"dragenter";
+    mixin EventMixin!"dragleave";
+    mixin EventMixin!"dragover";
+    mixin EventMixin!"dragstart";
+    mixin EventMixin!"drop";
+    // Fullscreen events
+    mixin EventMixin!"fullscreenchange";
+    mixin EventMixin!"fullscreenerror";
+    // Keyboard events
+    mixin EventMixin!"keydown";
+    mixin EventMixin!"keyup";
+    // Load & unload events
+    mixin EventMixin!"DOMContentLoaded";
+    mixin EventMixin!"readystatechange";
+    // Pointer events
+    mixin EventMixin!"gotpointercapture";
+    mixin EventMixin!"lostpointercapture";
+    mixin EventMixin!"pointercancel";
+    mixin EventMixin!"pointerdown";
+    mixin EventMixin!"pointerenter";
+    mixin EventMixin!"pointerleave";
+    mixin EventMixin!"pointerlockchange";
+    mixin EventMixin!"pointerlockerror";
+    mixin EventMixin!"pointermove";
+    mixin EventMixin!"pointerout";
+    mixin EventMixin!"pointerover";
+    mixin EventMixin!"pointerup";
+    // Selection events
+    mixin EventMixin!"selectionchange";
+    mixin EventMixin!"selectstart";
+    // Touch events
+    mixin EventMixin!"touchcancel";
+    mixin EventMixin!"touchend";
+    mixin EventMixin!"touchmove";
+    mixin EventMixin!"touchstart";
+    // Transition events
+    mixin EventMixin!"transitioncancel";
+    mixin EventMixin!"transitionend";
+    mixin EventMixin!"transitionrun";
+    mixin EventMixin!"transitionstart";
+
+
 protected:
     string     _cookie;
     Window     _defaultView;
@@ -576,6 +841,8 @@ protected:
     ReadyState _readyState;
     string     _referrer;
     string     _title;
+    bool       _hasFocus;
+    bool       _opened;
 }
 
 /** */
