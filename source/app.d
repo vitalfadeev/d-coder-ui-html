@@ -31,17 +31,14 @@ class EventTarget : IEventTarget
     {
         _routes[ type ] = listener;
     }
-
     void addEventListener( string type, EventListener listener, Options options )
     {
         _routes[ type ] = listener;
     }
-
     void addEventListener( string type, EventListener listener, bool useCapture=false )
     {
         _routes[ type ] = listener;
     }
-
     void addEventListener( string type, EventListener listener )
     {
         _routes[ type ] = listener;
@@ -963,9 +960,1237 @@ enum Dir
 }
 
 /** */
-class Window
+class Window : EventTarget
+{
+    /** DOMParser can parse XML or HTML source stored in a string into a DOM Document. DOMParser is specified in DOM Parsing and Serialization. */
+    static
+    Document DOMParser( string s )
+    {
+        auto parser = new DOMParser();
+        return parser.parseFromString( s );
+    }
+
+    /** Used for creating an HTMLImageElement. */
+    static 
+    HTMLImageElement Image( int width, int height )
+    {
+        return new HTMLImageElement();
+    }
+
+    /** Used for creating an HTMLOptionElement. */
+    HTMLOptionElement Option( string text, string value, bool defaultSelected, bool selected )
+    {
+        return new Option();
+    }
+
+    /** Returns a StaticRange() constructor which creates a StaticRange object. */
+    static
+    StaticRange StaticRange()
+    {
+        StaticRangeInit rangeSpec;
+        return new StaticRange( rangeSpec );
+    }
+
+    /** Used for creating a Web worker. */
+    Worker Worker( string aURL, WorkerOptions options )
+    {
+        return new Worker( aURL, options );
+    }
+
+    /** Converts a DOM tree into XML or HTML source. */
+    XMLSerializer XMLSerializer()
+    {
+        return new XMLSerializer();
+    }
+
+    // Properties
+    /** This property indicates whether the current window is closed or not. */
+    bool closed()
+    {
+        return _closed;
+    }
+
+    /** Returns a reference to the console object which provides access to the browser's debugging console. */
+    void console( T )( T someObject )
+    {
+        writeln( someObject );
+    }
+
+    /** Returns a reference to the CustomElementRegistry object, which can be used to register new custom elements and get information about previously registered custom elements. */
+    CustomElementRegistry customElements()
+    {
+        return customElementRegistry;
+    }
+
+    /** Returns the browser crypto object. */
+    Crypto crypto()
+    {
+        return .crypto;
+    }
+
+    /** Returns the ratio between physical pixels and device independent pixels in the current display. */
+    uint devicePixelRatio()
+    {
+        return _devicePixelRatio ;
+    }
+
+    /** Returns a reference to the document that the window contains. */
+    Document document()
+    {
+        return _document;
+    }
+
+    /** Returns the element in which the window is embedded, or null if the window is not embedded. */
+    Element frameElement()
+    {
+        for ( auto node = _firstChild; node !is null; node = node.nextSibling )
+        {
+            if ( node.nodeType == ELEMENT_NODE )
+            if ( 
+                ( cast ( Element ) node ).tagName == "iframe" ||
+                ( cast ( Element ) node ).tagName == "object" ||
+                ( cast ( Element ) node ).tagName == "embed"
+               )
+            {
+                return cast ( Element ) node;
+            }
+        }
+
+        return null;
+    }
+
+    /** Returns an array of the subframes in the current window. */
+    Window[] frames()
+    {
+        Window[] wins;
+
+        for ( auto node = _firstChild; node !is null; node = node.nextSibling )
+        {
+            if ( node.nodeType == ELEMENT_NODE )
+            if ( 
+                ( cast ( Element ) node ).tagName == "iframe" ||
+                ( cast ( Element ) node ).tagName == "frame"
+               )
+            {
+                wins != ( cast ( Element ) node ).defaultView;
+            }
+        }
+
+        return wins;
+    }
+
+    /** This property indicates whether the window is displayed in full screen or not. */
+    bool fullScreen()
+    {
+        return _fullScreen;
+    }
+
+    /** Returns a reference to the history object. */
+    History history()
+    {
+        return _history;
+    }
+
+protected:
+    bool     _closed;
+    uint     _devicePixelRatio;
+    Document _document;
+    bool     _fullScreen;
+    History  _history;
+}
+
+/** */
+class History
+{
+    /** Returns an Integer representing the number of elements in the session history, including the currently loaded page. For example, for a page loaded in a new tab this property returns 1. */
+    size_t length()
+    {
+        return _arr.length;
+    }
+
+    /** Allows web applications to explicitly set default scroll restoration behavior on history navigation. This property can be either auto or manual. */
+    ScrollRestoration scrollRestoration()
+    {
+        return _scrollRestoration;
+    }
+
+    /** Returns an any value representing the state at the top of the history stack. This is a way to look at the state without having to wait for a popstate event. */
+    auto state()
+    {
+        return _arr.front;
+    }
+
+    /** This asynchronous method goes to the previous page in session history, the same action as when the user clicks the browser's Back button. Equivalent to history.go(-1). */
+    void back()
+    {
+        //
+    }
+
+    /** This asynchronous method goes to the next page in session history, the same action as when the user clicks the browser's Forward button; this is equivalent to history.go(1). */
+    void forward()
+    {
+        //
+    }
+
+    /** Asynchronously loads a page from the session history, identified by its relative location to the current page, for example -1 for the previous page or 1 for the next page. If you specify an out-of-bounds value (for instance, specifying -1 when there are no previously-visited pages in the session history), this method silently has no effect. Calling go() without parameters or a value of 0 reloads the current page. Internet Explorer lets you specify a string, instead of an integer, to go to a specific URL in the history list. */
+    void go( int delta )
+    {
+        if ( delta < 0 )
+            _pos += delta;
+        else
+            _pos += delta;
+    }
+
+    /** Pushes the given data onto the session history stack with the specified title (and, if provided, URL). The data is treated as opaque by the DOM; you may specify any JavaScript object that can be serialized.  Note that all browsers but Safari currently ignore the title parameter. For more information, see Working with the History API. */
+    void pushState( HistoryState state, string title )
+    {
+        //
+    }
+    void pushState( HistoryState state, string title, string  url )
+    {
+        //
+    }
+
+    /** Updates the most recent entry on the history stack to have the specified data, title, and, if provided, URL. The data is treated as opaque by the DOM; you may specify any JavaScript object that can be serialized.  Note that all browsers but Safari currently ignore the title parameter. For more information, see Working with the History API. */
+    void replaceState( HistoryState state, string title )
+    {
+        //
+    }
+    void replaceState( HistoryState state, string title, string  url )
+    {
+        //
+    }
+
+    /** Gets the height of the content area of the browser window including, if rendered, the horizontal scrollbar. */
+    int innerHeight()
+    {
+        return _layoutViewport.height;
+    }
+
+    /** Gets the width of the content area of the browser window including, if rendered, the vertical scrollbar. */
+    int innerWidth()
+    {
+        return _layoutViewport.width;
+    }
+
+    /** Indicates whether a context is capable of using features that require secure contexts. */
+    bool isSecureContext()
+    {
+        return _isSecureContext;
+    }
+
+    /** Returns the number of frames in the window. See also window.frames. */
+    size_t length()
+    {
+        size_t l;
+
+        for ( auto node = _firstChild; node !is null; node = node.nextSibling )
+        {
+            if ( node.nodeType == ELEMENT_NODE )
+            if ( 
+                ( cast ( Element ) node ).tagName == "iframe" ||
+                ( cast ( Element ) node ).tagName == "frame"
+               )
+            {
+                l += 1;
+            }
+        }
+
+        return l;
+    }
+
+    /** Gets/sets the location, or current URL, of the window object. */
+    Location location()
+    {
+        return _location;
+    }
+    Location location( string loc )
+    {
+        return _location;
+    }
+
+    /** Returns the locationbar object, whose visibility can be toggled in the window. */
+    Locationbar locationbar()
+    {
+        return _locationbar;
+    }
+
+    /** Returns a reference to the local storage object used to store data that may only be accessed by the origin that created it. */
+    Storage localStorage()
+    {
+        return _localStorage;
+    }
+
+    /** Returns the menubar object, whose visibility can be toggled in the window. */
+    Menubar menubar()
+    {
+        return _menubar;
+    }
+
+    /** Gets/sets the name of the window. */
+    string name()
+    {
+        return _name;
+    }
+    void name( string s )
+    {
+        _name = s;
+    }
+
+    /** Returns a reference to the navigator object. */
+    Navigator navigator()
+    {
+        return _navigator;
+    }
+
+    /** Returns a reference to the window that opened this current window. */
+    Window opener()
+    {
+        return _opener;
+    }
+
+    /** Gets the height of the outside of the browser window. */
+    int outerHeight()
+    {
+        return 0;
+    }
+
+    /** Gets the width of the outside of the browser window. */
+    int outerWidth()
+    {
+        return 0;
+    }
+
+    /** An alias for window.scrollX. */
+    alias scrollX pageXOffset;
+
+    /** An alias for window.scrollY */
+    alias scrollY pageYOffset;
+
+    /** Returns a reference to the parent of the current window or subframe. */
+    Window parent()
+    {
+        return _parent;
+    }
+
+    /** Returns a Performance object, which includes the timing and navigation attributes, each of which is an object providing performance-related data. See also Using Navigation Timing for additional information and examples. */
+    Performance performance()
+    {
+        return _performance;
+    }
+
+    /** Returns the personalbar object, whose visibility can be toggled in the window. */
+    Personalbar personalbar()
+    {
+        return _personalbar;
+    }
+
+    /** Returns a reference to the screen object associated with the window. */
+    Screen screen()
+    {
+        return _screen;
+    }
+
+    /** Both properties return the horizontal distance from the left border of the user's browser viewport to the left side of the screen. */
+    int screenX()
+    {
+        return 0;
+    }
+    alias screenX screenLeft;
+
+    /** Both properties return the vertical distance from the top border of the user's browser viewport to the top side of the screen. */
+    int screenY()
+    {
+        return 0;
+    }
+    alias screenY screenTop;
+
+    /** Returns the scrollbars object, whose visibility can be toggled in the window. */
+    Scrollbars scrollbars()
+    {
+        return _scrollbars;
+    }
+
+    /** Returns the number of pixels that the document has already been scrolled horizontally. */
+    int scrollX()
+    {
+        return _scrollX;
+    }
+
+    /** Returns the number of pixels that the document has already been scrolled vertically. */
+    int scrollY()
+    {
+        return _scrollY;
+    }
+
+    /** Returns an object reference to the window object itself. */
+    WindowProxy self()
+    {
+        return new WindowProxy( this );
+    }
+
+    /** Returns a reference to the session storage object used to store data that may only be accessed by the origin that created it. */
+    Storage sessionStorage()
+    {
+        return _sessionStorage;
+    }
+
+    /** Returns a SpeechSynthesis object, which is the entry point into using Web Speech API speech synthesis functionality. */
+    SpeechSynthesis speechSynthesis()
+    {
+        return new SpeechSynthesis();
+    }
+
+    /** Returns the statusbar object, whose visibility can be toggled in the window. */
+    Statusbar statusbar()
+    {
+        return _statusbar;
+    }
+
+    /** Returns the toolbar object, whose visibility can be toggled in the window. */
+    Toolbar toolbar()
+    {
+        return _toolbar;
+    }
+
+    /** Returns a reference to the topmost window in the window hierarchy. This property is read only. */
+    Window top()
+    {
+        auto win = this;
+
+        while ( win.parent !is null )
+        {
+            win = win.parent;
+        }
+
+        return win;
+    }
+
+    /** Returns a VisualViewport object which represents the visual viewport for a given window. */
+    VisualViewport visualViewport()
+    {
+        return _visualViewport;
+    }
+
+    /** Returns a reference to the current window. */
+    Window window()
+    {
+        return this;
+    }
+
+    /** window[0], window[1], etc. */
+    Window opIndex( size_t i )
+    {
+        return frames[ i ];
+    }
+
+    /** Returns the CacheStorage object associated with the current context. This object enables functionality such as storing assets for offline use, and generating custom responses to requests. */
+    CacheStorage caches()
+    {
+        return _caches;
+    }
+
+    /** Provides a mechanism for applications to asynchronously access capabilities of indexed databases; returns an IDBFactory object. */
+    IDBFactory indexedDB()
+    {
+        return new IDBFactory();
+    }
+
+    /** Returns a boolean indicating whether the current context is secure (true) or not (false). */
+    bool isSecureContext()
+    {
+        return _isSecureContext;
+    }
+
+    /** Returns the global object's origin, serialized as a string. (This does not yet appear to be implemented in any browser.) */
+    string origin()
+    {
+        return _origin;
+    }
+
+    //
+    /** Displays an alert dialog. */
+    void alert( string message )
+    {
+        //
+    }
+
+    /** Sets focus away from the window. */
+    void blur()
+    {
+        //
+    }
+
+    /** Enables you to cancel a callback previously scheduled with Window.requestAnimationFrame. */
+    void cancelAnimationFrame( int requestID )
+    {
+        //
+    }
+
+    /** Enables you to cancel a callback previously scheduled with Window.requestIdleCallback. */
+    void cancelIdleCallback( IdleCallback handle )
+    {
+        //
+    }
+
+    /** Cancels the repeated execution set using setImmediate. */
+    void clearImmediate( int immediateID  )
+    {
+        //
+    }
+
+    /** Closes the current window. */
+    void close()
+    {
+        //
+    }
+
+    /** Displays a dialog with a message that the user needs to respond to. */
+    bool confirm( string message )
+    {
+        return false;
+    }
+
+    /** Searches for a given string in a window. */
+    bool find( string aString, bool aCaseSensitive, bool aBackwards, bool aWrapAround, 
+               bool aWholeWord, bool aSearchInFrames, bool aShowDialog )
+    {
+        retrn false;
+    }
+
+    /** Sets focus on the current window. */
+    void focus()
+    {
+        //
+    }
+
+    /** Gets computed style for the specified element. Computed style indicates the computed values of all CSS properties of the element. */
+    ComputedStyle getComputedStyle( Element element, string pseudoElt )
+    {
+        return ComputedStyle();
+    }
+    ComputedStyle getComputedStyle( Element element )
+    {
+        return ComputedStyle();
+    }
+
+    /** Returns the selection object representing the selected item(s). */
+    Selection getSelection()
+    {
+        return _selection;
+    }
+
+    /** Returns a MediaQueryList object representing the specified media query string. */
+    MediaQueryList matchMedia( string mediaQueryString )
+    {
+        return new MediaQueryList();
+    }
+
+    /** Maximize window */
+    void maximize()
+    {
+        //
+    }
+
+    /** Minimizes the window. */
+    void minimize()
+    {
+        //
+    }
+
+    /** Moves the current window by a specified amount. */
+    void moveBy( int deltaX, int deltaY )
+    {
+        //
+    }
+
+    /** Moves the window to the specified coordinates. */
+    void moveTo( int x, int y )
+    {
+        //
+    }
+
+    /** Opens a new window. */
+    Window open( string url, string windowName, string windowFeatures )
+    {
+        return new Window();
+    }
+    Window open( string url, string windowName )
+    {
+        return new Window();
+    }
+
+    /** Provides a secure means for one window to send a string of data to another window, which need not be within the same domain as the first. */
+    void postMessage( WindowMessage message, string targetOrigin, Transferable transfer )
+    {
+        //
+    }
+    void postMessage( WindowMessage message, string targetOrigin )
+    {
+        //
+    }
+
+    /** Opens the Print Dialog to print the current document. */
+    void print()
+    {
+        //
+    }
+
+    /** Returns the text entered by the user in a prompt dialog. */
+    string prompt( string message, string  default )
+    {
+        //
+    }
+
+    /** Tells the browser that an animation is in progress, requesting that the browser schedule a repaint of the window for the next animation frame. */
+    long requestAnimationFrame( void function( DOMHighResTimeStamp timestamp ) callback )
+    {
+        //
+    }
+
+    /** Enables the scheduling of tasks during a browser's idle periods. */
+    void* requestIdleCallback( void function( IdleDeadline idleDeadline ) callback, bool timeout )
+    {
+        //
+    }
+
+    /** Resizes the current window by a certain amount. */
+    void resizeBy( int xDelta, int yDelta )
+    {
+        //
+    }
+
+    /** Dynamically resizes window. */
+    void resizeTo(width, height)
+    {
+        //
+    }
+
+    /** Scrolls the window to a particular place in the document. */
+    void scroll( int x_coord, int y_coord )
+    {
+        //
+    }
+    void scroll( ScrollToOptions options )
+    {
+        //
+    }
+
+    /** Scrolls to a particular set of coordinates in the document. */
+    void scrollBy( int xDelta, int yDelta )
+    {
+        //
+    }
+    void scrollBy( ScrollToOptions options )
+    {
+        //
+    }
+
+    void scrollTo( int xDelta, int yDelta )
+    {
+        //
+    }
+    void scrollTo( ScrollToOptions options )
+    {
+        //
+    }
+
+    /** Executes a function after the browser has finished other heavy tasks */
+    int setImmediate( void function() func )
+    {
+        int immediateID;
+        return immediateID;
+    }
+    int setImmediate( ARGS... )( void function(), ARGS args )
+    {
+        int immediateID;
+        return immediateID;
+    }
+
+    /** Shows a file picker that allows a user to select a file or multiple files. */
+    FileSystemHandle[] showOpenFilePicker()
+    {
+        FileSystemHandle h;
+        FileSystemHandle[] handles;
+        return handles;
+    }
+    FileSystemHandle[] showOpenFilePicker( ShowOpenFilePickerOptions options )
+    {
+        FileSystemHandle h;
+        FileSystemHandle[] handles;
+        return handles;
+    }
+
+    /** Shows a file picker that allows a user to save a file. */
+    FileSystemFileHandle showSaveFilePicker()
+    {
+        FileSystemFileHandle h;
+        return h;
+    }
+    FileSystemFileHandle showSaveFilePicker( SaveFileOptions options )
+    {
+        FileSystemFileHandle h;
+        return h;
+    }
+
+    /** Displays a directory picker which allows the user to select a directory. */
+    FileSystemDirectoryHandle showDirectoryPicker()
+    {
+        FileSystemDirectoryHandle h;
+        return h;
+    }
+
+    /** This method stops window loading. */
+    void stop()
+    {
+        //
+    }
+
+    // WindowOrWorkerGlobalScope
+    /** Decodes a string of data which has been encoded using base-64 encoding. */
+    ubyte[] atob( const(char)[] encodedData )
+    {
+        import std.base4;
+        return Base64.decode( encodedData );
+    }
+
+    /** Creates a base-64 encoded ASCII string from a string of binary data. */
+    const(char)[]  btoa( ubyte[] stringToEncode )
+    {
+        import std.base4;
+        return Base64.encode( stringToEncode );
+    }
+
+    /** Cancels the repeated execution set using WindowOrWorkerGlobalScope.setInterval(). */
+    void clearInterval( int intervalID )
+    {
+        //
+    }
+
+    /** Cancels the delayed execution set using WindowOrWorkerGlobalScope.setTimeout(). */
+    void clearTimeout( int timeoutID )
+    {
+        //
+    }
+
+    /** Accepts a variety of different image sources, and returns a Promise which resolves to an ImageBitmap. Optionally the source is cropped to the rectangle of pixels originating at (sx, sy) with width sw, and height sh. */
+    Promise createImageBitmap( Element image )
+    {
+        void function( ImageBitmap imageBitmap ) resolve;
+        void function( string reason )           reject;
+        return new Promise( resolve, reject );
+    }
+    Promise createImageBitmap( Element image, CreateImageBitmapOptions options )
+    {
+        void function( ImageBitmap imageBitmap ) resolve;
+        void function( string reason )           reject;
+        return new Promise( resolve, reject );
+    }
+    Promise createImageBitmap( Element image, int sx, int sy, int sw, int sh )
+    {
+        void function( ImageBitmap imageBitmap ) resolve;
+        void function( string reason )           reject;
+        return new Promise( resolve, reject );
+    }
+    Promise createImageBitmap( Element image, int sx, int sy, int sw, int sh, CreateImageBitmapOptions options )
+    {
+        void function( ImageBitmap imageBitmap ) resolve;
+        void function( string reason )           reject;
+        return new Promise( resolve, reject );
+    }
+
+    /** Starts the process of fetching a resource from the network. */
+    Promise fetch( string resource )
+    {
+        void function( Request request ) resolve;
+        void function( string reason )   reject;
+        return new Promise( resolve, reject );
+    }
+    Promise fetch( string resource, FetchOptions init )
+    {
+        void function( Request request ) resolve;
+        void function( string reason )   reject;
+        return new Promise( resolve, reject );
+    }
+    Promise fetch( Request resource )
+    {
+        void function( Request request ) resolve;
+        void function( string reason )   reject;
+        return new Promise( resolve, reject );
+    }
+    Promise fetch( Request resource, FetchOptions init )
+    {
+        void function( Request request ) resolve;
+        void function( string reason )   reject;
+        return new Promise( resolve, reject );
+    }
+
+    /** Schedules a function to execute every time a given number of milliseconds elapses.  */
+    int setInterval( void function() )
+    {
+        int intervalID;
+        return intervalID;
+    }
+    int setInterval( ARGS... )( void function(), ARGS args )
+    {
+        int intervalID;
+        return intervalID;
+    }
+    int setInterval( void function(), long delay )
+    {
+        int intervalID;
+        return intervalID;
+    }
+    int setInterval( ARGS... )( void function(), long delay, ARGS args )
+    {
+        int intervalID;
+        return intervalID;
+    }
+    int setInterval( string CODE )( long delay )
+    {
+        mixin CODE;
+        int intervalID;
+        return intervalID;
+    }
+
+    /** Schedules a function to execute in a given amount of time. */
+    int setTimeout( void function() )
+    {
+        int timeoutID;
+        return timeoutID;
+    }
+    int setTimeout( ARGS... )( void function(), ARGS args )
+    {
+        int timeoutID;
+        return timeoutID;
+    }
+    int setTimeout( void function(), long delay )
+    {
+        int timeoutID;
+        return timeoutID;
+    }
+    int setTimeout( ARGS... )( void function(), long delay, ARGS args )
+    {
+        int timeoutID;
+        return timeoutID;
+    }
+    int setTimeout( string CODE )( long delay )
+    {
+        mixin CODE;
+        int timeoutID;
+        return timeoutID;
+    }
+
+    // Event handlers
+    EventHandler!"onappinstalled"();        // Called when the page is installed as a webapp. See appinstalled event.
+    EventHandler!"onbeforeinstallprompt"(); // An event handler property dispatched before a user is prompted to save a web site to a home screen on mobile.
+    EventHandler!"ondevicemotion"();        // Called if accelerometer detects a change (For mobile devices)
+    ondeviceorientation         // Called when the orientation is changed (For mobile devices)
+    ongamepadconnected          // Represents an event handler that will run when a gamepad is connected (when the gamepadconnected event fires).
+    ongamepaddisconnected       // Represents an event handler that will run when a gamepad is disconnected (when the gamepaddisconnected event fires).
+    onmozbeforepaint            // An event handler property for the MozBeforePaint event, which is sent before repainting the window if the event has been requested by a call to the window.requestAnimationFrame method.
+    onpaint                     // An event handler property for paint events on the window.
+    onrejectionhandled          // An event handler for handled Promise rejection events.
+    onvrdisplayconnect          // Represents an event handler that will run when a compatible VR device has been connected to the computer (when the vrdisplayconnected event fires).
+    onvrdisplaydisconnect       // Represents an event handler that will run when a compatible VR device has been disconnected from the computer (when the vrdisplaydisconnected event fires).
+    onvrdisplayactivate         // Represents an event handler that will run when a display is able to be presented to (when the vrdisplayactivate event fires), for example if an HMD has been moved to bring it out of standby, or woken up by being put on.
+    onvrdisplaydeactivate       // Represents an event handler that will run when a display can no longer be presented to (when the vrdisplaydeactivate event fires), for example if an HMD has gone into standby or sleep mode due to a period of inactivity.
+    onvrdisplayblur             // Represents an event handler that will run when presentation to a display has been paused for some reason by the browser, OS, or VR hardware (when the vrdisplayblur event fires) — for example, while the user is interacting with a system menu or browser, to prevent tracking or loss of experience.
+    onvrdisplayfocus            // Represents an event handler that will run when presentation to a display has resumed after being blurred (when the vrdisplayfocus event fires).
+    onvrdisplaypresentchange    // represents an event handler that will run when the presenting state of a VR device changes — i.e. goes from presenting to not presenting, or vice versa (when the vrdisplaypresentchange event fires).
+
+    onabort                     // Called when the loading of a resource has been aborted, such as by a user canceling the load while it is still in progress
+    onafterprint                // Called when the print dialog box is closed. See afterprint event.
+    
+
+protected:
+    void[]            _arr;
+    size_t            _pos;
+    ScrollRestoration _scrollRestoration;
+    LayoutViewport    _layoutViewport;
+    bool              _isSecureContext;
+    Location          _location;
+    Locationbar       _locationbar;
+    Storage           _localStorage;
+    string            _name;
+    Navigator         _navigator;
+    Window            _opener;
+    Window            _parent;
+    Performance       _performance;
+    Personalbar       _personalbar;
+    Screen            _screen;
+    Scrollbars        _scrollbars;
+    int               _scrollX;
+    int               _scrollY;
+    Storage           _sessionStorage;
+    Statusbar         _statusbar;
+    Toolbar           _toolbar;
+    VisualViewport    _visualViewport;
+    CacheStorage      _caches;
+    bool              _isSecureContext;
+    string            _origin;
+    Selection         _selection;
+}
+
+/** */
+struct FetchOptions
 {
     //
+}
+
+/** */
+class Request
+{
+    //
+}
+
+/** */
+struct CreateImageBitmapOptions
+{
+    ImageOrientation     imageOrientation;
+    PremultiplyAlpha     premultiplyAlpha;
+    ColorSpaceConversion colorSpaceConversion;
+    long                 resizeWidth;
+    long                 resizeHeight;
+    ResizeQuality        resizeQuality;
+}
+
+/** */
+enum ImageOrientation
+{
+    none,
+    flipY
+}
+
+/** */
+enum PremultiplyAlpha
+{
+    default,
+    none,
+    premultiply,
+}
+
+/** */
+enum ColorSpaceConversion
+{
+    default,
+    none
+}
+
+/** */
+enum ResizeQuality
+{
+    pixelated,
+    low,
+    medium,
+    high
+}
+
+/** */
+class ImageBitmap
+{
+    /** Is an unsigned long representing the height, in CSS pixels, of the ImageData. */
+    int height;
+
+    /** Is an unsigned long representing the width, in CSS pixels, of the ImageData. */
+    int width;
+
+    /** Disposes of all graphical resources associated with an ImageBitmap. */
+    void close()
+    {
+        //
+    }
+}
+
+/** */
+struct FileSystemDirectoryHandle
+{
+    //
+}
+
+/** */
+struct SaveFileOptions
+{
+    bool           excludeAcceptAllOption;
+    OpenFileType[] types;    
+}
+
+/** */
+struct ShowOpenFilePickerOptions
+{
+    bool           multiple;
+    bool           excludeAcceptAllOption;
+    OpenFileType[] types;
+}
+
+/** */
+struct OpenFileType
+{
+    string           description; // 'Images',
+    string[ string ] accept;      // 'image/*': ['.png', '.gif', '.jpeg', '.jpg']
+}
+
+/** */
+class FileSystemFileHandle
+{
+    /** Returns a file object representing the state on disk of the entry represented by the handle. */
+    File getFile()
+    {
+        return FileObject;
+    }
+
+    /** Creates a FileSystemWritableFileStream that can be used to write to a file. */
+    Promise createWritable()
+    {
+        // FileSystemWritableFileStream 
+        return new Promise();
+    }
+}
+
+/** */
+class FileSystemWritableFileStream 
+{
+    //
+}
+
+/** */
+class File
+{
+    //
+}
+
+/** */
+class IdleDeadline
+{
+    //
+}
+
+/** */
+alias ulong DOMHighResTimeStamp;
+
+/** */
+struct WindowMessage
+{
+    //
+}
+
+/** */
+class Transferable
+{
+    //
+}
+
+/** */
+class MediaQueryList
+{
+    //
+}
+
+/** */
+class Selection
+{
+    //
+}
+
+/** */
+struct ComputedStyle
+{
+    //
+}
+
+/** */
+alias void function() IdleCallback;
+
+/** */
+class IDBFactory
+{
+    //
+}
+
+/** */
+class CacheStorage
+{
+    //
+}
+
+/** */
+class VisualViewport
+{
+    //
+}
+
+/** */
+class Toolbar
+{
+    //
+}
+
+/** */
+class Statusbar
+{
+    //
+}
+
+/** */
+class WindowProxy
+{
+    //
+}
+
+/** */
+class Screen
+{
+    //
+}
+
+/** */
+class Performance
+{
+    //
+}
+
+/** */
+class Navigator
+{
+    //
+}
+
+/** */
+class Menubar
+{
+    //
+}
+
+/** */
+class Storage
+{
+    /** Returns an integer representing the number of data items stored in the Storage object. */
+    size_t length()
+    {
+        //
+    }
+
+    /** When passed a number n, this method will return the name of the nth key in the storage. */
+    string  key( size_t index )
+    {
+        //
+    }
+
+    /** When passed a key name, will return that key's value. */
+    string getItem( string keyName )
+    {
+        //
+    }
+
+    /** When passed a key name and value, will add that key to the storage, or update that key's value if it already exists. */
+    void setItem( string keyName, string keyValue )
+    {
+        //
+    }
+
+    /** When passed a key name, will remove that key from the storage. */
+    void removeItem()
+    {
+        //
+    }
+
+    /** When invoked, will empty all keys out of the storage. */
+    void clear()
+    {
+        //
+    }
+}
+
+/** */
+class Locationbar
+{
+    //
+}
+
+/** */
+class HistoryState
+{
+    //
+}
+
+/** */
+enum ScrollRestoration
+{
+    auto,
+    manual
+}
+
+/** */
+class XMLSerializer
+{
+    /** Returns the serialized subtree of a string. */
+    string serializeToString( Node rootNode )
+    {
+        return "";
+    }
+}
+
+/** */
+class Worker
+{
+    this( string aURL, WorkerOptions options )
+    {
+        //
+    }
+}
+
+/** */
+struct WorkerOptions
+{
+    //
+}
+
+/** */
+class StaticRange
+{
+    this( StaticRangeInit rangeSpec )
+    {
+        //
+    }
+}
+
+/** */
+struct StaticRangeInit
+{
+    //
+}
+
+/** */
+class HTMLImageElement : HTMLElement
+{
+    //
+}
+
+/** */
+class HTMLOptionElement : HTMLElement
+{
+    //
+}
+
+/** */
+class HTMLElement : Element
+{
+    //
+}
+
+/** */
+class DOMParser
+{
+    /** Parses a string using either the HTML parser or the XML parser, returning an HTMLDocument or XMLDocument. */
+    Document parseFromString( string s, string mimeType="text/html" )
+    {
+        // text/html
+        // text/xml
+        // application/xml
+        // application/xhtml+xml
+        // image/svg+xml
+        return new Document();
+    }
 }
 
 /** */
@@ -4719,16 +5944,94 @@ private:
 }
 
 /** */
+class CustomElementRegistry
+{
+    /** Defines a new custom element. */
+    void define( string name, CustomElementConstructor constructor, CustomElementOptios options )
+    {
+        //
+    }
+
+    /** Returns the constructor for the named custom element, or undefined if the custom element is not defined. */
+    CustomElementConstructor get( string name )
+    {
+        return _constructors.get( name, null );
+    }
+
+    /** Upgrades a custom element directly, even before it is connected to its shadow root. */
+    void upgrade( root )
+    {
+        //
+    }
+
+    /** Returns an empty promise that resolves when a custom element becomes defined with the given name. If such a custom element is already defined, the returned promise is immediately fulfilled. */
+    Promise whenDefined( string name )
+    {
+        return new Promise( ( success, failure ) {} );
+    }
+
+protected:
+    CustomElementConstructor[ name ] _constructors;
+}
+
+/** */
+alias void function() CustomElementConstructor;
+
+/** */
+struct CustomElementOptios
+{
+    string extends; // extends: String specifying the name of a built-in element to extend. Used to create a customized built-in element.
+}
+
+/** */
 alias void function() PromiseCallback;
 alias void function( PromiseCallback successCallback, PromiseCallback failureCallback ) PromiseExecutor;
 
 
+/** */
+class Crypto
+{
+    /** Returns a SubtleCrypto object providing access to common cryptographic primitives, like hashing, signing, encryption, or decryption. */
+    SubtleCrypto subtle()
+    {
+        return new SubtleCrypto();
+    }
+
+    /** Fills the passed TypedArray with cryptographically sound random values. */
+    T[] getRandomValues( T )( T[] arr )
+    {
+        import std.random : Random;
+        import std.random : uniform;
+
+        auto rnd = Random( unpredictableSeed );
+
+        foreach ( ref a; arr )
+        {
+            a = uniform( 0, T.max, rnd ).to!T;;
+        }
+
+        return arr;
+    }
+
+}
+
+/** */ 
+class SubtleCrypto
+{
+    //
+}
 
 /** */
-Viewport viewport;
+CustomElementRegistry customElementRegistry;
+Viewport              viewport;
+Window                window;
+Crypto                crypto;
 
 static
 this()
 {
-    viewport = new Viewport();
+    customElementRegistry = new CustomElementRegistry();
+    viewport              = new Viewport();
+    window                = new Window();
+    crypto                = new Crypto();
 }
