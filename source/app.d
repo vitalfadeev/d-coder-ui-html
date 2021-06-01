@@ -106,7 +106,7 @@ class Document : Node, IDocument
     {
         return _activeElement;
     }
-    
+
     /** Returns the <body> or <frameset> node of the current document. */
     Element body()
     {
@@ -294,7 +294,7 @@ class Document : Node, IDocument
         for ( auto node = _firstChild; node !is null; node = node.nextSibling )
         {
             if ( node.nodeType == ELEMENT_NODE )
-            if ( ( cast ( Element ) node ).tagName == "area"  || 
+            if ( ( cast ( Element ) node ).tagName == "area"  ||
                  ( cast ( Element ) node ).tagName == "a" )
             {
                 elements ~= cast ( Element ) node;
@@ -387,7 +387,7 @@ class Document : Node, IDocument
     }
 
     // Event handlers
-    EventHandler onfullscreenchange;   // Is an EventHandler representing the code to be called when the fullscreenchange event is raised. 
+    EventHandler onfullscreenchange;   // Is an EventHandler representing the code to be called when the fullscreenchange event is raised.
     EventHandler onfullscreenerror;    // Is an EventHandler representing the code to be called when the fullscreenerror event is raised.
     EventHandler onreadystatechange;   // Represents the event handling code for the readystatechange event.
     EventHandler onselectionchange;    // Is an EventHandler representing the code to be called when the selectionchange event is raised.
@@ -540,7 +540,7 @@ protected:
 /** */
 class XPathNSResolver
 {
-    string resolve( Node node, string ns ) 
+    string resolve( Node node, string ns )
     {
         return "";
     }
@@ -563,7 +563,7 @@ enum XPathResultType
 }
 
 /** */
-class XPathResult 
+class XPathResult
 {
     //
 }
@@ -772,7 +772,7 @@ class HTMLDocument : Document
         transitionrun,      // Fired when a CSS transition is first created.
         transitionstart,    // Fired when a CSS transition has actually started.
     }
-    mixin EventMixin!"scroll"; 
+    mixin EventMixin!"scroll";
     mixin EventMixin!"visibilitychange";
     mixin EventMixin!"wheel";
     // Animation events
@@ -971,7 +971,7 @@ class Window : EventTarget
     }
 
     /** Used for creating an HTMLImageElement. */
-    static 
+    static
     HTMLImageElement Image( int width, int height )
     {
         return new HTMLImageElement();
@@ -1046,7 +1046,7 @@ class Window : EventTarget
         for ( auto node = _firstChild; node !is null; node = node.nextSibling )
         {
             if ( node.nodeType == ELEMENT_NODE )
-            if ( 
+            if (
                 ( cast ( Element ) node ).tagName == "iframe" ||
                 ( cast ( Element ) node ).tagName == "object" ||
                 ( cast ( Element ) node ).tagName == "embed"
@@ -1067,7 +1067,7 @@ class Window : EventTarget
         for ( auto node = _firstChild; node !is null; node = node.nextSibling )
         {
             if ( node.nodeType == ELEMENT_NODE )
-            if ( 
+            if (
                 ( cast ( Element ) node ).tagName == "iframe" ||
                 ( cast ( Element ) node ).tagName == "frame"
                )
@@ -1187,7 +1187,7 @@ class History
         for ( auto node = _firstChild; node !is null; node = node.nextSibling )
         {
             if ( node.nodeType == ELEMENT_NODE )
-            if ( 
+            if (
                 ( cast ( Element ) node ).tagName == "iframe" ||
                 ( cast ( Element ) node ).tagName == "frame"
                )
@@ -1452,7 +1452,7 @@ class History
     }
 
     /** Searches for a given string in a window. */
-    bool find( string aString, bool aCaseSensitive, bool aBackwards, bool aWrapAround, 
+    bool find( string aString, bool aCaseSensitive, bool aBackwards, bool aWrapAround,
                bool aWholeWord, bool aSearchInFrames, bool aShowDialog )
     {
         retrn false;
@@ -1782,26 +1782,132 @@ class History
     }
 
     // Event handlers
-    EventHandler!"onappinstalled"();        // Called when the page is installed as a webapp. See appinstalled event.
-    EventHandler!"onbeforeinstallprompt"(); // An event handler property dispatched before a user is prompted to save a web site to a home screen on mobile.
-    EventHandler!"ondevicemotion"();        // Called if accelerometer detects a change (For mobile devices)
-    ondeviceorientation         // Called when the orientation is changed (For mobile devices)
-    ongamepadconnected          // Represents an event handler that will run when a gamepad is connected (when the gamepadconnected event fires).
-    ongamepaddisconnected       // Represents an event handler that will run when a gamepad is disconnected (when the gamepaddisconnected event fires).
-    onmozbeforepaint            // An event handler property for the MozBeforePaint event, which is sent before repainting the window if the event has been requested by a call to the window.requestAnimationFrame method.
-    onpaint                     // An event handler property for paint events on the window.
-    onrejectionhandled          // An event handler for handled Promise rejection events.
-    onvrdisplayconnect          // Represents an event handler that will run when a compatible VR device has been connected to the computer (when the vrdisplayconnected event fires).
-    onvrdisplaydisconnect       // Represents an event handler that will run when a compatible VR device has been disconnected from the computer (when the vrdisplaydisconnected event fires).
-    onvrdisplayactivate         // Represents an event handler that will run when a display is able to be presented to (when the vrdisplayactivate event fires), for example if an HMD has been moved to bring it out of standby, or woken up by being put on.
-    onvrdisplaydeactivate       // Represents an event handler that will run when a display can no longer be presented to (when the vrdisplaydeactivate event fires), for example if an HMD has gone into standby or sleep mode due to a period of inactivity.
-    onvrdisplayblur             // Represents an event handler that will run when presentation to a display has been paused for some reason by the browser, OS, or VR hardware (when the vrdisplayblur event fires) — for example, while the user is interacting with a system menu or browser, to prevent tracking or loss of experience.
-    onvrdisplayfocus            // Represents an event handler that will run when presentation to a display has resumed after being blurred (when the vrdisplayfocus event fires).
-    onvrdisplaypresentchange    // represents an event handler that will run when the presenting state of a VR device changes — i.e. goes from presenting to not presenting, or vice versa (when the vrdisplaypresentchange event fires).
+	EventHandler!"onappinstalled"();          // Called when the page is installed as a webapp. See appinstalled event.
+    EventHandler!"onbeforeinstallprompt"();   // An event handler property dispatched before a user is prompted to save a web site to a home screen on mobile.
+    EventHandler!"ondevicemotion"();          // Called if accelerometer detects a change (For mobile devices)
+    EventHandler!"ondeviceorientation";       // Called when the orientation is changed (For mobile devices)
+    EventHandler!"ongamepadconnected";        // Represents an event handler that will run when a gamepad is connected (when the gamepadconnected event fires).
+    EventHandler!"ongamepaddisconnected";     // Represents an event handler that will run when a gamepad is disconnected (when the gamepaddisconnected event fires).
+    EventHandler!"onmozbeforepaint";          // An event handler property for the MozBeforePaint event, which is sent before repainting the window if the event has been requested by a call to the window.requestAnimationFrame method.
+    EventHandler!"onpaint";                   // An event handler property for paint events on the window.
+    EventHandler!"onrejectionhandled";        // An event handler for handled Promise rejection events.
+    EventHandler!"onvrdisplayconnect";        // Represents an event handler that will run when a compatible VR device has been connected to the computer (when the vrdisplayconnected event fires).
+    EventHandler!"onvrdisplaydisconnect";     // Represents an event handler that will run when a compatible VR device has been disconnected from the computer (when the vrdisplaydisconnected event fires).
+    EventHandler!"onvrdisplayactivate";       // Represents an event handler that will run when a display is able to be presented to (when the vrdisplayactivate event fires), for example if an HMD has been moved to bring it out of standby, or woken up by being put on.
+    EventHandler!"onvrdisplaydeactivate";     // Represents an event handler that will run when a display can no longer be presented to (when the vrdisplaydeactivate event fires), for example if an HMD has gone into standby or sleep mode due to a period of inactivity.
+    EventHandler!"onvrdisplayblur";           // Represents an event handler that will run when presentation to a display has been paused for some reason by the browser, OS, or VR hardware (when the vrdisplayblur event fires) — for example, while the user is interacting with a system menu or browser, to prevent tracking or loss of experience.
+	EventHandler!"onabort";                   // Called when the loading of a resource has been aborted, such as by a user canceling the load while it is still in progress
+	EventHandler!"onafterprint";              // Called when the print dialog box is closed. See afterprint event.
+	EventHandler!"onbeforeprint";             // Called when the print dialog box is opened. See beforeprint event.
+	EventHandler!"onbeforeunload";            // An event handler property for before-unload events on the window.
+	EventHandler!"onblur";                    // Called after the window loses focus, such as due to a popup.
+	EventHandler!"onchange";                  // An event handler property for change events on the window.
+	EventHandler!"onclick";                   // Called after the ANY mouse button is pressed & released
+	EventHandler!"ondblclick";                // Called when a double click is made with ANY mouse button.
+	EventHandler!"onclose";                   // Called after the window is closed
+	EventHandler!"oncontextmenu";             // Called when the RIGHT mouse button is pressed
+	EventHandler!"onerror";                   // Called when a resource fails to load OR when an error occurs at runtime. See error event.
+	EventHandler!"onfocus";                   // Called after the window receives or regains focus. See focus events.
+	EventHandler!"onhashchange";              // An event handler property for hashchange events on the window; called when the part of the URL after the hash mark ("#") changes.
+	EventHandler!"oninput";                   // Called when the value of an <input> element changes
+	EventHandler!"onkeydown";                 // Called when you begin pressing ANY key. See keydown event.
+	EventHandler!"onkeypress";                // Called when a key (except Shift, Fn, and CapsLock) is in pressed position. See keypress event.
+	EventHandler!"onkeyup";                   // Called when you finish releasing ANY key. See keyup event.
+	EventHandler!"onlanguagechange";          // An event handler property for languagechange events on the window.
+	EventHandler!"onload";                    // Called after all resources and the DOM are fully loaded. WILL NOT get called when the page is loaded from cache, such as with back button.
+	EventHandler!"onmessage";                 // Is an event handler representing the code to be called when the message event is raised.
+	EventHandler!"onmousedown";               // Called when ANY mouse button is pressed.
+	EventHandler!"onmousemove";               // Called continously when the mouse is moved inside the window.
+	EventHandler!"onmouseout";                // Called when the pointer leaves the window.
+	EventHandler!"onmouseover";               // Called when the pointer enters the window
+	EventHandler!"onmouseup";                 // Called when ANY mouse button is released
+	EventHandler!"onoffline";                 // Called when network connection is lost. See offline event.
+	EventHandler!"ononline";                  // Called when network connection is established. See online event.
+	EventHandler!"onpagehide";                // Called when the user navigates away from the page, before the onunload event. See pagehide event.
+	EventHandler!"onpageshow";                // Called after all resources and the DOM are fully loaded. See pageshow event.
+	EventHandler!"onpopstate";                // Called when a back button is pressed.
+	EventHandler!"onreset";                   // Called when a form is reset
+	EventHandler!"onresize";                  // Called continuously as you are resizing the window.
+	EventHandler!"onscroll";                  // Called when the scroll bar is moved via ANY means. If the resource fully fits in the window, then this event cannot be invoked
+	EventHandler!"onwheel";                   // Called when the mouse wheel is rotated around any axis
+	EventHandler!"onselect";                  // Called after text in an input field is selected
+	EventHandler!"onselectionchange";         // Is an event handler representing the code to be called when the selectionchange event is raised.
+	EventHandler!"onstorage";                 // Called when there is a change in session storage or local storage. See storage event
+	EventHandler!"onsubmit";                  // Called when a form is submitted
+	EventHandler!"onunhandledrejection";      // An event handler for unhandled Promise rejection events.
+	EventHandler!"onunload";                  // Called when the user navigates away from the page.
+    EventHandler!"onvrdisplayfocus";          // Represents an event handler that will run when presentation to a display has resumed after being blurred (when the vrdisplayfocus event fires).
+    EventHandler!"onvrdisplaypresentchange";  // represents an event handler that will run when the presenting state of a VR device changes — i.e. goes from presenting to not presenting, or vice versa (when the vrdisplaypresentchange event fires).
 
-    onabort                     // Called when the loading of a resource has been aborted, such as by a user canceling the load while it is still in progress
-    onafterprint                // Called when the print dialog box is closed. See afterprint event.
-    
+
+    // Events
+    enum Events
+    {
+        error, 				// Fired when a resource failed to load, or can't be used. For example, if a script has an execution error or an image can't be found or is invalid.
+		languagechange, 	// Fired at the global scope object when the user's preferred language changes.
+		devicemotion,		// Fired at a regular interval, indicating the amount of physical force of acceleration the device is receiving and the rate of rotation, if available.
+        deviceorientation,  // Fired when fresh data is available from the magnetometer orientation sensor about the current orientation of the device as compared to the Earth coordinate frame.
+        resize,             // Fired when the window has been resized.
+        storage,            // Fired when a storage area (localStorage or sessionStorage) has been modified in the context of another document.
+        // Animation events
+        animationcancel,    // Fired when an animation unexpectedly aborts.
+        animationend,       // Fired when an animation has completed normally.
+        animationiteration, // Fired when an animation iteration has completed.
+        animationstart,     // Fired when an animation starts.
+        // Clipboard events
+        copy,               // Fired when the user initiates a copy action through the browser's user interface.
+        cut,                // Fired when the user initiates a cut action through the browser's user interface.
+        paste,              // Fired when the user initiates a paste action through the browser's user interface.
+        // Connection events
+        offline,            // Fired when the browser has lost access to the network and the value of navigator.onLine has switched to false.
+        online,             // Fired when the browser has gained access to the network and the value of navigator.onLine has switched to true.
+        // Focus events
+        blur,               // Fired when an element has lost focus.
+        focus,              // Fired when an element has gained focus.
+        // Gamepad events
+        gamepadconnected,   // Fired when the browser detects that a gamepad has been connected or the first time a button/axis of the gamepad is used.
+        gamepaddisconnected, // Fired when the browser detects that a gamepad has been disconnected.
+        // History events
+        hashchange,         // Fired when the fragment identifier of the URL has changed (the part of the URL beginning with and following the # symbol).
+        pagehide,           // Sent when the browser hides the current document while in the process of switching to displaying in its place a different document from the session's history. This happens, for example, when the user clicks the Back button or when they click the Forward button to move ahead in session history.
+        pageshow,           // Sent when the browser makes the document visible due to navigation tasks, including not only when the page is first loaded, but also situations such as the user navigating back to the page after having navigated to another within the same tab.
+        popstate,           // Fired when the active history entry changes.
+        // Load & unload events
+        beforeunload,       // Fired when the window, the document and its resources are about to be unloaded.
+        DOMContentLoaded,   // Fired when the document has been completely loaded and parsed, without waiting for stylesheets, images, and subframes to finish loading.
+        load,               // Fired when the whole page has loaded, including all dependent resources such as stylesheets images.
+        unload,             // Fired when the document or a child resource is being unloaded.
+        // Manifest events
+        appinstalled,       // Fired when the browser has successfully installed a page as an application.
+        beforeinstallprompt, // Fired when a user is about to be prompted to install a web application.
+        // Messaging events
+        message,            // Fired when the window receives a message, for example from a call to Window.postMessage() from another browsing context.
+        messageerror,       // Fired when a Window object receives a message that can't be deserialized.
+        // Print events
+        afterprint,         // Fired after the associated document has started printing or the print preview has been closed.
+        beforeprint,        // Fired when the associated document is about to be printed or previewed for printing.
+        // Promise rejection events
+        rejectionhandled,   // Sent every time a JavaScript Promise is rejected, regardless of whether or not there is a handler in place to catch the rejection.
+        nhandledrejection,  // Sent when a JavaScript Promise is rejected but there is no handler in place to catch the rejection.
+        // Transition events
+        transitioncancel,   // Fired when a CSS transition is canceled.
+        transitionend,      // Fired when a CSS transition has completed.
+        transitionrun,      // Fired when a CSS transition is first created.
+        transitionstart,    // Fired when a CSS transition has actually started.
+        // WebVR events
+        vrdisplayactivate,  // Fired when a VR display becomes available to be presented to, for example if an HMD has been moved to bring it out of standby, or woken up by being put on.
+        vrdisplayblur,      // Fired when presentation to a VR display has been paused for some reason by the browser, OS, or VR hardware.
+        vrdisplayconnect,   // Fired when a compatible VR display is connected to the computer.
+        vrdisplaydeactivate, // Fired when a VR display can no longer be presented to, for example if an HMD has gone into standby or sleep mode due to a period of inactivity.
+        vrdisplaydisconnect, // Fired when a compatible VR display is disconnected from the computer.
+        vrdisplayfocus,     // Fired when presentation to a VR display has resumed after being blurred.
+        vrdisplaypresentchange, // Fired when the presenting state of a VR display changes — i.e. goes from presenting to not presenting, or vice versa.
+        vrdisplaypointerrestricted, // Fired when the VR display's pointer input is restricted to consumption via a pointerlocked element.
+        vrdisplaypointerunrestricted, // Fired when the VR display's pointer input is no longer restricted to consumption via a pointerlocked element.
+
+    }
+
+
 
 protected:
     void[]            _arr;
@@ -1912,7 +2018,7 @@ struct FileSystemDirectoryHandle
 struct SaveFileOptions
 {
     bool           excludeAcceptAllOption;
-    OpenFileType[] types;    
+    OpenFileType[] types;
 }
 
 /** */
@@ -1942,13 +2048,13 @@ class FileSystemFileHandle
     /** Creates a FileSystemWritableFileStream that can be used to write to a file. */
     Promise createWritable()
     {
-        // FileSystemWritableFileStream 
+        // FileSystemWritableFileStream
         return new Promise();
     }
 }
 
 /** */
-class FileSystemWritableFileStream 
+class FileSystemWritableFileStream
 {
     //
 }
@@ -2390,7 +2496,7 @@ class FontFaceSet
     Promise!string load( string font )
     {
         // font: "italic bold 16px Roboto"
-        return 
+        return
             new Promise!string(
                 ( success, failure )
                 {
@@ -2400,7 +2506,7 @@ class FontFaceSet
     }
     Promise!string load( string font, string text )
     {
-        return 
+        return
             new Promise!string(
                 ( success, failure )
                 {
@@ -2644,7 +2750,7 @@ class Node : EventTarget, INode
         {
             _firstChild = childNode;
             _lastChild  = childNode;
-        } 
+        }
         else // firstChild !is null
         {
             childNode.previousSibling = _lastChild;
@@ -2714,7 +2820,7 @@ class Node : EventTarget, INode
         }
 
         // DOCUMENT_POSITION_PRECEDING
-        // DOCUMENT_POSITION_FOLLOWING        
+        // DOCUMENT_POSITION_FOLLOWING
         if ( bitmask == 0 )
         {
             foreach ( child; _parentNode.childNodes )
@@ -2738,7 +2844,7 @@ class Node : EventTarget, INode
         {
             //
         }
-        
+
         return bitmask;
     }
 
@@ -2761,7 +2867,7 @@ class Node : EventTarget, INode
     }
 
     /** Returns a list of the node's CSS boxes relative to another node. */
-    void getBoxQuads() 
+    void getBoxQuads()
     {
         assert( 0, "unsupported" );
     }
@@ -2815,7 +2921,7 @@ class Node : EventTarget, INode
             prev.nextSibling = newNode;
         }
 
-        // 
+        //
         if ( referenceNode is _firstChild )
         {
             _firstChild = newNode;
@@ -2854,7 +2960,7 @@ class Node : EventTarget, INode
                     }
                 }
                 // FAIL
-                attr_FAIL: 
+                attr_FAIL:
                     return false;
                 // OK
                 attr_OK:
@@ -3001,7 +3107,7 @@ string concatenate_textContent_of_every_child( Node node )
     import std.array : join;
 
     if ( ! node.childNodes.empty )
-    {    
+    {
         string[] ss;
         string s;
 
@@ -3013,7 +3119,7 @@ string concatenate_textContent_of_every_child( Node node )
             if ( child.nodeType == PROCESSING_INSTRUCTION_NODE )
                 continue;
             else
-            {            
+            {
                 s = child.textContent;
 
                 if ( ! s.empty )
@@ -3274,7 +3380,7 @@ class Element : Node, IElement
     string outerHTML()
     {
         auto attrsString = _attrsAsString;
-        
+
         if ( ! attrsString.empty  )
             return "<" ~ _tagName ~ " " ~ attrsString ~ "">" ~ innerHTML ~ "</" ~ _tagName ~ ">";
         else
@@ -3391,11 +3497,11 @@ class Element : Node, IElement
     }
 
     /** A shortcut method to create and run an animation on an element. Returns the created Animation object instance. */
-    Animation animate( Keyframe2[] keyframes, AnimateOptions options ) 
+    Animation animate( Keyframe2[] keyframes, AnimateOptions options )
     {
         return new Animation();
     }
-    Animation animate( Keyframe2 keyframe, AnimateOptions options ) 
+    Animation animate( Keyframe2 keyframe, AnimateOptions options )
     {
         return new Animation();
     }
@@ -3430,7 +3536,7 @@ class Element : Node, IElement
 
             static
             if ( is ( T == string ) )
-            {            
+            {
                 //auto e = createElement( s );
                 //appendChild( e );
             }
@@ -3450,7 +3556,7 @@ class Element : Node, IElement
     }
 
     /** Returns an array of Animation objects currently active on the element. */
-    Animation[] getAnimations() 
+    Animation[] getAnimations()
     {
         return _animations;
     }
@@ -3556,7 +3662,7 @@ class Element : Node, IElement
         final
         switch ( position )
         {
-            case InsertAdjacent.beforebegin: 
+            case InsertAdjacent.beforebegin:
                 return this.insertBefore( element, this );
 
             case InsertAdjacent.afterbegin:
@@ -3565,10 +3671,10 @@ class Element : Node, IElement
                 else
                     return this.appendChild( element );
 
-            case InsertAdjacent.beforeend: 
+            case InsertAdjacent.beforeend:
                 return this.appendChild( element );
 
-            case InsertAdjacent.afterend: 
+            case InsertAdjacent.afterend:
                 if ( this._nextSibling !is null )
                     return this.insertBefore( element, this._nextSibling );
                 else
@@ -3629,7 +3735,7 @@ class Element : Node, IElement
 
             static
             if ( is ( T == string ) )
-            {            
+            {
                 //auto e = createElement( s );
                 //insertBefore( node, _firstChild );
         }
@@ -3715,7 +3821,7 @@ class Element : Node, IElement
 
             static
             if ( is ( T == string ) )
-            {            
+            {
                 //auto e = createElement( s );
                 //appendChild( node );
             }
@@ -3787,7 +3893,7 @@ class Element : Node, IElement
     }
 
     /** Sets the node representation of the named attribute from the current node. */
-    Attr setAttributeNode( Attr attribute ) 
+    Attr setAttributeNode( Attr attribute )
     {
         return _attrs.setNamedItem( attribute );
     }
@@ -3824,10 +3930,10 @@ class Element : Node, IElement
     enum EventTypes
     {
         cancel,  // Fires on a <dialog> when the user instructs the browser that they wish to dismiss the current open dialog. For example, the browser might fire this event when the user presses the Esc key or clicks a "Close dialog" button which is part of the browser's UI.
-        error,   // Fired when a resource failed to load, or can't be used. For example, if a script has an execution error or an image can't be found or is invalid. 
+        error,   // Fired when a resource failed to load, or can't be used. For example, if a script has an execution error or an image can't be found or is invalid.
         scroll,  // Fired when the document view or an element has been scrolled.
         select,  // Fired when some text has been selected.
-        show,    // Fired when a contextmenu event was fired on/bubbled to an element that has a contextmenu attribute. 
+        show,    // Fired when a contextmenu event was fired on/bubbled to an element that has a contextmenu attribute.
         wheel,   // Fired when the user rotates a wheel button on a pointing device (typically a mouse).
         // Clipboard events
         copy,    // Fired when the user initiates a copy action through the browser's user interface.
@@ -3847,7 +3953,7 @@ class Element : Node, IElement
         fullscreenerror,  // Sent to an Element if an error occurs while attempting to switch it into or out of full-screen mode.
         // Keyboard events
         keydown,  // Fired when a key is pressed.
-        keypress, // Fired when a key that produces a character value is pressed down. 
+        keypress, // Fired when a key that produces a character value is pressed down.
         keyup,    // Fired when a key is released.
         // Mouse events
         auxclick,                  // Fired when a non-primary pointing device button (e.g., any mouse button other than the left button) has been pressed and released on an element.
@@ -3930,7 +4036,7 @@ protected:
     Animation[]              _animations;
     bool                     _pointerCapture;
     int                      _pointerId;
-      
+
     /** _attrs.getNamedItem( "class" ).value.split( ' ' ) */
     string[] _classes()
     {
@@ -3944,7 +4050,7 @@ protected:
         }
         else
         {
-            return []; 
+            return [];
         }
     }
 
@@ -3976,7 +4082,7 @@ protected:
 /** */
 mixin template EventMixin( string NAME )
 {
-    enum EventMixin = 
+    enum EventMixin =
     format!q{
         EventListener on%s()
         {
@@ -3987,7 +4093,7 @@ mixin template EventMixin( string NAME )
             //
         }
     }
-    ( 
+    (
         NAME,
         NAME,
     );
@@ -4004,18 +4110,18 @@ struct ScrollIntoViewOptions
 /** */
 enum VerticalAlignment
 {
-    start, 
-    center, 
-    end, 
+    start,
+    center,
+    end,
     nearest
 }
 
 /** */
 enum HorizontalAlignment
 {
-    start, 
-    center, 
-    end, 
+    start,
+    center,
+    end,
     nearest
 }
 
@@ -4135,14 +4241,14 @@ protected:
 class StylePropertyMap : StylePropertyMapReadOnly
 {
     void set( string property, CSSStyleValue[] values ... );
-    { 
+    {
         foreach ( value; values )
         {
             _map[ property ] = value;
         }
     }
-    void set( string property, string[] values ... ) 
-    { 
+    void set( string property, string[] values ... )
+    {
         foreach ( value; values )
         {
             _map[ property ] = CSSStyleValue.parse( property, value );
@@ -4150,14 +4256,14 @@ class StylePropertyMap : StylePropertyMapReadOnly
     }
 
     void append( string property, CSSStyleValue[] values ... )
-    { 
+    {
         foreach ( value; values )
         {
             _map[ property ] = value;
         }
     }
     void append( string property, string[] values ... )
-    { 
+    {
         foreach ( value; values )
         {
             _map[ property ] = CSSStyleValue.parse( property, value );
@@ -4165,7 +4271,7 @@ class StylePropertyMap : StylePropertyMapReadOnly
     }
 
     void delete( string property)
-    { 
+    {
         _map.remove( property );
     }
 
@@ -4181,13 +4287,13 @@ struct CSSStyleValue
     Value _value;
     alias _value this;
 
-    const 
-    string[] validCSSProperties = 
+    const
+    string[] validCSSProperties =
         [ // sorted
             "border", "borderLeft", "borderTop",
         ];
 
-    static 
+    static
     CSSStyleValue parse( string property, string cssText )
     {
         // 1. -- custom property
@@ -4209,7 +4315,7 @@ struct CSSStyleValue
         return CSSStyleValue();
     }
 
-    static 
+    static
     CSSStyleValue[] parseAll( string property, string cssText )
     {
         return [ CSSStyleValue() ];
@@ -4260,7 +4366,7 @@ struct AnimateOptions
     PlaybackDirection direction;      // Whether the animation runs forwards (normal), backwards (reverse), switches direction after each iteration (alternate), or runs backwards and switches direction after each iteration (alternate-reverse). Defaults to "normal".
     float             duration;       // The number of milliseconds each iteration of the animation takes to complete. Defaults to 0. Although this is technically optional, keep in mind that your animation will not run if this value is 0.
     string            easing;         // The rate of the animation's change over time. Accepts the pre-defined values "linear", "ease", "ease-in", "ease-out", and "ease-in-out", or a custom "cubic-bezier" value like "cubic-bezier(0.42, 0, 0.58, 1)". Defaults to "linear".
-    float             endDelay;       // The number of milliseconds to delay after the end of an animation. This is primarily of use when sequencing animations based on the end time of another animation. Defaults to 0. 
+    float             endDelay;       // The number of milliseconds to delay after the end of an animation. This is primarily of use when sequencing animations based on the end time of another animation. Defaults to 0.
     FillMode          fill;           // Dictates whether the animation's effects should be reflected by the element(s) prior to playing ("backwards"), retained after the animation has completed playing ("forwards"), or both. Defaults to "none".
     float             iterationStart; // Describes at what point in the iteration the animation should start. 0.5 would indicate starting halfway through the first iteration for example, and with this value set, an animation with 2 iterations would end halfway through a third iteration. Defaults to 0.0.
     float             iterations;     // The number of times the animation should repeat. Defaults to 1, and can also take a value of Infinity to make it repeat for as long as the element exists.
@@ -4513,11 +4619,11 @@ protected:
 }
 
 /** */
-enum TimelinePhase 
-{ 
-    inactive, 
-    before, 
-    active, 
+enum TimelinePhase
+{
+    inactive,
+    before,
+    active,
     after
  }
 
@@ -4654,7 +4760,7 @@ struct KeyframeOptions
     PlaybackDirection  direction;          // Whether the animation runs forwards (normal), backwards (reverse), switches direction after each iteration (alternate), or runs backwards and switches direction after each iteration (alternate-reverse). Defaults to "normal".
     float              duration;           // The number of milliseconds each iteration of the animation takes to complete. Defaults to 0. Although this is technically optional, keep in mind that your animation will not run if this value is 0.
     string             easing;             // The rate of the animation's change over time. Accepts the pre-defined values "linear", "ease", "ease-in", "ease-out", and "ease-in-out", or a custom "cubic-bezier" value like "cubic-bezier(0.42, 0, 0.58, 1)". Defaults to "linear".
-    float              endDelay;           // The number of milliseconds to delay after the end of an animation. This is primarily of use when sequencing animations based on the end time of another animation. Defaults to 0. 
+    float              endDelay;           // The number of milliseconds to delay after the end of an animation. This is primarily of use when sequencing animations based on the end time of another animation. Defaults to 0.
     FillMode           fill;               // Dictates whether the animation's effects should be reflected by the element(s) prior to playing ("backwards"), retained after the animation has completed playing ("forwards"), or both. Defaults to "none".
     float              iterationStart;     // Describes at what point in the iteration the animation should start. 0.5 would indicate starting halfway through the first iteration for example, and with this value set, an animation with 2 iterations would end halfway through a third iteration. Defaults to 0.0.
     float              iterations;         // The number of times the animation should repeat. Defaults to 1, and can also take a value of Infinity to make it repeat for as long as the element exists.
@@ -4679,7 +4785,7 @@ struct Keyframe
     string             easing;
     /** The KeyframeEffect.composite operation used to combine the values specified in this keyframe with the underlying value. This will be absent if the composite operation specified on the effect is being used. */
     CompositeOperation composite;
-}  
+}
 
 /** */
 struct ComputedTiming
@@ -4697,18 +4803,18 @@ struct ComputedTiming
 }
 
 /** */
-enum CompositeOperation 
-{ 
-    replace, 
-    add, 
-    accumulate 
+enum CompositeOperation
+{
+    replace,
+    add,
+    accumulate
 }
 
 /** */
-enum IterationCompositeOperation 
-{ 
-    replace, 
-    accumulate 
+enum IterationCompositeOperation
+{
+    replace,
+    accumulate
 }
 
 /** */
@@ -4742,13 +4848,13 @@ enum PlaybackDirection
 }
 
 /** */
-enum FillMode 
+enum FillMode
 {
-     none, 
-     forwards, 
-     backwards, 
-     both, 
-     auto,
+     none,
+     forwards,
+     backwards,
+     both,
+     auto_,
 }
 
 /** */
@@ -5238,7 +5344,7 @@ class NodeList : INodeList
     }
 
     // foreach suppport
-    int opApply( int delegate( ref Node currentValue ) dg ) const 
+    int opApply( int delegate( ref Node currentValue ) dg ) const
     {
         int  result = 0;
         auto currentValue = _first;
@@ -5256,9 +5362,9 @@ class NodeList : INodeList
         }
 
         return result;
-    }    
+    }
 
-    int opApply( int delegate( ref Node currentValue, ref size_t currentIndex ) dg ) const 
+    int opApply( int delegate( ref Node currentValue, ref size_t currentIndex ) dg ) const
     {
         int    result       = 0;
         auto   currentValue = _first;
@@ -5278,9 +5384,9 @@ class NodeList : INodeList
         }
 
         return result;
-    }    
+    }
 
-    int opApply( int delegate( ref Node currentValue, ref size_t currentIndex, ref NodeList nodeList ) dg ) const 
+    int opApply( int delegate( ref Node currentValue, ref size_t currentIndex, ref NodeList nodeList ) dg ) const
     {
         int    result       = 0;
         auto   currentValue = _first;
@@ -5456,7 +5562,7 @@ class NodeIteratorItem : IIteratorItem
     Value value()
     {
         return _value;
-    }    
+    }
 
 protected:
     bool  _done;
@@ -5607,7 +5713,7 @@ protected:
     string       _systemId = "http://www.w3.org/TR/html4/strict.dtd";
 }
 
-/** 
+/**
  https://developer.mozilla.org/en-US/docs/Web/API/NamedNodeMap
 */
 interface INamedNodeMap
@@ -5740,7 +5846,7 @@ class NamedNodeMap : INamedNodeMap
 
     // Range support
     // foreach suppport
-    int opApply( int delegate( ref Attr a ) dg ) const 
+    int opApply( int delegate( ref Attr a ) dg ) const
     {
         int  result = 0;
 
@@ -5755,14 +5861,14 @@ class NamedNodeMap : INamedNodeMap
         }
 
         return result;
-    }    
+    }
 
 
 protected:
     Attr[] _attrs;
 }
 
-/** 
+/**
  https://developer.mozilla.org/en-US/docs/Web/API/Attr
 */
 interface IAttr : INode
@@ -5865,13 +5971,13 @@ class Promise( TS )
     static
     Promise resolve( T )( T value )
     {
-        return 
-            new Promise( 
+        return
+            new Promise(
                 ( success, failure )
                 {
                     if ( success !is null )
                         success( value );
-                } 
+                }
             );
     }
 
@@ -6015,7 +6121,7 @@ class Crypto
 
 }
 
-/** */ 
+/** */
 class SubtleCrypto
 {
     //
