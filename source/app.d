@@ -88,7 +88,7 @@ class EventTarget : IEventTarget
     }
 
 protected:
-    EventListener[ type ] _routes;
+    EventListener[ EventType ] _routes;
 }
 
 /** */
@@ -387,91 +387,91 @@ class Document : Node, IDocument
     }
 
     // Event handlers
-    EventHandler onfullscreenchange;   // Is an EventHandler representing the code to be called when the fullscreenchange event is raised.
-    EventHandler onfullscreenerror;    // Is an EventHandler representing the code to be called when the fullscreenerror event is raised.
-    EventHandler onreadystatechange;   // Represents the event handling code for the readystatechange event.
-    EventHandler onselectionchange;    // Is an EventHandler representing the code to be called when the selectionchange event is raised.
-    EventHandler onvisibilitychange;   // Is an EventHandler representing the code to be called when the visibilitychange event is raised.
+    mixin EventHandler!"onfullscreenchange";   // Is an EventHandler representing the code to be called when the fullscreenchange event is raised.
+    mixin EventHandler!"onfullscreenerror";    // Is an EventHandler representing the code to be called when the fullscreenerror event is raised.
+    mixin EventHandler!"onreadystatechange";   // Represents the event handling code for the readystatechange event.
+    mixin EventHandler!"onselectionchange";    // Is an EventHandler representing the code to be called when the selectionchange event is raised.
+    mixin EventHandler!"onvisibilitychange";   // Is an EventHandler representing the code to be called when the visibilitychange event is raised.
 
     // GlobalEventHandlers
-    EventHandler onabort;              // Is an EventHandler representing the code to be called when the abort event is raised.
-    EventHandler onblur;               // Is an EventHandler representing the code to be called when the blur event is raised.
-    EventHandler onerror;              // Is an OnErrorEventHandler representing the code to be called when the error event is raised.
-    EventHandler onfocus;              // Is an EventHandler representing the code to be called when the focus event is raised.
-    EventHandler oncancel;             // Is an EventHandler representing the code to be called when the cancel event is raised.
-    EventHandler oncanplay;            // Is an EventHandler representing the code to be called when the canplay event is raised.
-    EventHandler oncanplaythrough;     // Is an EventHandler representing the code to be called when the canplaythrough event is raised.
-    EventHandler onchange;             // Is an EventHandler representing the code to be called when the change event is raised.
-    EventHandler onclick;              // Is an EventHandler representing the code to be called when the click event is raised.
-    EventHandler onclose;              // Is an EventHandler representing the code to be called when the close event is raised.
-    EventHandler oncontextmenu;        // Is an EventHandler representing the code to be called when the contextmenu event is raised.
-    EventHandler oncuechange;          // Is an EventHandler representing the code to be called when the cuechange event is raised.
-    EventHandler ondblclick;           // Is an EventHandler representing the code to be called when the dblclick event is raised.
-    EventHandler ondrag;               // Is an EventHandler representing the code to be called when the drag event is raised.
-    EventHandler ondragend;            // Is an EventHandler representing the code to be called when the dragend event is raised.
-    EventHandler ondragenter;          // Is an EventHandler representing the code to be called when the dragenter event is raised.
-    EventHandler ondragleave;          // Is an EventHandler representing the code to be called when the dragleave event is raised.
-    EventHandler ondragover;           // Is an EventHandler representing the code to be called when the dragover event is raised.
-    EventHandler ondragstart;          // Is an EventHandler representing the code to be called when the dragstart event is raised.
-    EventHandler ondrop;               // Is an EventHandler representing the code to be called when the drop event is raised.
-    EventHandler ondurationchange;     // Is an EventHandler representing the code to be called when the durationchange event is raised.
-    EventHandler onemptied;            // Is an EventHandler representing the code to be called when the emptied event is raised.
-    EventHandler onended;              // Is an EventHandler representing the code to be called when the ended event is raised.
-    EventHandler onformdata;           // Is an EventHandler for processing formdata events, fired after the entry list representing the form's data is constructed.
-    EventHandler ongotpointercapture;  // Is an EventHandler representing the code to be called when the gotpointercapture event type is raised.
-    EventHandler oninput;              // Is an EventHandler representing the code to be called when the input event is raised.
-    EventHandler oninvalid;            // Is an EventHandler representing the code to be called when the invalid event is raised.
-    EventHandler onkeydown;            // Is an EventHandler representing the code to be called when the keydown event is raised.
-    EventHandler onkeypress;           // Is an EventHandler representing the code to be called when the keypress event is raised.
-    EventHandler onkeyup;              // Is an EventHandler representing the code to be called when the keyup event is raised.
-    EventHandler onload;               // Is an EventHandler representing the code to be called when the load event is raised.
-    EventHandler onloadeddata;         // Is an EventHandler representing the code to be called when the loadeddata event is raised.
-    EventHandler onloadedmetadata;     // Is an EventHandler representing the code to be called when the loadedmetadata event is raised.
-    EventHandler onloadend;            // Is an EventHandler representing the code to be called when the loadend event is raised (when progress has stopped on the loading of a resource.)
-    EventHandler onloadstart;          // Is an EventHandler representing the code to be called when the loadstart event is raised (when progress has begun on the loading of a resource.)
-    EventHandler onlostpointercapture; // Is an EventHandler representing the code to be called when the lostpointercapture event type is raised.
-    EventHandler onmousedown;          // Is an EventHandler representing the code to be called when the mousedown event is raised.
-    EventHandler onmouseenter;         // Is an EventHandler representing the code to be called when the mouseenter event is raised.
-    EventHandler onmouseleave;         // Is an EventHandler representing the code to be called when the mouseleave event is raised.
-    EventHandler onmousemove;          // Is an EventHandler representing the code to be called when the mousemove event is raised.
-    EventHandler onmouseout;           // Is an EventHandler representing the code to be called when the mouseout event is raised.
-    EventHandler onmouseover;          // Is an EventHandler representing the code to be called when the mouseover event is raised.
-    EventHandler onmouseup;            // Is an EventHandler representing the code to be called when the mouseup event is raised.
-    EventHandler onwheel;              // Is an EventHandler representing the code to be called when the wheel event is raised.
-    EventHandler onpause;              // Is an EventHandler representing the code to be called when the pause event is raised.
-    EventHandler onplay;               // Is an EventHandler representing the code to be called when the play event is raised.
-    EventHandler onplaying;            // Is an EventHandler representing the code to be called when the playing event is raised.
-    EventHandler onpointerdown;        // Is an EventHandler representing the code to be called when the pointerdown event is raised.
-    EventHandler onpointermove;        // Is an EventHandler representing the code to be called when the pointermove event is raised.
-    EventHandler onpointerup;          // Is an EventHandler representing the code to be called when the pointerup event is raised.
-    EventHandler onpointercancel;      // Is an EventHandler representing the code to be called when the pointercancel event is raised.
-    EventHandler onpointerover;        // Is an EventHandler representing the code to be called when the pointerover event is raised.
-    EventHandler onpointerout;         // Is an EventHandler representing the code to be called when the pointerout event is raised.
-    EventHandler onpointerenter;       // Is an EventHandler representing the code to be called when the pointerenter event is raised.
-    EventHandler onpointerleave;       // Is an EventHandler representing the code to be called when the pointerleave event is raised.
-    EventHandler onpointerlockchange;  // Is an EventHandler representing the code to be called when the pointerlockchange event is raised.
-    EventHandler onpointerlockerror;   // Is an EventHandler representing the code to be called when the pointerlockerror event is raised.
-    EventHandler onprogress;           // Is an EventHandler representing the code to be called when the progress event is raised.
-    EventHandler onratechange;         // Is an EventHandler representing the code to be called when the ratechange event is raised.
-    EventHandler onreset;              // Is an EventHandler representing the code to be called when the reset event is raised.
-    EventHandler onresize;             // Is an EventHandler representing the code to be called when the resize event is raised.
-    EventHandler onscroll;             // Is an EventHandler representing the code to be called when the scroll event is raised.
-    EventHandler onseeked;             // Is an EventHandler representing the code to be called when the seeked event is raised.
-    EventHandler onseeking;            // Is an EventHandler representing the code to be called when the seeking event is raised.
-    EventHandler onselect;             // Is an EventHandler representing the code to be called when the select event is raised.
-    EventHandler onselectstart;        // Is an EventHandler representing the code to be called when the selectionchange event is raised, i.e. when the user starts to make a new text selection on a web page.
-    EventHandler onselectionchange;    // Is an EventHandler representing the code to be called when the selectionchange event is raised, i.e. when the text selected on a web page changes.
-    EventHandler onsort;               // Is an EventHandler representing the code to be called when the sort event is raised.
-    EventHandler onstalled;            // Is an EventHandler representing the code to be called when the stalled event is raised.
-    EventHandler onsubmit;             // Is an EventHandler representing the code to be called when the submit event is raised.
-    EventHandler onsuspend;            // Is an EventHandler representing the code to be called when the suspend event is raised.
-    EventHandler ontimeupdate;         // Is an EventHandler representing the code to be called when the timeupdate event is raised.
-    EventHandler onvolumechange;       // Is an EventHandler representing the code to be called when the volumechange event is raised.
-    EventHandler ontransitioncancel;   // An EventHandler called when a transitioncancel event is sent, indicating that a CSS transition has been cancelled.
-    EventHandler ontransitionend;      // An EventHandler called when a transitionend event is sent, indicating that a CSS transition has finished playing.
-    EventHandler ontransitionrun;      // An EventHandler called when a transitionrun event is sent, indicating that a CSS transition is running, though not nessarilty started.
-    EventHandler ontransitionstart;    // An EventHandler called when a transitionstart event is sent, indicating that a CSS transition has started transitioning.
-    EventHandler onwaiting;            // Is an EventHandler representing the code to be called when the waiting event is raised.
+    mixin EventHandler!"onabort";              // Is an EventHandler representing the code to be called when the abort event is raised.
+    mixin EventHandler!"onblur";               // Is an EventHandler representing the code to be called when the blur event is raised.
+    mixin EventHandler!"onerror";              // Is an OnErrorEventHandler representing the code to be called when the error event is raised.
+    mixin EventHandler!"onfocus";              // Is an EventHandler representing the code to be called when the focus event is raised.
+    mixin EventHandler!"oncancel";             // Is an EventHandler representing the code to be called when the cancel event is raised.
+    mixin EventHandler!"oncanplay";            // Is an EventHandler representing the code to be called when the canplay event is raised.
+    mixin EventHandler!"oncanplaythrough";     // Is an EventHandler representing the code to be called when the canplaythrough event is raised.
+    mixin EventHandler!"onchange";             // Is an EventHandler representing the code to be called when the change event is raised.
+    mixin EventHandler!"onclick";              // Is an EventHandler representing the code to be called when the click event is raised.
+    mixin EventHandler!"onclose";              // Is an EventHandler representing the code to be called when the close event is raised.
+    mixin EventHandler!"oncontextmenu";        // Is an EventHandler representing the code to be called when the contextmenu event is raised.
+    mixin EventHandler!"oncuechange";          // Is an EventHandler representing the code to be called when the cuechange event is raised.
+    mixin EventHandler!"ondblclick";           // Is an EventHandler representing the code to be called when the dblclick event is raised.
+    mixin EventHandler!"ondrag";               // Is an EventHandler representing the code to be called when the drag event is raised.
+    mixin EventHandler!"ondragend";            // Is an EventHandler representing the code to be called when the dragend event is raised.
+    mixin EventHandler!"ondragenter";          // Is an EventHandler representing the code to be called when the dragenter event is raised.
+    mixin EventHandler!"ondragleave";          // Is an EventHandler representing the code to be called when the dragleave event is raised.
+    mixin EventHandler!"ondragover";           // Is an EventHandler representing the code to be called when the dragover event is raised.
+    mixin EventHandler!"ondragstart";          // Is an EventHandler representing the code to be called when the dragstart event is raised.
+    mixin EventHandler!"ondrop";               // Is an EventHandler representing the code to be called when the drop event is raised.
+    mixin EventHandler!"ondurationchange";     // Is an EventHandler representing the code to be called when the durationchange event is raised.
+    mixin EventHandler!"onemptied";            // Is an EventHandler representing the code to be called when the emptied event is raised.
+    mixin EventHandler!"onended";              // Is an EventHandler representing the code to be called when the ended event is raised.
+    mixin EventHandler!"onformdata";           // Is an EventHandler for processing formdata events, fired after the entry list representing the form's data is constructed.
+    mixin EventHandler!"ongotpointercapture";  // Is an EventHandler representing the code to be called when the gotpointercapture event type is raised.
+    mixin EventHandler!"oninput";              // Is an EventHandler representing the code to be called when the input event is raised.
+    mixin EventHandler!"oninvalid";            // Is an EventHandler representing the code to be called when the invalid event is raised.
+    mixin EventHandler!"onkeydown";            // Is an EventHandler representing the code to be called when the keydown event is raised.
+    mixin EventHandler!"onkeypress";           // Is an EventHandler representing the code to be called when the keypress event is raised.
+    mixin EventHandler!"onkeyup";              // Is an EventHandler representing the code to be called when the keyup event is raised.
+    mixin EventHandler!"onload";               // Is an EventHandler representing the code to be called when the load event is raised.
+    mixin EventHandler!"onloadeddata";         // Is an EventHandler representing the code to be called when the loadeddata event is raised.
+    mixin EventHandler!"onloadedmetadata";     // Is an EventHandler representing the code to be called when the loadedmetadata event is raised.
+    mixin EventHandler!"onloadend";            // Is an EventHandler representing the code to be called when the loadend event is raised (when progress has stopped on the loading of a resource.)
+    mixin EventHandler!"onloadstart";          // Is an EventHandler representing the code to be called when the loadstart event is raised (when progress has begun on the loading of a resource.)
+    mixin EventHandler!"onlostpointercapture"; // Is an EventHandler representing the code to be called when the lostpointercapture event type is raised.
+    mixin EventHandler!"onmousedown";          // Is an EventHandler representing the code to be called when the mousedown event is raised.
+    mixin EventHandler!"onmouseenter";         // Is an EventHandler representing the code to be called when the mouseenter event is raised.
+    mixin EventHandler!"onmouseleave";         // Is an EventHandler representing the code to be called when the mouseleave event is raised.
+    mixin EventHandler!"onmousemove";          // Is an EventHandler representing the code to be called when the mousemove event is raised.
+    mixin EventHandler!"onmouseout";           // Is an EventHandler representing the code to be called when the mouseout event is raised.
+    mixin EventHandler!"onmouseover";          // Is an EventHandler representing the code to be called when the mouseover event is raised.
+    mixin EventHandler!"onmouseup";            // Is an EventHandler representing the code to be called when the mouseup event is raised.
+    mixin EventHandler!"onwheel";              // Is an EventHandler representing the code to be called when the wheel event is raised.
+    mixin EventHandler!"onpause";              // Is an EventHandler representing the code to be called when the pause event is raised.
+    mixin EventHandler!"onplay";               // Is an EventHandler representing the code to be called when the play event is raised.
+    mixin EventHandler!"onplaying";            // Is an EventHandler representing the code to be called when the playing event is raised.
+    mixin EventHandler!"onpointerdown";        // Is an EventHandler representing the code to be called when the pointerdown event is raised.
+    mixin EventHandler!"onpointermove";        // Is an EventHandler representing the code to be called when the pointermove event is raised.
+    mixin EventHandler!"onpointerup";          // Is an EventHandler representing the code to be called when the pointerup event is raised.
+    mixin EventHandler!"onpointercancel";      // Is an EventHandler representing the code to be called when the pointercancel event is raised.
+    mixin EventHandler!"onpointerover";        // Is an EventHandler representing the code to be called when the pointerover event is raised.
+    mixin EventHandler!"onpointerout";         // Is an EventHandler representing the code to be called when the pointerout event is raised.
+    mixin EventHandler!"onpointerenter";       // Is an EventHandler representing the code to be called when the pointerenter event is raised.
+    mixin EventHandler!"onpointerleave";       // Is an EventHandler representing the code to be called when the pointerleave event is raised.
+    mixin EventHandler!"onpointerlockchange";  // Is an EventHandler representing the code to be called when the pointerlockchange event is raised.
+    mixin EventHandler!"onpointerlockerror";   // Is an EventHandler representing the code to be called when the pointerlockerror event is raised.
+    mixin EventHandler!"onprogress";           // Is an EventHandler representing the code to be called when the progress event is raised.
+    mixin EventHandler!"onratechange";         // Is an EventHandler representing the code to be called when the ratechange event is raised.
+    mixin EventHandler!"onreset";              // Is an EventHandler representing the code to be called when the reset event is raised.
+    mixin EventHandler!"onresize";             // Is an EventHandler representing the code to be called when the resize event is raised.
+    mixin EventHandler!"onscroll";             // Is an EventHandler representing the code to be called when the scroll event is raised.
+    mixin EventHandler!"onseeked";             // Is an EventHandler representing the code to be called when the seeked event is raised.
+    mixin EventHandler!"onseeking";            // Is an EventHandler representing the code to be called when the seeking event is raised.
+    mixin EventHandler!"onselect";             // Is an EventHandler representing the code to be called when the select event is raised.
+    mixin EventHandler!"onselectstart";        // Is an EventHandler representing the code to be called when the selectionchange event is raised, i.e. when the user starts to make a new text selection on a web page.
+    /* EventHandler onselectionchange;    // Is an EventHandler representing the code to be called when the selectionchange event is raised, i.e. when the text selected on a web page changes. */
+    mixin EventHandler!"onsort";               // Is an EventHandler representing the code to be called when the sort event is raised.
+    mixin EventHandler!"onstalled";            // Is an EventHandler representing the code to be called when the stalled event is raised.
+    mixin EventHandler!"onsubmit";             // Is an EventHandler representing the code to be called when the submit event is raised.
+    mixin EventHandler!"onsuspend";            // Is an EventHandler representing the code to be called when the suspend event is raised.
+    mixin EventHandler!"ontimeupdate";         // Is an EventHandler representing the code to be called when the timeupdate event is raised.
+    mixin EventHandler!"onvolumechange";       // Is an EventHandler representing the code to be called when the volumechange event is raised.
+    mixin EventHandler!"ontransitioncancel";   // An EventHandler called when a transitioncancel event is sent, indicating that a CSS transition has been cancelled.
+    mixin EventHandler!"ontransitionend";      // An EventHandler called when a transitionend event is sent, indicating that a CSS transition has finished playing.
+    mixin EventHandler!"ontransitionrun";      // An EventHandler called when a transitionrun event is sent, indicating that a CSS transition is running, though not nessarilty started.
+    mixin EventHandler!"ontransitionstart";    // An EventHandler called when a transitionstart event is sent, indicating that a CSS transition has started transitioning.
+    mixin EventHandler!"onwaiting";            // Is an EventHandler representing the code to be called when the waiting event is raised.
 
     // Methods
     /** Adopt node from an external document. */
@@ -510,7 +510,8 @@ class Document : Node, IDocument
     }
 
     /** Evaluates an XPath expression. */
-    XPathResult evaluate( string xpathExpression, Node contextNode, XPathNSResolver namespaceResolver, XPathResultType resultType, XPathResult result=null )
+    XPathResult evaluate( string xpathExpression, Node contextNode, XPathNSResolver namespaceResolver,
+        XPathResultType resultType, XPathResult result=null )
     {
         return new XPathResult();
     }
@@ -530,11 +531,17 @@ protected:
     Element         _head;
     bool            _hidden;
     DOMImplementation _implementation;
-    element         _pictureInPictureElement;
+    Element         _pictureInPictureElement;
     bool            _pictureInPictureEnabled;
     Element         _pointerLockElement;
     Element         _scrollingElement;
     VisibilityState _visibilityState;
+}
+
+/** */
+mixin template EventHandler( string ENAME )
+{
+    //
 }
 
 /** */
@@ -559,7 +566,16 @@ class XPathExpression
 /** */
 enum XPathResultType
 {
-    //
+    ANY_TYPE                     = 0, // A result set containing whatever type naturally results from evaluation of the expression. Note that if the result is a node-set then UNORDERED_NODE_ITERATOR_TYPE is always the resulting type.
+    STRING_TYPE                  = 2, // A result containing a single string.
+    NUMBER_TYPE                  = 1, // A result containing a single number. This is useful for example, in an XPath expression using the count() function.
+    BOOLEAN_TYPE                 = 3, // A result containing a single boolean value. This is useful for example, in an XPath expression using the not() function.
+    UNORDERED_NODE_ITERATOR_TYPE = 4, // A result node-set containing all the nodes matching the expression. The nodes may not necessarily be in the same order that they appear in the document.
+    ORDERED_NODE_ITERATOR_TYPE   = 5, // A result node-set containing all the nodes matching the expression. The nodes in the result set are in the same order that they appear in the document.
+    UNORDERED_NODE_SNAPSHOT_TYPE = 6, // A result node-set containing snapshots of all the nodes matching the expression. The nodes may not necessarily be in the same order that they appear in the document.
+    ORDERED_NODE_SNAPSHOT_TYPE   = 7, // A result node-set containing snapshots of all the nodes matching the expression. The nodes in the result set are in the same order that they appear in the document.
+    ANY_UNORDERED_NODE_TYPE      = 8, // A result node-set containing any single node that matches the expression. The node is not necessarily the first node in the document that matches the expression.
+    FIRST_ORDERED_NODE_TYPE      = 9, // A result node-set containing the first node in the document that matches the expression.    //
 }
 
 /** */
@@ -569,7 +585,7 @@ class XPathResult
 }
 
 /** */
-alias string function( string prefix ) NamespaceURLMapper;
+alias NamespaceURLMapper = string function( string prefix );
 
 /** */
 class CaretPosition
@@ -956,7 +972,7 @@ enum Dir
 {
     ltr,
     rtl,
-    auto
+    auto_
 }
 
 /** */
@@ -1262,10 +1278,10 @@ class History
     }
 
     /** An alias for window.scrollX. */
-    alias scrollX pageXOffset;
+    alias pageXOffset = scrollX;
 
     /** An alias for window.scrollY */
-    alias scrollY pageYOffset;
+    alias pageYOffset = scrollY;
 
     /** Returns a reference to the parent of the current window or subframe. */
     Window parent()
@@ -1296,14 +1312,14 @@ class History
     {
         return 0;
     }
-    alias screenX screenLeft;
+    alias screenLeft = screenX;
 
     /** Both properties return the vertical distance from the top border of the user's browser viewport to the top side of the screen. */
     int screenY()
     {
         return 0;
     }
-    alias screenY screenTop;
+    alias screenTop = screenY;
 
     /** Returns the scrollbars object, whose visibility can be toggled in the window. */
     Scrollbars scrollbars()
@@ -1455,7 +1471,7 @@ class History
     bool find( string aString, bool aCaseSensitive, bool aBackwards, bool aWrapAround,
                bool aWholeWord, bool aSearchInFrames, bool aShowDialog )
     {
-        retrn false;
+        return false;
     }
 
     /** Sets focus on the current window. */
@@ -1537,7 +1553,7 @@ class History
     }
 
     /** Returns the text entered by the user in a prompt dialog. */
-    string prompt( string message, string  default )
+    string prompt( string message, string  default_ )
     {
         //
     }
@@ -1782,62 +1798,62 @@ class History
     }
 
     // Event handlers
-	EventHandler!"onappinstalled"();          // Called when the page is installed as a webapp. See appinstalled event.
-    EventHandler!"onbeforeinstallprompt"();   // An event handler property dispatched before a user is prompted to save a web site to a home screen on mobile.
-    EventHandler!"ondevicemotion"();          // Called if accelerometer detects a change (For mobile devices)
-    EventHandler!"ondeviceorientation";       // Called when the orientation is changed (For mobile devices)
-    EventHandler!"ongamepadconnected";        // Represents an event handler that will run when a gamepad is connected (when the gamepadconnected event fires).
-    EventHandler!"ongamepaddisconnected";     // Represents an event handler that will run when a gamepad is disconnected (when the gamepaddisconnected event fires).
-    EventHandler!"onmozbeforepaint";          // An event handler property for the MozBeforePaint event, which is sent before repainting the window if the event has been requested by a call to the window.requestAnimationFrame method.
-    EventHandler!"onpaint";                   // An event handler property for paint events on the window.
-    EventHandler!"onrejectionhandled";        // An event handler for handled Promise rejection events.
-    EventHandler!"onvrdisplayconnect";        // Represents an event handler that will run when a compatible VR device has been connected to the computer (when the vrdisplayconnected event fires).
-    EventHandler!"onvrdisplaydisconnect";     // Represents an event handler that will run when a compatible VR device has been disconnected from the computer (when the vrdisplaydisconnected event fires).
-    EventHandler!"onvrdisplayactivate";       // Represents an event handler that will run when a display is able to be presented to (when the vrdisplayactivate event fires), for example if an HMD has been moved to bring it out of standby, or woken up by being put on.
-    EventHandler!"onvrdisplaydeactivate";     // Represents an event handler that will run when a display can no longer be presented to (when the vrdisplaydeactivate event fires), for example if an HMD has gone into standby or sleep mode due to a period of inactivity.
-    EventHandler!"onvrdisplayblur";           // Represents an event handler that will run when presentation to a display has been paused for some reason by the browser, OS, or VR hardware (when the vrdisplayblur event fires) — for example, while the user is interacting with a system menu or browser, to prevent tracking or loss of experience.
-	EventHandler!"onabort";                   // Called when the loading of a resource has been aborted, such as by a user canceling the load while it is still in progress
-	EventHandler!"onafterprint";              // Called when the print dialog box is closed. See afterprint event.
-	EventHandler!"onbeforeprint";             // Called when the print dialog box is opened. See beforeprint event.
-	EventHandler!"onbeforeunload";            // An event handler property for before-unload events on the window.
-	EventHandler!"onblur";                    // Called after the window loses focus, such as due to a popup.
-	EventHandler!"onchange";                  // An event handler property for change events on the window.
-	EventHandler!"onclick";                   // Called after the ANY mouse button is pressed & released
-	EventHandler!"ondblclick";                // Called when a double click is made with ANY mouse button.
-	EventHandler!"onclose";                   // Called after the window is closed
-	EventHandler!"oncontextmenu";             // Called when the RIGHT mouse button is pressed
-	EventHandler!"onerror";                   // Called when a resource fails to load OR when an error occurs at runtime. See error event.
-	EventHandler!"onfocus";                   // Called after the window receives or regains focus. See focus events.
-	EventHandler!"onhashchange";              // An event handler property for hashchange events on the window; called when the part of the URL after the hash mark ("#") changes.
-	EventHandler!"oninput";                   // Called when the value of an <input> element changes
-	EventHandler!"onkeydown";                 // Called when you begin pressing ANY key. See keydown event.
-	EventHandler!"onkeypress";                // Called when a key (except Shift, Fn, and CapsLock) is in pressed position. See keypress event.
-	EventHandler!"onkeyup";                   // Called when you finish releasing ANY key. See keyup event.
-	EventHandler!"onlanguagechange";          // An event handler property for languagechange events on the window.
-	EventHandler!"onload";                    // Called after all resources and the DOM are fully loaded. WILL NOT get called when the page is loaded from cache, such as with back button.
-	EventHandler!"onmessage";                 // Is an event handler representing the code to be called when the message event is raised.
-	EventHandler!"onmousedown";               // Called when ANY mouse button is pressed.
-	EventHandler!"onmousemove";               // Called continously when the mouse is moved inside the window.
-	EventHandler!"onmouseout";                // Called when the pointer leaves the window.
-	EventHandler!"onmouseover";               // Called when the pointer enters the window
-	EventHandler!"onmouseup";                 // Called when ANY mouse button is released
-	EventHandler!"onoffline";                 // Called when network connection is lost. See offline event.
-	EventHandler!"ononline";                  // Called when network connection is established. See online event.
-	EventHandler!"onpagehide";                // Called when the user navigates away from the page, before the onunload event. See pagehide event.
-	EventHandler!"onpageshow";                // Called after all resources and the DOM are fully loaded. See pageshow event.
-	EventHandler!"onpopstate";                // Called when a back button is pressed.
-	EventHandler!"onreset";                   // Called when a form is reset
-	EventHandler!"onresize";                  // Called continuously as you are resizing the window.
-	EventHandler!"onscroll";                  // Called when the scroll bar is moved via ANY means. If the resource fully fits in the window, then this event cannot be invoked
-	EventHandler!"onwheel";                   // Called when the mouse wheel is rotated around any axis
-	EventHandler!"onselect";                  // Called after text in an input field is selected
-	EventHandler!"onselectionchange";         // Is an event handler representing the code to be called when the selectionchange event is raised.
-	EventHandler!"onstorage";                 // Called when there is a change in session storage or local storage. See storage event
-	EventHandler!"onsubmit";                  // Called when a form is submitted
-	EventHandler!"onunhandledrejection";      // An event handler for unhandled Promise rejection events.
-	EventHandler!"onunload";                  // Called when the user navigates away from the page.
-    EventHandler!"onvrdisplayfocus";          // Represents an event handler that will run when presentation to a display has resumed after being blurred (when the vrdisplayfocus event fires).
-    EventHandler!"onvrdisplaypresentchange";  // represents an event handler that will run when the presenting state of a VR device changes — i.e. goes from presenting to not presenting, or vice versa (when the vrdisplaypresentchange event fires).
+	mixin EventHandler!"onappinstalled";            // Called when the page is installed as a webapp. See appinstalled event.
+    mixin EventHandler!"onbeforeinstallprompt";     // An event handler property dispatched before a user is prompted to save a web site to a home screen on mobile.
+    mixin EventHandler!"ondevicemotion";            // Called if accelerometer detects a change (For mobile devices)
+    mixin EventHandler!"ondeviceorientation";       // Called when the orientation is changed (For mobile devices)
+    mixin EventHandler!"ongamepadconnected";        // Represents an event handler that will run when a gamepad is connected (when the gamepadconnected event fires).
+    mixin EventHandler!"ongamepaddisconnected";     // Represents an event handler that will run when a gamepad is disconnected (when the gamepaddisconnected event fires).
+    mixin EventHandler!"onmozbeforepaint";          // An event handler property for the MozBeforePaint event, which is sent before repainting the window if the event has been requested by a call to the window.requestAnimationFrame method.
+    mixin EventHandler!"onpaint";                   // An event handler property for paint events on the window.
+    mixin EventHandler!"onrejectionhandled";        // An event handler for handled Promise rejection events.
+    mixin EventHandler!"onvrdisplayconnect";        // Represents an event handler that will run when a compatible VR device has been connected to the computer (when the vrdisplayconnected event fires).
+    mixin EventHandler!"onvrdisplaydisconnect";     // Represents an event handler that will run when a compatible VR device has been disconnected from the computer (when the vrdisplaydisconnected event fires).
+    mixin EventHandler!"onvrdisplayactivate";       // Represents an event handler that will run when a display is able to be presented to (when the vrdisplayactivate event fires), for example if an HMD has been moved to bring it out of standby, or woken up by being put on.
+    mixin EventHandler!"onvrdisplaydeactivate";     // Represents an event handler that will run when a display can no longer be presented to (when the vrdisplaydeactivate event fires), for example if an HMD has gone into standby or sleep mode due to a period of inactivity.
+    mixin EventHandler!"onvrdisplayblur";           // Represents an event handler that will run when presentation to a display has been paused for some reason by the browser, OS, or VR hardware (when the vrdisplayblur event fires) — for example, while the user is interacting with a system menu or browser, to prevent tracking or loss of experience.
+	mixin EventHandler!"onabort";                   // Called when the loading of a resource has been aborted, such as by a user canceling the load while it is still in progress
+	mixin EventHandler!"onafterprint";              // Called when the print dialog box is closed. See afterprint event.
+	mixin EventHandler!"onbeforeprint";             // Called when the print dialog box is opened. See beforeprint event.
+	mixin EventHandler!"onbeforeunload";            // An event handler property for before-unload events on the window.
+	mixin EventHandler!"onblur";                    // Called after the window loses focus, such as due to a popup.
+	mixin EventHandler!"onchange";                  // An event handler property for change events on the window.
+	mixin EventHandler!"onclick";                   // Called after the ANY mouse button is pressed & released
+	mixin EventHandler!"ondblclick";                // Called when a double click is made with ANY mouse button.
+	mixin EventHandler!"onclose";                   // Called after the window is closed
+	mixin EventHandler!"oncontextmenu";             // Called when the RIGHT mouse button is pressed
+	mixin EventHandler!"onerror";                   // Called when a resource fails to load OR when an error occurs at runtime. See error event.
+	mixin EventHandler!"onfocus";                   // Called after the window receives or regains focus. See focus events.
+	mixin EventHandler!"onhashchange";              // An event handler property for hashchange events on the window; called when the part of the URL after the hash mark ("#") changes.
+	mixin EventHandler!"oninput";                   // Called when the value of an <input> element changes
+	mixin EventHandler!"onkeydown";                 // Called when you begin pressing ANY key. See keydown event.
+	mixin EventHandler!"onkeypress";                // Called when a key (except Shift, Fn, and CapsLock) is in pressed position. See keypress event.
+	mixin EventHandler!"onkeyup";                   // Called when you finish releasing ANY key. See keyup event.
+	mixin EventHandler!"onlanguagechange";          // An event handler property for languagechange events on the window.
+	mixin EventHandler!"onload";                    // Called after all resources and the DOM are fully loaded. WILL NOT get called when the page is loaded from cache, such as with back button.
+	mixin EventHandler!"onmessage";                 // Is an event handler representing the code to be called when the message event is raised.
+	mixin EventHandler!"onmousedown";               // Called when ANY mouse button is pressed.
+	mixin EventHandler!"onmousemove";               // Called continously when the mouse is moved inside the window.
+	mixin EventHandler!"onmouseout";                // Called when the pointer leaves the window.
+	mixin EventHandler!"onmouseover";               // Called when the pointer enters the window
+	mixin EventHandler!"onmouseup";                 // Called when ANY mouse button is released
+	mixin EventHandler!"onoffline";                 // Called when network connection is lost. See offline event.
+	mixin EventHandler!"ononline";                  // Called when network connection is established. See online event.
+	mixin EventHandler!"onpagehide";                // Called when the user navigates away from the page, before the onunload event. See pagehide event.
+	mixin EventHandler!"onpageshow";                // Called after all resources and the DOM are fully loaded. See pageshow event.
+	mixin EventHandler!"onpopstate";                // Called when a back button is pressed.
+	mixin EventHandler!"onreset";                   // Called when a form is reset
+	mixin EventHandler!"onresize";                  // Called continuously as you are resizing the window.
+	mixin EventHandler!"onscroll";                  // Called when the scroll bar is moved via ANY means. If the resource fully fits in the window, then this event cannot be invoked
+	mixin EventHandler!"onwheel";                   // Called when the mouse wheel is rotated around any axis
+	mixin EventHandler!"onselect";                  // Called after text in an input field is selected
+	mixin EventHandler!"onselectionchange";         // Is an event handler representing the code to be called when the selectionchange event is raised.
+	mixin EventHandler!"onstorage";                 // Called when there is a change in session storage or local storage. See storage event
+	mixin EventHandler!"onsubmit";                  // Called when a form is submitted
+	mixin EventHandler!"onunhandledrejection";      // An event handler for unhandled Promise rejection events.
+	mixin EventHandler!"onunload";                  // Called when the user navigates away from the page.
+    mixin EventHandler!"onvrdisplayfocus";          // Represents an event handler that will run when presentation to a display has resumed after being blurred (when the vrdisplayfocus event fires).
+    mixin EventHandler!"onvrdisplaypresentchange";  // represents an event handler that will run when the presenting state of a VR device changes — i.e. goes from presenting to not presenting, or vice versa (when the vrdisplaypresentchange event fires).
 
 
     // Events
@@ -1971,7 +1987,7 @@ enum ImageOrientation
 /** */
 enum PremultiplyAlpha
 {
-    default,
+    default_,
     none,
     premultiply,
 }
@@ -1979,7 +1995,7 @@ enum PremultiplyAlpha
 /** */
 enum ColorSpaceConversion
 {
-    default,
+    default_,
     none
 }
 
@@ -2072,7 +2088,7 @@ class IdleDeadline
 }
 
 /** */
-alias ulong DOMHighResTimeStamp;
+alias DOMHighResTimeStamp = ulong;
 
 /** */
 struct WindowMessage
@@ -2105,7 +2121,7 @@ struct ComputedStyle
 }
 
 /** */
-alias void function() IdleCallback;
+alias IdleCallback = void function();
 
 /** */
 class IDBFactory
@@ -2222,7 +2238,7 @@ class HistoryState
 /** */
 enum ScrollRestoration
 {
-    auto,
+    auto_,
     manual
 }
 
@@ -2433,7 +2449,7 @@ class DOMImplementation
     }
 
     /** Returns a Boolean indicating if a given feature is supported or not. This function is unreliable and kept for compatibility purpose alone: except for SVG-related queries, it always returns true. Old browsers are very inconsistent in their behavior. */
-    bool hasFeature( string feature, string version)
+    bool hasFeature( string feature, string version_ )
     {
         //
     }
@@ -2487,7 +2503,7 @@ class FontFaceSet
     }
 
     /** Removes a manually-added font from the font set. CSS-connected fonts are unaffected. */
-    void delete()
+    void delete_()
     {
         //
     }
@@ -2558,7 +2574,7 @@ interface INode : IEventTarget
     Node   insertBefore( Node newNode, Node referenceNode );
     bool   isDefaultNamespace( string namespaceURI );
     bool   isEqualNode( Node otherNode );
-    bool   isSameNode( Node otherNode )s;
+    bool   isSameNode( Node otherNode );
     string lookupNamespaceURI( string prefix );
     string lookupPrefix();
     void   normalize();
@@ -3382,9 +3398,9 @@ class Element : Node, IElement
         auto attrsString = _attrsAsString;
 
         if ( ! attrsString.empty  )
-            return "<" ~ _tagName ~ " " ~ attrsString ~ "">" ~ innerHTML ~ "</" ~ _tagName ~ ">";
+            return "<" ~ _tagName ~ " " ~ attrsString ~ ">" ~ innerHTML ~ "</" ~ _tagName ~ ">";
         else
-            return "<" ~ _tagName ~ "">" ~ innerHTML ~ "</" ~ _tagName ~ ">";
+            return "<" ~ _tagName ~ ">" ~ innerHTML ~ "</" ~ _tagName ~ ">";
 
     }
 
@@ -3826,7 +3842,6 @@ class Element : Node, IElement
                 //appendChild( node );
             }
         }
-        }
     }
 
     /** Asynchronously asks the browser to make the element full-screen. */
@@ -3978,53 +3993,53 @@ class Element : Node, IElement
         touchstart,  // Fired when one or more touch points are placed on the touch surface.
     }
 
-    EventMixin!"cancel";
-    EventMixin!"error";
-    EventMixin!"scroll";
-    EventMixin!"select";
-    EventMixin!"show";
-    EventMixin!"wheel";
+    mixin EventMixin!"cancel";
+    mixin EventMixin!"error";
+    mixin EventMixin!"scroll";
+    mixin EventMixin!"select";
+    mixin EventMixin!"show";
+    mixin EventMixin!"wheel";
     // Clipboard events
-    EventMixin!"copy";
-    EventMixin!"cut";
-    EventMixin!"paste";
+    mixin EventMixin!"copy";
+    mixin EventMixin!"cut";
+    mixin EventMixin!"paste";
     // Composition events
-    EventMixin!"compositionend";
-    EventMixin!"compositionstart";
-    EventMixin!"compositionupdate";
+    mixin EventMixin!"compositionend";
+    mixin EventMixin!"compositionstart";
+    mixin EventMixin!"compositionupdate";
     // Focus events
-    EventMixin!"blur";
-    EventMixin!"focus";
-    EventMixin!"focusin";
-    EventMixin!"focusout";
+    mixin EventMixin!"blur";
+    mixin EventMixin!"focus";
+    mixin EventMixin!"focusin";
+    mixin EventMixin!"focusout";
     // Fullscreen events
-    EventMixin!"fullscreenchange";
-    EventMixin!"fullscreenerror";
+    mixin EventMixin!"fullscreenchange";
+    mixin EventMixin!"fullscreenerror";
     // Keyboard events
-    EventMixin!"keydown";
-    EventMixin!"keypress";
-    EventMixin!"keyup";
+    mixin EventMixin!"keydown";
+    mixin EventMixin!"keypress";
+    mixin EventMixin!"keyup";
     // Mouse events
-    EventMixin!"auxclick";
-    EventMixin!"click";
-    EventMixin!"contextmenu";
-    EventMixin!"dblclick";
-    EventMixin!"mousedown";
-    EventMixin!"mouseenter";
-    EventMixin!"mouseleave";
-    EventMixin!"mousemove";
-    EventMixin!"mouseout";
-    EventMixin!"mouseover";
-    EventMixin!"mouseup";
-    EventMixin!"webkitmouseforcechanged";
-    EventMixin!"webkitmouseforcedown";
-    EventMixin!"webkitmouseforcewillbegin";
-    EventMixin!"webkitmouseforceup";
+    mixin EventMixin!"auxclick";
+    mixin EventMixin!"click";
+    mixin EventMixin!"contextmenu";
+    mixin EventMixin!"dblclick";
+    mixin EventMixin!"mousedown";
+    mixin EventMixin!"mouseenter";
+    mixin EventMixin!"mouseleave";
+    mixin EventMixin!"mousemove";
+    mixin EventMixin!"mouseout";
+    mixin EventMixin!"mouseover";
+    mixin EventMixin!"mouseup";
+    mixin EventMixin!"webkitmouseforcechanged";
+    mixin EventMixin!"webkitmouseforcedown";
+    mixin EventMixin!"webkitmouseforcewillbegin";
+    mixin EventMixin!"webkitmouseforceup";
     // Touch events
-    EventMixin!"touchcancel";
-    EventMixin!"touchend";
-    EventMixin!"touchmove";
-    EventMixin!"touchstart";
+    mixin EventMixin!"touchcancel";
+    mixin EventMixin!"touchend";
+    mixin EventMixin!"touchmove";
+    mixin EventMixin!"touchstart";
 
 protected:
     NamedNodeMap             _attrs;
@@ -4137,7 +4152,7 @@ struct ScrollToOptions
 enum ScrollBehavior
 {
     smooth, // The scrolling animates smoothly.
-    auto    // The scrolling happens in a single jump.
+    auto_    // The scrolling happens in a single jump.
 }
 
 /** */
@@ -4240,7 +4255,7 @@ protected:
 /** */
 class StylePropertyMap : StylePropertyMapReadOnly
 {
-    void set( string property, CSSStyleValue[] values ... );
+    void set( string property, CSSStyleValue[] values ... )
     {
         foreach ( value; values )
         {
@@ -4270,7 +4285,7 @@ class StylePropertyMap : StylePropertyMapReadOnly
         }
     }
 
-    void delete( string property)
+    void delete_( string property)
     {
         _map.remove( property );
     }
@@ -4279,7 +4294,7 @@ class StylePropertyMap : StylePropertyMapReadOnly
     {
         _map.clear();
     }
-};
+}
 
 /** */
 struct CSSStyleValue
@@ -4341,9 +4356,9 @@ struct CSSStyleValue
 }
 
 /** */
-alias void delegate( CSSStyleValue value                                                 ) KeyValueForEachCallback1;
-alias void delegate( CSSStyleValue value, string property                                ) KeyValueForEachCallback2;
-alias void delegate( CSSStyleValue value, string property, CSSStyleValue[ string ] array ) KeyValueForEachCallback3;
+alias KeyValueForEachCallback1 = void delegate( CSSStyleValue value );
+alias KeyValueForEachCallback2 = void delegate( CSSStyleValue value, string property );
+alias KeyValueForEachCallback3 = void delegate( CSSStyleValue value, string property, CSSStyleValue[ string ] array );
 
 /** */
 struct KeyValue
@@ -4899,11 +4914,11 @@ class Event
 /** */
 enum EventType
 {
-    //
+    none
 }
 
 /** */
-alias float Number;
+alias Number = float;
 
 /** */
 Number Number( string s )
@@ -5116,9 +5131,9 @@ protected:
 }
 
 /** */
-alias void delegate( string currentValue                                            ) TokenForEachCallback1;
-alias void delegate( string currentValue, size_t currentIndex                       ) TokenForEachCallback1;
-alias void delegate( string currentValue, size_t currentIndex, DOMTokenList listObj ) TokenForEachCallback3;
+alias TokenForEachCallback1 = void delegate( string currentValue );
+alias TokenForEachCallback1 = void delegate( string currentValue, size_t currentIndex );
+alias TokenForEachCallback3 = void delegate( string currentValue, size_t currentIndex, DOMTokenList listObj );
 
 /** */
 class TokenKeyIterator : IIterator
@@ -5509,9 +5524,9 @@ protected:
 }
 
 /** */
-alias void delegate( Node currentValue                                        ) ForEachCallback1;
-alias void delegate( Node currentValue, size_t currentIndex                   ) ForEachCallback1;
-alias void delegate( Node currentValue, size_t currentIndex, NodeList listObj ) ForEachCallback3;
+alias ForEachCallback1 = void delegate( Node currentValue );
+alias ForEachCallback1 = void delegate( Node currentValue, size_t currentIndex );
+alias ForEachCallback3 = void delegate( Node currentValue, size_t currentIndex, NodeList listObj );
 
 /** */
 class NodeIterator : IIterator
@@ -6081,7 +6096,7 @@ protected:
 }
 
 /** */
-alias void function() CustomElementConstructor;
+alias CustomElementConstructor = void function();
 
 /** */
 struct CustomElementOptios
@@ -6090,8 +6105,8 @@ struct CustomElementOptios
 }
 
 /** */
-alias void function() PromiseCallback;
-alias void function( PromiseCallback successCallback, PromiseCallback failureCallback ) PromiseExecutor;
+alias PromiseCallback = void function();
+alias PromiseExecutor =  void function( PromiseCallback successCallback, PromiseCallback failureCallback );
 
 
 /** */
@@ -6113,7 +6128,7 @@ class Crypto
 
         foreach ( ref a; arr )
         {
-            a = uniform( 0, T.max, rnd ).to!T;;
+            a = uniform( 0, T.max, rnd ).to!T;
         }
 
         return arr;
@@ -6141,3 +6156,4 @@ this()
     window                = new Window();
     crypto                = new Crypto();
 }
+
