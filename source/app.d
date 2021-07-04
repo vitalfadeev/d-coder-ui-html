@@ -12,10 +12,150 @@ import log           : Log;
 import tools;
 
 
+version ( Windows )
 void main()
 {
-	writeln("Edit source/app.d to start your project.");
+	writeln( "Start" );
+
+    // App( "app.html" ).run();
+
+    App app = {
+        url: "app.html"
+    };
+
+    app.run();
+
+
+    writeln( "Finish" );
 }
+
+/** */
+version ( Windows )
+{
+    void initSDL()
+    {
+        import bindbc.sdl;
+
+        auto ret = loadSDL();
+
+        if ( ret != sdlSupport ) 
+        {
+            if ( ret == SDLSupport.noLibrary ) 
+            {
+                writeln( "SDLSupport.noLibrary" );
+            }
+            else 
+
+            if ( SDLSupport.badLibrary ) 
+            {
+                writeln( "SDLSupport.badLibrary" );
+            }
+        }
+    }
+}
+
+/** */
+version ( Windows )
+struct App
+{
+    string url = "index.html";
+    string windowName;
+    Window window;
+    bool   running = true;
+
+
+    void run()
+    {
+        initialize();
+
+        SDL_Event Event;
+
+        while ( SDL_PollEvent( &Event ) ) 
+        {
+            event( &Event );
+
+            loop();
+
+            render();
+        }
+         
+        cleanup();
+    }
+
+private:
+    void Initialize()
+    {
+        initSDL();
+
+        window = Window.open( url, windowName );
+        //window = Window.open( url, windowName, "width=640,height=480" );
+    }
+
+    void event( SDL_Event* event )
+    {
+        if ( event.type == SDL_QUIT ) 
+        {
+            running = false;
+        }
+    }
+
+    void loop()
+    {
+        //
+    }
+
+    void render()
+    {
+        draw( surface, testSurface, 0, 0 );
+        SDL_Flip( surface );
+    }
+
+    void cleanup()
+    {
+        SDL_FreeSurface( testSurface );
+        SDL_FreeSurface( surface );
+        SDL_Quit();
+    }
+
+    void draw( SDL_Surface* dst, SDL_Surface* src, int x, int y ) 
+    {
+        if ( dst == NULL || src == NULL) 
+        {
+            return;
+        }
+     
+        SDL_Rect rect;
+     
+        rect.x = x;
+        rect.y = y;
+     
+        SDL_BlitSurface( src, NULL, dst, &rect );
+    }
+}
+
+/** */
+struct HTMLParser
+{
+    string url = "index.html";
+
+    void parse()
+    {
+        parseFile( url );
+    }
+
+    void parseFile( string fileName )
+    {
+        import std.file;
+        string s = readText( fileName );
+        parseString( s );
+    }
+    
+    void parseString( string s )
+    {
+        //
+    }    
+}
+
 
 /** */
 interface IEventTarget
@@ -1527,13 +1667,40 @@ class History
     }
 
     /** Opens a new window. */
+    static
     Window open( string url, string windowName, string windowFeatures )
     {
+        _open();
         return new Window();
     }
+    static
     Window open( string url, string windowName )
     {
+        _open();
         return new Window();
+    }
+
+    private _open()
+    {
+        surface = SDL_SetVideoMode( 640, 480, 32, SDL_HWSURFACE | SDL_DOUBLEBUF );
+
+        if ( surface == NULL ) 
+        {
+            return;
+        }
+
+        // test
+        string fileName = "test.bmp";
+        SDL_Surface* tempSurface = NULL;
+        SDL_Surface* testSurface  = NULL;
+     
+        if ( ( tempSurface = SDL_LoadBMP( fileName ) ) == NULL ) 
+        {
+            return NULL;
+        }
+     
+        testSurface = SDL_DisplayFormat( tempSurface );
+        SDL_FreeSurface( tempSurface );             
     }
 
     /** Provides a secure means for one window to send a string of data to another window, which need not be within the same domain as the first. */
@@ -1952,6 +2119,10 @@ protected:
     bool              _isSecureContext;
     string            _origin;
     Selection         _selection;
+
+private:
+    SDL_Surface* surface;
+    SDL_Surface* testSurface;
 }
 
 /** */

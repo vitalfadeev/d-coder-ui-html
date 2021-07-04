@@ -1,9 +1,17 @@
 {
-	"authors": [
-		"vital"
-	],
-	"copyright": "Copyright © 2021, vital",
-	"description": "A minimal D application.",
-	"license": "proprietary",
-	"name": "d-coder-ui-html"
+	"authors"     : [ "Vital Radeev" ],
+	"copyright"   : "Copyright © 2021, vital",
+	"description" : "A minimal D application.",
+	"license"     : "proprietary",
+	"name"        : "d-coder-ui-html",
+	"dependencies": 
+	{
+	    "bindbc-sdl": { "path": "deps/bindbc-sdl" },
+	    "xml": { "path": "deps/xml" },
+	}	,
+	"versions": 
+	[
+	    "SDL_Image",
+	    "SDL_TTF"
+	]
 }
